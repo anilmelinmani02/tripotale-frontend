@@ -1,0 +1,22 @@
+.bg{
+    background: var(--background-color);
+}
+.imgShadowbox{
+   box-shadow: 0px 2.76726px 2.21381px 0px rgba(0, 0, 0, 0.02), 
+    0px 6.6501px 5.32008px 0px rgba(0, 0, 0, 0.03), 0px 12.52155px 10.01724px 0px rgba(0, 0, 0, 0.04), 0px 22.33631px 17.86905px 0px rgba(0, 0, 0, 0.04), 0px 41.77761px 33.42209px 0px rgba(0, 0, 0, 0.05), 0px 100px 80px 0px rgba(0, 0, 0, 0.07)
+}
+.textShadow{
+    text-shadow: 0px 2px 3px gray;
+}
+.gradient-background-mob{
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.00) 14.58%, rgba(56, 56, 56, 0.84) 100%);
+}
+input[type=date] ::placeholder {
+    background: #891515 !important; 
+}
+.img-zoom:hover{
+    transform: scale(1.03);
+    transition: all 0.5s;
+    filter: drop-shadow(0px 4px 6px black);
+    box-shadow: none;
+}
