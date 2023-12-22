@@ -1,0 +1,49 @@
+<div class="login-container">
+    <div>
+        <h3 class="text-center text-2xl font-semibold">Register Form </h3>
+
+    </div>
+    <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
+
+        <label for="email">Email:</label>
+        <input class="border" type="email" id="email" formControlName="email"
+            [class.invalid]="registrationForm.get('email')?.invalid && registrationForm.get('email')?.touched" />
+
+        <div *ngIf="registrationForm.get('email')?.hasError('required') && registrationForm.get('email')?.touched"
+            class="error-message">
+            <span class="error-text">Email is required.</span>
+        </div>
+
+        <div *ngIf="registrationForm.get('email')?.hasError('email') && registrationForm.get('email')?.touched"
+            class="error-message">
+            <span class="error-text">Please enter a valid email address.</span>
+        </div>
+
+        <label for="password">password:</label>
+        <input class="border" type="password" id="password" formControlName="password"
+            [class.invalid]="registrationForm.get('password')?.invalid && registrationForm.get('password')?.touched" />
+
+        <div *ngIf="registrationForm.get('password')?.hasError('required') && registrationForm.get('password')?.touched"
+            class="error-message">
+            <span class="error-text">password is required.</span>
+        </div>
+
+        <div *ngIf="registrationForm.get('password')?.hasError('password') && registrationForm.get('password')?.touched"
+            class="error-message">
+            <span class="error-text">Please enter a valid password address.</span>
+        </div>
+
+        <label for="confirmPassword">Confirm Password:</label>
+        <input class="border" type="password" id="confirmPassword" formControlName="confirmPassword">
+
+        <div *ngIf="registrationForm.hasError('mismatch')">
+            Passwords do not match.
+        </div>
+        <div>
+            <button type="submit" [disabled]="registrationForm.invalid">Register</button>
+
+        </div>
+
+        <span>if you have already account than goto <a class="text-blue-600 font-medium" routerLink="/login">Login</a></span>
+    </form>
+</div>

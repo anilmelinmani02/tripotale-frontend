@@ -12,9 +12,12 @@
     <div>
       <button class=" text-[#424242] xxsm:text-sm sm:text-base md:text-[17px] xsm:font-normal sm:font-medium xxsm:px-2 sm:px-4 py-2 ">How it works?
       </button>
-      <a
-          class="xsm:text-sm xsm:font-semibold w-32 sm:h-[43px] sm:text-base px-4 xxsm:py-1 xsm:py-2 whitespace-nowrap sm:font-bold rounded text-white bg-black mt-4">Sign
+      <a routerLink="/login" *ngIf="isLogedIn =='false' || isLogedIn == null"
+          class="xsm:text-sm xsm:font-semibold hover:cursor-pointer w-32 sm:h-[43px] sm:text-base px-4 xxsm:py-1 xsm:py-2 whitespace-nowrap sm:font-bold rounded text-white bg-black mt-4">Sign
           In</a>
+          <a (click)="onClickOnLogOut()" *ngIf="isLogedIn=='true'"
+          class="xsm:text-sm ms-1 xsm:font-semibold hover:cursor-pointer w-32 sm:h-[43px] sm:text-base px-4 xxsm:py-1 xsm:py-2 whitespace-nowrap sm:font-bold rounded text-white bg-black mt-4">Log
+          Out</a>
     </div>
   </div>
 </nav>

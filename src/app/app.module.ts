@@ -9,7 +9,24 @@ import { HeaderComponent } from './header/header.component';
 import { ItineraryPageComponent } from './itinerary-page/itinerary-page.component';
 import { ItineraryPageMainComponent } from './itinerary-page-main/itinerary-page-main.component';
 import { ItineraryCardComponent } from './itinerary-card/itinerary-card.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { LoginComponent } from './auth/login/login.component';
+import { RegisterComponent } from './auth/register/register.component';
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
+import {  HttpClientModule } from '@angular/common/http';
+import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.component';
+
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDp7yyM3_72459eJ2sd6DF6JDzHzBOhHXU",
+  authDomain: "tripotale-f1db9.firebaseapp.com",
+  projectId: "tripotale-f1db9",
+  storageBucket: "tripotale-f1db9.appspot.com",
+  messagingSenderId: "152516444939",
+  appId: "1:152516444939:web:70cc71eb653aea866a980e",
+  measurementId: "G-JMQ061HFB5"
+};
 
 @NgModule({
   declarations: [
@@ -20,11 +37,21 @@ import { FormsModule } from '@angular/forms';
     ItineraryPageComponent,
     ItineraryPageMainComponent,
     ItineraryCardComponent,
+    LoginComponent,
+    RegisterComponent,
+    ForgotPasswordComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    FormsModule,
+    ReactiveFormsModule,
+    AngularFireModule.initializeApp(firebaseConfig),
+    AngularFireAuthModule,
+    AngularFireModule,
+    HttpClientModule,
+    
   ],
   providers: [],
   bootstrap: [AppComponent]
