@@ -46,11 +46,11 @@
                     </div> -->
                     <div style="border-radius: 0px 0px 50px 50px;"
                         class="w-full xxsm:h-[120px] sm:h-[180px] md:h-[237px] bg-img">
-                        <p class="text-[#FFF] text-3xl font-bold font-['Sora'] pt-3 text-center">Mexico</p>
+                        <p class="text-[#FFF] text-3xl font-bold font-['Sora'] pt-3 text-center">{{cityDetails.city}}</p>
                     </div>
                 </div>
                 <!-- city details -->
-                <div
+                <div 
                     class="px-8 flex gap-2 justify-between flex-wrap items-center bg-white shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] border border-[#E5E7EB] rounded-[14px] min-h-[78px]">
                     <div class="flex justify-between items-center">
                         <div class="flex gap-2 items-center">
@@ -66,7 +66,7 @@
                                 </svg>
                             </span>
                             <span>
-                                <p class="text-base font-normal text-[#18181B] font-['IBM_Plex_Sans']">MXN</p>
+                                <p class="text-base font-normal text-[#18181B] font-['IBM_Plex_Sans']">{{cityDetails.currency}}</p>
                             </span>
                         </div>
                     </div>
@@ -93,7 +93,7 @@
                                 </svg>
                             </span>
                             <span>
-                                <p class="text-base font-normal text-[#18181B] font-['IBM_Plex_Sans']">Mexico City</p>
+                                <p class="text-base font-normal text-[#18181B] font-['IBM_Plex_Sans']">{{cityDetails.city}} City</p>
                             </span>
                         </div>
                     </div>
@@ -127,7 +127,7 @@
                                 </svg>
                             </span>
                             <span>
-                                <p class="text-base font-normal text-[#18181B] font-['IBM_Plex_Sans']">23.24°C</p>
+                                <p class="text-base font-normal text-[#18181B] font-['IBM_Plex_Sans']">{{cityDetails.temprature}}</p>
                             </span>
                         </div>
                     </div>
@@ -155,7 +155,7 @@
                                 </svg>
                             </span>
                             <span>
-                                <p class="text-base font-normal text-[#18181B] font-['IBM_Plex_Sans']">Spanish</p>
+                                <p class="text-base font-normal text-[#18181B] font-['IBM_Plex_Sans']">{{cityDetails.localLanguage}}</p>
                             </span>
                         </div>
                     </div>
@@ -192,7 +192,7 @@
                                 </svg>
                             </span>
                             <span>
-                                <p class="text-base font-normal text-[#18181B] font-['IBM_Plex_Sans']">1 USD = MXN 17.54
+                                <p class="text-base font-normal text-[#18181B] font-['IBM_Plex_Sans']">{{cityDetails.currencyExchange}}
                                 </p>
                             </span>
                         </div>
@@ -401,9 +401,7 @@
                                 </p>
                                 <div class="pt-[14px] px-7 flex justify-center">
                                     <ul class="list-disc xxsm:text-lg sm:text-xl flex flex-col text-[#000] font-normal">
-                                        <li class="pb-1">Al Fanar Restaurant and Cafe</li>
-                                        <li class="pb-1">Arabian Tea House Restaurant and Cafe</li>
-                                        <li class="pb-1">Seven Sands Restaurant</li>
+                                        <li *ngFor="let restaurants of highRatetRestaurants" class="pb-1">{{restaurants}}</li>
                                     </ul>
                                 </div>
                             </div>

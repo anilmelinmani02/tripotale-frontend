@@ -13,12 +13,13 @@ itineraryData: any;
 cardsData: any[] = [];
 estimatedCostData : any = {};
 localCuisine: any[] = [];
+highRatetRestaurants: any[] = [];
+cityDetails: any = {};
 
 constructor(private itineraryService: ItineraryService) {
   const selectedCity = 'Pune';
   this.fetchItineraryData(selectedCity);
 }
-
 
 fetchItineraryData(selectedCity: string): void {
   this.itineraryService.getItineraryData(selectedCity).subscribe(
@@ -29,7 +30,9 @@ fetchItineraryData(selectedCity: string): void {
     this.estimatedCostData =  this.itineraryData.estimatedBudget
     console.log(this.estimatedCostData);
 
-    this.localCuisine = this.itineraryData.localCuision;    
+    this.localCuisine = this.itineraryData.localCuision;
+    this.highRatetRestaurants = this.itineraryData.highRatedRestaurants;
+    this.cityDetails = this.itineraryData.additionalInformation
     
       this.cardsData = data.data.tripPlans[0].activities ;   
       // console.log('allPlanes',this.cardsData);
