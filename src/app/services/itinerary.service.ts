@@ -9,6 +9,8 @@ import { Observable } from 'rxjs';
 export class ItineraryService {
   private citiesApi = 'http://localhost:8000/api/IND/states-cities';
   private apiUrl = 'http://localhost:8000/api/itineraryData';
+  private commentApi = 'http://localhost:8000/api/comments'
+ 
 
 
   constructor(
@@ -19,6 +21,11 @@ export class ItineraryService {
   getItineraryData(selectedCity: string): Observable<any> {
     const requestData = { selectCity: [selectedCity] };
     return this.http.post<any>(this.apiUrl, requestData);
+  }
+
+  // comment data
+  getCommentsData(): Observable<any> {
+    return this.http.get<any>(this.commentApi);
   }
 
   // get all indianCities
@@ -32,7 +39,8 @@ export class ItineraryService {
   }
 
   // get data from firestore
-  getData(): Observable<any[]> {
-    return this.firestore.collection('itineraryData').valueChanges();
-  }
+
+  // getData(): Observable<any[]> {
+  //   return this.firestore.collection('itineraryData').valueChanges();
+  // }
 }

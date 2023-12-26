@@ -411,27 +411,12 @@
                     <div class="pt-12">
                         <div class="bg-white border border-[#E5E7EB] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] rounded-md">
                             <div class="py-6 px-2">
-                                <p
-                                    class="text-[#1F2937]  xxsm:text-xl sm:text-2xl font-semibold text-['IBM_Plex_Sans']">
+                                <p class="text-[#1F2937] text-center xxsm:text-xl sm:text-2xl font-semibold text-['IBM_Plex_Sans']">
                                     Suggestions
                                 </p>
                                 <div class="pt-[14px] px-7 flex justify-center">
-                                    <ul
-                                        class="list-disc xxsm:text-base sm:text-lg flex flex-col text-[#000] font-normal">
-                                        <li class="pb-1">Look up the opening hours and any entry fees for the <a href=""
-                                                class="text-[#507DBE]"> Al Shindagha Museum.</a></li>
-                                        <li class="pb-1">Check if any special events are happening at the <a href=""
-                                                class="text-[#507DBE]"> Dubai Museum</a> on your visit day.</li>
-                                        <li class="pb-1">Book a table at <a href="" class="text-[#507DBE]">Al Ustad
-                                                Special Kabab</a> to ensure you have a seat and check their menu for any
-                                            dietary requirements.</li>
-                                        <li class="pb-1">Explore the <a href="" class="text-[#507DBE]">Al Fahidi
-                                                Historic District</a> and its charming architecture.</li>
-                                        <li class="pb-1">Make a reservation at <a href=""
-                                                class="text-[#507DBE]">Pierchic</a> to ensure you have a table and check
-                                            their menu for any dietary requirements. </li>
-                                        <li class="pb-1">Check the schedule for performances at the <a href=""
-                                                class="text-[#507DBE]">Dubai Opera</a> and book tickets in advance.</li>
+                                    <ul class="list-disc xxsm:text-base sm:text-lg flex flex-col text-[#000] font-normal">
+                                        <li class="pb-1" *ngFor="let sugst of suggestionsData, let i = index" [innerHTML]="wrapWithAnchorTag(sugst, i === 0 ? 'Ola or Uber' : i === 1 ? 'historical charm' : i === 2 ? 'Tulshi Baug' : i === 3 ? 'Khadakwasla Dam' : i === 4 ? 'Koregaon Park' : '', 'https://www.example.com/custom-link')"></li>
                                     </ul>
                                 </div>
                             </div>
@@ -440,28 +425,13 @@
                 </div>
                 <!-- Q n A -->
                 <div class="pt-12">
-                    <div class="py-7 bg-white border border-[#E5E7EB] rounded-md px-5 flex justify-start w-fit">
-                        <ul class="list-disc xxsm:text-base sm:text-lg flex flex-col text-[#000] font-normal">
+                    <div class="py-7 bg-white border border-[#E5E7EB] rounded-md px-5 justify-start w-fit">
+                        <ul *ngFor="let item of triviaData" class="list-disc xxsm:text-base sm:text-lg flex flex-col text-[#000] font-normal">
                             <span class="flex gap-1">
-                                <p>Q:</p><p class="pb-1">When is the best time to visit Dubai?</p>
+                                <p>Q:</p><p class="pb-1">{{ item.question }}</p>
                             </span>
                             <span class="flex gap-1">
-                                <p>A:</p><p class="pb-1">The best time to visit Dubai is during the winter months, from November
-                                to March, when the weather is pleasant.</p>
-                            </span>
-                            <span class="flex gap-1">
-                                <p>Q:</p><p class="pb-1">Is Dubai safe for tourists? </p>
-                            </span>
-                            <span class="flex gap-1">
-                            <p>A:</p><p class="pb-1">Dubai is considered one of the safest cities in the world, with low crime
-                                rates and a strong emphasis on security.</p>
-                            </span>
-                            <span class="flex gap-1">
-                            <p>Q:</p> <p class="pb-1">Can I drink alcohol in Dubai? </p>
-                            </span>
-                            <span class="flex gap-1">
-                            <p>A:</p><p class="pb-1">A: Alcohol is available in licensed venues such as hotels, bars, and
-                                restaurants. However, public intoxication is strictly prohibited.</p>
+                                <p>A:</p><p class="pb-1">{{ item.answer }}</p>
                             </span>
                         </ul>
                     </div>
