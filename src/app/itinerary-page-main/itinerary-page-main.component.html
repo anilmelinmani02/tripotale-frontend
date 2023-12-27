@@ -503,12 +503,16 @@
                 </div>
                 <!-- map sec -->
                 <div class="xxsm:w-full md:w-2/5 xxsm:px-2 lg:px-0 h-[88.4vh] sticky top-[77px]">
-                    <!-- <iframe
-                        src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d60628.19688665578!2d73.97373081563322!3d18.542377191135742!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sin!4v1700747378225!5m2!1sen!2sin"
-                        height="100%" style="border:0; width: 100%;" allowfullscreen="" loading="lazy"
-                        referrerpolicy="no-referrer-when-downgrade">
-                    </iframe> -->
-                    <div id="map" class="h-full w-full"></div>
+                    <div id="map" class="h-full w-full">
+                        <div class="absolute bottom-2 xxsm:right-4 md:right-2 z-30 flex flex-col divide-y-2">
+                            <button class="bg-white w-fit h-fit p-2 rounded-sm hover:bg-slate-100" (click)="zoomIn()">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="16" width="14" viewBox="0 0 448 512"><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg>
+                            </button>
+                            <button class="bg-white w-fit h-fit p-2 rounded-sm hover:bg-slate-100" (click)="zoomOut()">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="16" width="14" viewBox="0 0 448 512"><path d="M432 256c0 17.7-14.3 32-32 32L48 288c-17.7 0-32-14.3-32-32s14.3-32 32-32l352 0c17.7 0 32 14.3 32 32z"/></svg>
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

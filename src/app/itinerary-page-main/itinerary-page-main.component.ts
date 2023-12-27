@@ -9,6 +9,7 @@ import { fromLonLat } from 'ol/proj';
 import { boundingExtent } from 'ol/extent';
 import { Coordinate } from 'ol/coordinate';
 
+
 @Component({
   selector: 'app-itinerary-page-main',
   templateUrl: './itinerary-page-main.component.html',
@@ -28,7 +29,7 @@ triviaData: any[] = [];
 map: Map = new Map();
 markerOverlay !: Overlay;
 allCoords: any[] = []
-
+currentZoom:any;
 
 constructor(
   private itineraryService: ItineraryService, 
@@ -116,6 +117,18 @@ addMarker() {
     // Fit the view to the bounding box
     this.map.getView().fit(boundingBox, { padding: [20, 20, 20, 20], maxZoom: 13 });
   }
+}
+
+zoomIn() {
+  const view = this.map.getView();
+  this.currentZoom = view.getZoom();
+  view.setZoom(this.currentZoom + 1);
+}
+
+zoomOut() {
+  const view = this.map.getView();
+  this.currentZoom = view.getZoom();
+  view.setZoom(Math.max(this.currentZoom - 1, 1));
 }
 
 fetchCommentData(){
