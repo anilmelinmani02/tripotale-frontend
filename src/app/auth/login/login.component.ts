@@ -33,7 +33,7 @@ export class LoginComponent {
       this.auth.login(this.myForm.value.email, this.myForm.value.password).then(res =>{
         localStorage.setItem('logedIn', 'true');        
         localStorage.setItem('userId', this.myForm.value.email)
-        this.router.navigate(['/customer-profilling']);
+        this.router.navigate(['/home']);
         if(res.user?.emailVerified == true){
           this.router.navigate(['/home']);
         }

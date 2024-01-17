@@ -4,3 +4,37 @@
     object-fit: cover;
     background-position: center;
 }
+.pin-number{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: black;
+    color: white;
+    border-radius: 100%;
+    width: 10px;
+    height: 10px;
+    font-size: x-small;
+    position: absolute;
+    top: 30px;
+    left: 11px;
+}
+
+
+//  loader for Reregenration
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+  };
+
+.loader {
+    background-repeat: no-repeat;
+    animation: l11 1s infinite linear;
+  }
+  @keyframes l11{ 
+    100%{transform: rotate(1turn)}
+  }

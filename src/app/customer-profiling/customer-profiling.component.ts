@@ -1,8 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core'
-import { FormBuilder, FormGroup, NgModel, Validators } from '@angular/forms'
-import { Router } from '@angular/router'
+import { AbstractControl, FormBuilder, FormGroup, NgModel, Validators } from '@angular/forms'
+import { ActivatedRoute, Router } from '@angular/router'
 import { ItineraryService } from '../services/itinerary.service';
+import { ErrorModalComponent } from '../../app/alertModal/error-modal/error-modal.component';
+
 
 interface ModesOfTravelInterface {
   name: string,
@@ -28,8 +30,12 @@ export class CustomerProfilingComponent implements OnInit {
   @ViewChild('candidateInput', { static: false }) candidateInput!: ElementRef;
   @ViewChild('peopleCountInput', { static: false }) peopleCountInput!: ElementRef;
   @ViewChild('moneySpendInput', { static: false }) moneySpendInput!: ElementRef;
+  @ViewChild('journeyStartDateInput', { static: false }) journeyStartDateInput!: ElementRef;
+  @ViewChild('journeyEndDateInput', { static: false }) journeyEndDateInput!: ElementRef;
   @ViewChild('activitiesSelection', { static: false }) activitiesSelection!: ElementRef;
   @ViewChild('travelModeSelection', { static: false }) travelModeSelection!: ElementRef;
+
+  @ViewChild(ErrorModalComponent) errorModalComponent!: ErrorModalComponent;
 
   peopleCount: number = 1
   isPeopleCountValid: boolean = true;
@@ -111,7 +117,11 @@ export class CustomerProfilingComponent implements OnInit {
       isChoosed: false,
     },
   ]
-
+  journey: any;
+  ischoosedStartDate: boolean = true;
+  ischoosedEndDate: boolean = true;
+  minDate: any;
+  maxDate: any;
   searchTerm: string = ''
   filteredCities: string[] = []
   showPromptMessage: boolean = false
@@ -133,6 +143,9 @@ export class CustomerProfilingComponent implements OnInit {
   allStates: any[] = [];
   allCities: any[] = [];
   indiaAllCitiList: any[] = [];
+  loading: boolean = false;
+  userInfo:any;
+  faildToGenerate: boolean = false;
 
   myForm: FormGroup;
 
@@ -140,9 +153,17 @@ export class CustomerProfilingComponent implements OnInit {
     private router: Router,
     private http: HttpClient,
     private itineraryService: ItineraryService,
+    private route: ActivatedRoute
   ) {
+
+    this.userInfo = {loginStatus:localStorage.getItem('logedIn'),userId:localStorage.getItem("userId")} 
+    
+    this.minDate = this.formatStartDate(new Date())
+
     this.myForm = this.fb.group({
       selectCity: [''],
+      journeyStartDate: ['', [Validators.required]],
+      journeyEndDate: ['', [Validators.required]],
       peopleCount: ['', [Validators.required]],
       selectCandidate: ['', Validators.required],
       moneySpend: ['', [Validators.required]],
@@ -154,7 +175,7 @@ export class CustomerProfilingComponent implements OnInit {
     this.itineraryService.getCitiesData().subscribe(
       (result) => {
         // result.states.map((m,index)=>m.cities.map(e=>({...e, stateName:m.name})))
-        console.log("getCities API data:", result);
+        // console.log("getCities API data:", result);
         const allStates = (result.states);
         allStates.forEach((st: any) => {
           st.cities.forEach((ct: any) => {
@@ -164,23 +185,39 @@ export class CustomerProfilingComponent implements OnInit {
 
       }
     )
-    // console.log(this.indiaAllCitiList);
-
   }
 
   ngOnInit(): void {
+    // console.log(this.indiaAllCitiList);
+        this.route.queryParams.subscribe((params => {
+      this.journey = params;
+      console.log('Received journey date & current city:', this.journey);
+      this.indiaAllCitiList.filter(city =>{
+        if (city.toLowerCase().includes(this.journey?.to.toLowerCase())){
+          this.selectedCities.push(city)
+        }
+      })
+    })
+    )
+  }
 
+  private formatStartDate(date: Date): string {
+    const year = date.getFullYear();
+    const month = ('0' + (date.getMonth() + 1)).slice(-2);
+    const day = ('0' + date.getDate()).slice(-2);
+    return `${year}-${month}-${day}`;
   }
 
   onSubmit() {
     this.myForm.get('selectCity')?.setValue(this.selectedCities);
     this.myForm.get('selectActivity')?.setValue(this.selectedActivities)
     this.myForm.get('modeOfTravell')?.setValue(this.selectedModeOfTravell)
+
     this.itineraryData = (this.myForm.value);
     let logedUserId = localStorage.getItem('userId');
     this.itineraryData.userId = logedUserId;
-    this.itineraryData.date = new Date().toLocaleDateString();
-    this.itineraryData.time = new Date().toLocaleTimeString();
+    this.itineraryData.journeyStartFrom = this.journey?.from;
+    console.log('form value', this.myForm.value);
 
     // scroll up to error field
     if (this.selectedCities.length < 1) {
@@ -198,10 +235,21 @@ export class CustomerProfilingComponent implements OnInit {
 
     if (this.selectedCandidate.length < 1) {
       this.candidateInput.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      this.unselectedCandidate = true;
     }
 
     if (this.myForm.get('moneySpend')?.invalid) {
       this.moneySpendInput.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    if (this.myForm.get('journeyStartDate')?.invalid) {
+      this.journeyStartDateInput.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      this.ischoosedStartDate = false;
+    }
+
+    if (this.myForm.get('journeyEndDate')?.invalid) {
+      this.journeyEndDateInput.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      this.ischoosedEndDate = false;
     }
 
     if (this.selectedActivities.length < 1) {
@@ -225,6 +273,7 @@ export class CustomerProfilingComponent implements OnInit {
 
     // add data to firestore
     if (this.myForm.valid && this.selectedActivities.length > 0 && this.selectedCities.length > 0 && (this.selectedModeOfTravell !== '')) {
+      this.loading = true;
       this.itineraryService.addData(this.itineraryData)
         .then(res => {
           console.log('data is added in firestore ', res);
@@ -234,15 +283,36 @@ export class CustomerProfilingComponent implements OnInit {
         })
     }
 
-    //add form values data in api 
-    this.http.post(`http://localhost:8000/api/itineraryData`, this.itineraryData).subscribe(
-      res => {
-        console.log(res);
-      })
-
     if (this.myForm.valid && this.selectedActivities.length > 0 && this.selectedCities.length > 0 && (this.selectedModeOfTravell !== '')) {
-      this.router.navigate(['/itinarary-details'])
+
+    var reqestedData: any={userReq:this.itineraryData,userInfo:this.userInfo};
+    // store reqestedData data in service.
+    this.itineraryService.userRequestedData = reqestedData;
+
+    // console.log("user reqested Data",reqestedData);
+    this.itineraryService.getItineraryData(reqestedData).subscribe(
+      tripPlan => {  
+        this.itineraryService.aiResponse.push(tripPlan);      
+        console.log('Generated Trip Plan:', tripPlan);
+        this.loading = false;
+        if (this.myForm.valid && this.selectedActivities.length > 0 && this.selectedCities.length > 0 && (this.selectedModeOfTravell !== '')) {
+          this.router.navigate(['/itinarary-details'], { queryParams: this.itineraryData.selectCity })
+        }
+      },
+      error => {
+        console.error('Error while generating trip plan:', error);
+        this.loading = false;
+        this.faildToGenerate = true
+        this.errorModalComponent.errorMessage = 'An error occurred while generating trip plan. Please try again later.';
+        this.errorModalComponent.openModal();
+        if(this.errorModalComponent.showModal === false ){
+          this.faildToGenerate = false
+        }
+      }
+    )
     }
+
+    // }
     // this.myForm.reset();
     // this.selectedCities = [];
     this.myForm.get('selectCity')?.setValue('');
@@ -298,30 +368,6 @@ export class CustomerProfilingComponent implements OnInit {
     this.listCandidate = false;
     this.unselectedCandidate = false
   }
-
-  indianCitiesWithStates: string[] = [
-    'Mumbai (MH)',
-    'Delhi (DL)',
-    'Bangalore (KA)',
-    'Hyderabad (TL)',
-    'Chennai (TN)',
-    'Kolkata (WB)',
-    'Ahmedabad (GJ)',
-    'Pune (MH)',
-    'Surat (GJ)',
-    'Jaipur (Rj)',
-    'Lucknow (UP)',
-    'Kanpur (UP)',
-    'Nagpur (MH)',
-    'Indore (MP)',
-    'Thane (MH)',
-    'Bhopal (MP)',
-    'Visakhapatnam (AP)',
-    'Pimpri-Chinchwad (MH)',
-    'Patna (BH)',
-    'Vadodara (GJ)',
-    // ... add more cities with states and country code as needed
-  ]
 
   travelCandidate: string[] = [
     'Friends',

@@ -44,10 +44,11 @@
                         class="w-full xxsm:h-[120px] sm:h-[180px] md:h-[237px]">
                         <p class="text-[#FFF] text-3xl font-bold font-['Sora'] pt-3 text-center">Mexico</p>
                     </div> -->
-                        <div style="border-radius: 0px 0px 50px 50px;"
-                            class="w-full xxsm:h-[120px] sm:h-[180px] md:h-[237px] bg-img">
+                        <div [style.background-image]="'url(' + citiImageUrl + ')'"
+                            style="border-radius: 0px 0px 50px 50px; background: url(citiImageUrl); background-repeat: no-repeat; background-size: cover; background-position:center"
+                            class="w-full xxsm:h-[120px] sm:h-[180px] md:h-[237px]">
                             <p class="text-[#FFF] text-3xl font-bold font-['Sora'] pt-3 text-center">
-                                {{cityDetails.city}}</p>
+                                {{city1?.cityName}}</p>
                         </div>
                     </div>
                     <!-- city details -->
@@ -68,7 +69,7 @@
                                 </span>
                                 <span>
                                     <p class="text-base font-normal text-[#18181B] font-['IBM_Plex_Sans']">
-                                        {{cityDetails.currency}}</p>
+                                        {{city1.currency}}</p>
                                 </span>
                             </div>
                         </div>
@@ -96,7 +97,7 @@
                                 </span>
                                 <span>
                                     <p class="text-base font-normal text-[#18181B] font-['IBM_Plex_Sans']">
-                                        {{cityDetails.city}} City</p>
+                                        {{city1.cityName}} City</p>
                                 </span>
                             </div>
                         </div>
@@ -131,7 +132,7 @@
                                 </span>
                                 <span>
                                     <p class="text-base font-normal text-[#18181B] font-['IBM_Plex_Sans']">
-                                        {{cityDetails.temprature}}</p>
+                                        {{city1.temperature}}</p>
                                 </span>
                             </div>
                         </div>
@@ -160,7 +161,7 @@
                                 </span>
                                 <span>
                                     <p class="text-base font-normal text-[#18181B] font-['IBM_Plex_Sans']">
-                                        {{cityDetails.localLanguage}}</p>
+                                        {{city1.localLanguage}}</p>
                                 </span>
                             </div>
                         </div>
@@ -198,15 +199,25 @@
                                 </span>
                                 <span>
                                     <p class="text-base font-normal text-[#18181B] font-['IBM_Plex_Sans']">
-                                        {{cityDetails.currencyExchange}}
+                                        {{city1.currencyExchangeRate}}
                                     </p>
                                 </span>
                             </div>
                         </div>
                     </div>
-                    <!-- 1 Day Itinerary of Mexico -->
+                    <!-- shoulder months for visiting -->
+                    <div
+                        class="px-8 mt-5 bg-white shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] border border-[#E5E7EB] rounded-[14px] min-h-[78px]">
+                        <div *ngFor="let city of shoulderMonths">
+                            <p class="text-[#1F2937] text-2xl font-semibold text-center py-3">Shoulder months for a
+                                trip- {{city.cityName}}</p>
+                            <p class="pb-3"><span class="font-medium">{{city.months}}- </span>{{ city.seasonsInfo }}</p>
+                        </div>
+                    </div>
+                    <!-- 1 Day Itinerary of city -->
                     <div class="pt-11 px-2">
-                        <p class="text-[#1F2937] text-2xl font-semibold pb-5">1 Day Itinerary of Mexico</p>
+                        <p class="text-[#1F2937] text-2xl font-semibold pb-5">1 Day Itinerary of
+                            {{city1?.cityName}}</p>
                         <div
                             class="px-8 flex w-full justify-between flex-wrap items-center bg-white shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] border border-[#E5E7EB] rounded-[14px] min-h-[78px]">
                             <div
@@ -229,8 +240,7 @@
                                     <div class="flex gap-2 items-center">
                                         <span>
                                             <p class="text-base font-medium text-[#1F2937] font-['IBM_Plex_Sans']">Find
-                                                a
-                                                place to stay</p>
+                                                a place to stay</p>
                                         </span>
                                     </div>
                                 </div>
@@ -295,163 +305,191 @@
                         </div>
                     </div>
                     <!-- day 1 detail -->
-                    <div class="">
-                        <!-- {{ itineraryData |json}} -->
+                    <div class="" *ngFor="let day of allDaysTripPlans ; let i = index">
                         <div class="pt-14 px-4">
-                            <p class="text-[#1F2937] text-xl font-medium font-['IBM_Plex_Sans']">Day 1</p>
-                            <p class="text-[#3F3F46] text-sm font-normal font-['IBM_Plex_Sans']">Wed,08 Nov</p>
-                        </div>
-                        <!-- 4cards -->
-                        <div class="pt-10">
-                            <!-- <div *ngFor="let activity of allPlanes" class="my-5 w-full bg-white sm:max-h-[200px] md:h-[162px] p-4 border border-[#E5E7EB] rounded-md flex xxsm:flex-col-reverse sm:flex-row xxsm:gap-3 md:gap-9">
-                            <div class="xxsm:w-full sm:w-[70%]">
-                              <p class="text-lg font-medium text-[#1F2937] font-['IBM_Plex_Sans']">{{ activity.placeName }}</p>
-                              <div class="flex items-center justify-start gap-2 pb-2">
-                                <p class="text-sm font-normal text-[#1F2937] font-['IBM_Plex_Sans']">{{ activity.location }}</p>
-                                <span class="w-[1px] h-[2px] flex justify-center items-center rounded-full bg-[#3F3F46]"></span>
-                                <p class="text-sm font-normal text-[#1F2937] font-['IBM_Plex_Sans']">{{ activity.time }}</p>
-                              </div>
-                              <p class="text-base font-normal text-[#1F2937] font-['IBM_Plex_Sans']">{{ activity.details }}</p>
-                              <span class="flex pt-2 gap-3">
-                                <svg (click)="toggleLike()" *ngIf="like==false"  class="cursor-pointer"   xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 512 512"><path d="M323.8 34.8c-38.2-10.9-78.1 11.2-89 49.4l-5.7 20c-3.7 13-10.4 25-19.5 35l-51.3 56.4c-8.9 9.8-8.2 25 1.6 33.9s25 8.2 33.9-1.6l51.3-56.4c14.1-15.5 24.4-34 30.1-54.1l5.7-20c3.6-12.7 16.9-20.1 29.7-16.5s20.1 16.9 16.5 29.7l-5.7 20c-5.7 19.9-14.7 38.7-26.6 55.5c-5.2 7.3-5.8 16.9-1.7 24.9s12.3 13 21.3 13L448 224c8.8 0 16 7.2 16 16c0 6.8-4.3 12.7-10.4 15c-7.4 2.8-13 9-14.9 16.7s.1 15.8 5.3 21.7c2.5 2.8 4 6.5 4 10.6c0 7.8-5.6 14.3-13 15.7c-8.2 1.6-15.1 7.3-18 15.2s-1.6 16.7 3.6 23.3c2.1 2.7 3.4 6.1 3.4 9.9c0 6.7-4.2 12.6-10.2 14.9c-11.5 4.5-17.7 16.9-14.4 28.8c.4 1.3 .6 2.8 .6 4.3c0 8.8-7.2 16-16 16H286.5c-12.6 0-25-3.7-35.5-10.7l-61.7-41.1c-11-7.4-25.9-4.4-33.3 6.7s-4.4 25.9 6.7 33.3l61.7 41.1c18.4 12.3 40 18.8 62.1 18.8H384c34.7 0 62.9-27.6 64-62c14.6-11.7 24-29.7 24-50c0-4.5-.5-8.8-1.3-13c15.4-11.7 25.3-30.2 25.3-51c0-6.5-1-12.8-2.8-18.7C504.8 273.7 512 257.7 512 240c0-35.3-28.6-64-64-64l-92.3 0c4.7-10.4 8.7-21.2 11.8-32.2l5.7-20c10.9-38.2-11.2-78.1-49.4-89zM32 192c-17.7 0-32 14.3-32 32V448c0 17.7 14.3 32 32 32H96c17.7 0 32-14.3 32-32V224c0-17.7-14.3-32-32-32H32z"/></svg>
-                                <svg (click)="resetLike()" *ngIf="like==true" class="cursor-pointer" xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 512 512"><path d="M313.4 32.9c26 5.2 42.9 30.5 37.7 56.5l-2.3 11.4c-5.3 26.7-15.1 52.1-28.8 75.2H464c26.5 0 48 21.5 48 48c0 18.5-10.5 34.6-25.9 42.6C497 275.4 504 288.9 504 304c0 23.4-16.8 42.9-38.9 47.1c4.4 7.3 6.9 15.8 6.9 24.9c0 21.3-13.9 39.4-33.1 45.6c.7 3.3 1.1 6.8 1.1 10.4c0 26.5-21.5 48-48 48H294.5c-19 0-37.5-5.6-53.3-16.1l-38.5-25.7C176 420.4 160 390.4 160 358.3V320 272 247.1c0-29.2 13.3-56.7 36-75l7.4-5.9c26.5-21.2 44.6-51 51.2-84.2l2.3-11.4c5.2-26 30.5-42.9 56.5-37.7zM32 192H96c17.7 0 32 14.3 32 32V448c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32V224c0-17.7 14.3-32 32-32z"/></svg>
-                                <svg (click)="toggleUnlike()" *ngIf="unlike==false" class="cursor-pointer"   xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 512 512"><path d="M323.8 477.2c-38.2 10.9-78.1-11.2-89-49.4l-5.7-20c-3.7-13-10.4-25-19.5-35l-51.3-56.4c-8.9-9.8-8.2-25 1.6-33.9s25-8.2 33.9 1.6l51.3 56.4c14.1 15.5 24.4 34 30.1 54.1l5.7 20c3.6 12.7 16.9 20.1 29.7 16.5s20.1-16.9 16.5-29.7l-5.7-20c-5.7-19.9-14.7-38.7-26.6-55.5c-5.2-7.3-5.8-16.9-1.7-24.9s12.3-13 21.3-13L448 288c8.8 0 16-7.2 16-16c0-6.8-4.3-12.7-10.4-15c-7.4-2.8-13-9-14.9-16.7s.1-15.8 5.3-21.7c2.5-2.8 4-6.5 4-10.6c0-7.8-5.6-14.3-13-15.7c-8.2-1.6-15.1-7.3-18-15.2s-1.6-16.7 3.6-23.3c2.1-2.7 3.4-6.1 3.4-9.9c0-6.7-4.2-12.6-10.2-14.9c-11.5-4.5-17.7-16.9-14.4-28.8c.4-1.3 .6-2.8 .6-4.3c0-8.8-7.2-16-16-16H286.5c-12.6 0-25 3.7-35.5 10.7l-61.7 41.1c-11 7.4-25.9 4.4-33.3-6.7s-4.4-25.9 6.7-33.3l61.7-41.1c18.4-12.3 40-18.8 62.1-18.8H384c34.7 0 62.9 27.6 64 62c14.6 11.7 24 29.7 24 50c0 4.5-.5 8.8-1.3 13c15.4 11.7 25.3 30.2 25.3 51c0 6.5-1 12.8-2.8 18.7C504.8 238.3 512 254.3 512 272c0 35.3-28.6 64-64 64l-92.3 0c4.7 10.4 8.7 21.2 11.8 32.2l5.7 20c10.9 38.2-11.2 78.1-49.4 89zM32 384c-17.7 0-32-14.3-32-32V128c0-17.7 14.3-32 32-32H96c17.7 0 32 14.3 32 32V352c0 17.7-14.3 32-32 32H32z"/></svg>
-                                <svg (click)="resetUnlike()" *ngIf="unlike==true"  class="cursor-pointer"  xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 512 512"><path d="M313.4 479.1c26-5.2 42.9-30.5 37.7-56.5l-2.3-11.4c-5.3-26.7-15.1-52.1-28.8-75.2H464c26.5 0 48-21.5 48-48c0-18.5-10.5-34.6-25.9-42.6C497 236.6 504 223.1 504 208c0-23.4-16.8-42.9-38.9-47.1c4.4-7.3 6.9-15.8 6.9-24.9c0-21.3-13.9-39.4-33.1-45.6c.7-3.3 1.1-6.8 1.1-10.4c0-26.5-21.5-48-48-48H294.5c-19 0-37.5 5.6-53.3 16.1L202.7 73.8C176 91.6 160 121.6 160 153.7V192v48 24.9c0 29.2 13.3 56.7 36 75l7.4 5.9c26.5 21.2 44.6 51 51.2 84.2l2.3 11.4c5.2 26 30.5 42.9 56.5 37.7zM32 384H96c17.7 0 32-14.3 32-32V128c0-17.7-14.3-32-32-32H32C14.3 96 0 110.3 0 128V352c0 17.7 14.3 32 32 32z"/></svg>
-                            </span>
-                            </div>
-                            <div class="xxsm:w-full sm:w-[30%] flex xxsm:justify-center md:justify-end items-center xxsm:pt-">
-                              <img [src]="itineraryData.imageSrc" class="xxsm:w-full rounded-md w-full object-cover sm:h-full">
-                            </div>
-                          </div> -->
-                            <hr>
-                            <app-itinerary-card *ngFor="let card of cardsData" [cardData]="card"></app-itinerary-card>
-                        </div>
-                        <!-- estimated cost -->
-                        <div class="pt-12">
-                            <div
-                                class="bg-white sm:max-h-[300px] md:h-[338px] border border-[#E5E7EB] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] rounded-md">
-                                <p
-                                    class="pt-3 text-[#1F2937] text-2xl text-center font-semibold text-['IBM_Plex_Sans']">
-                                    Estimated Cost (INR)</p>
-                                <div
-                                    class="w-full pt-10 flex md:gap-4 xxsm:gap-10 xxsm:justify-center sm:justify-between xxsm:flex-wrap sm:flex-nowrap xxsm:px-2 sm:px-7 md:px-14">
-                                    <div class="">
-                                        <span class="flex gap-5 items-center">
-                                            <svg class="" xmlns="http://www.w3.org/2000/svg" width="28" height="35"
-                                                viewBox="0 0 28 35" fill="none">
-                                                <path
-                                                    d="M23 14.9822H15C14.4696 14.9822 13.9609 15.244 13.5858 15.7101C13.2107 16.1762 13 16.8083 13 17.4675V24.9234H2V10.7572L14 2.72968L26.53 11.1051L27.47 8.91807L14.47 0.219535C14.3253 0.123801 14.1639 0.0737305 14 0.0737305C13.8361 0.0737305 13.6747 0.123801 13.53 0.219535L0.53 8.91807C0.370321 9.02372 0.236697 9.18122 0.143364 9.3738C0.0500301 9.56637 0.00048271 9.78679 0 10.0116V34.8645H2V27.4087H26V34.8645H28V21.1954C28 19.5476 27.4732 17.9672 26.5355 16.802C25.5979 15.6368 24.3261 14.9822 23 14.9822ZM15 24.9234V17.4675H23C23.7956 17.4675 24.5587 17.8602 25.1213 18.5594C25.6839 19.2585 26 20.2067 26 21.1954V24.9234H15Z"
-                                                    fill="black" />
-                                            </svg>
-                                            <p
-                                                class="text-[#1F2937] capitalize text-xl font-semibold text-['IBM_Plex_Sans']">
-                                                accommodation</p>
-                                        </span>
-                                        <div class="flex flex-col justify-start py-[14px]">
-                                            <p class="text-xl font-normal text-[#000] font-['IBM_Plex_Sans']">Hostel</p>
-                                            <p class="text-xl font-normal text-[#000] font-['IBM_Plex_Sans']">
-                                                &#8377;{{estimatedCostData.hostel}} per
-                                                night</p>
+                            <p class="text-[#1F2937] text-xl font-medium font-['IBM_Plex_Sans']">Day {{ i + 1 }}</p>
+                            <p class="text-[#3F3F46] text-sm font-normal font-['IBM_Plex_Sans']">{{ day.dayDetail }}</p>
+                            <!-- <app-itinerary-card *ngFor="let card of allTripPlans" [cardData]="card"></app-itinerary-card> -->
+                            <div (mouseover)="hoverOnCard(i, ind, activity)"
+                                *ngFor="let activity of day.activities; let ind = index;">
+                                <small class="w-6 h-6 bg-black text-white flex items-center justify-center rounded-full relative top-[32px] right-[11px]">
+                                    {{ (i * 2) + ind + 1 + i }}
+                                </small>
+                                <div (mouseover)="sendCord((i * 2) + ind + 1 + i, [activity.coordinates.longitude, activity.coordinates.latitude])"
+                                    class="hover:cursor-pointer my-5 w-full bg-white min-h-[200px] sm:max-h-[200px] md:h-[162px] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] p-4 border border-[#E5E7EB] rounded-md flex xxsm:flex-col-reverse sm:flex-row xxsm:gap-3 md:gap-9">
+                                    <div class="xxsm:w-full sm:w-[70%] ">
+                                        <!-- <p class="text-lg font-medium text-[#1F2937] font-['IBM_Plex_Sans'] flex items-center"><small class="w-4 h-4 bg-black text-white flex items-center justify-center rounded-full">{{(i+1)* ind+1}}</small>{{ activity.placeName }}</p> -->
+                                        <p class="text-lg font-medium text-[#1F2937] font-['IBM_Plex_Sans'] flex items-center">
+                                            {{ activity.placeName }}</p>
+                                        <div class="flex items-center justify-start gap-2 pb-2">
+                                            <p class="text-sm font-normal text-[#1F2937] font-['IBM_Plex_Sans']">{{activity.cityName }}</p>
+                                            <span
+                                                class="w-[1px] h-[2px] flex justify-center items-center rounded-full bg-[#3F3F46]"></span>
+                                            <p class="text-sm font-normal text-[#1F2937] font-['IBM_Plex_Sans']">{{activity.time }}</p>
                                         </div>
-                                        <div class="flex flex-col justify-start">
-                                            <p class="text-xl font-normal text-[#000] font-['IBM_Plex_Sans']">Hotel</p>
-                                            <p class="text-xl font-normal text-[#000] font-['IBM_Plex_Sans']">
-                                                &#8377;{{estimatedCostData.hotel}} per
-                                                night</p>
-                                        </div>
+                                        <p class="text-base font-normal text-[#1F2937] font-['IBM_Plex_Sans']">{{activity.commentOnPlace }}</p>
+                                        <span class="flex pt-2 gap-3">
+                                    <svg (click)="toggleLikeClick(activity.placeName, (i * 2) + ind + 1 + i)" *ngIf="!isLiked(activity.placeName, (i * 2) + ind + 1 + i)" class="cursor-pointer"  xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 512 512"><path d="M323.8 34.8c-38.2-10.9-78.1 11.2-89 49.4l-5.7 20c-3.7 13-10.4 25-19.5 35l-51.3 56.4c-8.9 9.8-8.2 25 1.6 33.9s25 8.2 33.9-1.6l51.3-56.4c14.1-15.5 24.4-34 30.1-54.1l5.7-20c3.6-12.7 16.9-20.1 29.7-16.5s20.1 16.9 16.5 29.7l-5.7 20c-5.7 19.9-14.7 38.7-26.6 55.5c-5.2 7.3-5.8 16.9-1.7 24.9s12.3 13 21.3 13L448 224c8.8 0 16 7.2 16 16c0 6.8-4.3 12.7-10.4 15c-7.4 2.8-13 9-14.9 16.7s.1 15.8 5.3 21.7c2.5 2.8 4 6.5 4 10.6c0 7.8-5.6 14.3-13 15.7c-8.2 1.6-15.1 7.3-18 15.2s-1.6 16.7 3.6 23.3c2.1 2.7 3.4 6.1 3.4 9.9c0 6.7-4.2 12.6-10.2 14.9c-11.5 4.5-17.7 16.9-14.4 28.8c.4 1.3 .6 2.8 .6 4.3c0 8.8-7.2 16-16 16H286.5c-12.6 0-25-3.7-35.5-10.7l-61.7-41.1c-11-7.4-25.9-4.4-33.3 6.7s-4.4 25.9 6.7 33.3l61.7 41.1c18.4 12.3 40 18.8 62.1 18.8H384c34.7 0 62.9-27.6 64-62c14.6-11.7 24-29.7 24-50c0-4.5-.5-8.8-1.3-13c15.4-11.7 25.3-30.2 25.3-51c0-6.5-1-12.8-2.8-18.7C504.8 273.7 512 257.7 512 240c0-35.3-28.6-64-64-64l-92.3 0c4.7-10.4 8.7-21.2 11.8-32.2l5.7-20c10.9-38.2-11.2-78.1-49.4-89zM32 192c-17.7 0-32 14.3-32 32V448c0 17.7 14.3 32 32 32H96c17.7 0 32-14.3 32-32V224c0-17.7-14.3-32-32-32H32z"/></svg>
+                                    <svg (click)="toggleLikeClick(activity.placeName, (i * 2) + ind + 1 + i)" *ngIf="isLiked(activity.placeName, (i * 2) + ind + 1 + i)" class="cursor-pointer" xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 512 512"><path d="M313.4 32.9c26 5.2 42.9 30.5 37.7 56.5l-2.3 11.4c-5.3 26.7-15.1 52.1-28.8 75.2H464c26.5 0 48 21.5 48 48c0 18.5-10.5 34.6-25.9 42.6C497 275.4 504 288.9 504 304c0 23.4-16.8 42.9-38.9 47.1c4.4 7.3 6.9 15.8 6.9 24.9c0 21.3-13.9 39.4-33.1 45.6c.7 3.3 1.1 6.8 1.1 10.4c0 26.5-21.5 48-48 48H294.5c-19 0-37.5-5.6-53.3-16.1l-38.5-25.7C176 420.4 160 390.4 160 358.3V320 272 247.1c0-29.2 13.3-56.7 36-75l7.4-5.9c26.5-21.2 44.6-51 51.2-84.2l2.3-11.4c5.2-26 30.5-42.9 56.5-37.7zM32 192H96c17.7 0 32 14.3 32 32V448c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32V224c0-17.7 14.3-32 32-32z"/></svg>
+                                    <svg (click)="toggleDislikeClick(activity.placeName, (i * 2) + ind + 1 + i)" *ngIf="!isDisiked(activity.placeName, (i * 2) + ind + 1 + i)" class="cursor-pointer"  xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 512 512"><path d="M323.8 477.2c-38.2 10.9-78.1-11.2-89-49.4l-5.7-20c-3.7-13-10.4-25-19.5-35l-51.3-56.4c-8.9-9.8-8.2-25 1.6-33.9s25-8.2 33.9 1.6l51.3 56.4c14.1 15.5 24.4 34 30.1 54.1l5.7 20c3.6 12.7 16.9 20.1 29.7 16.5s20.1-16.9 16.5-29.7l-5.7-20c-5.7-19.9-14.7-38.7-26.6-55.5c-5.2-7.3-5.8-16.9-1.7-24.9s12.3-13 21.3-13L448 288c8.8 0 16-7.2 16-16c0-6.8-4.3-12.7-10.4-15c-7.4-2.8-13-9-14.9-16.7s.1-15.8 5.3-21.7c2.5-2.8 4-6.5 4-10.6c0-7.8-5.6-14.3-13-15.7c-8.2-1.6-15.1-7.3-18-15.2s-1.6-16.7 3.6-23.3c2.1-2.7 3.4-6.1 3.4-9.9c0-6.7-4.2-12.6-10.2-14.9c-11.5-4.5-17.7-16.9-14.4-28.8c.4-1.3 .6-2.8 .6-4.3c0-8.8-7.2-16-16-16H286.5c-12.6 0-25 3.7-35.5 10.7l-61.7 41.1c-11 7.4-25.9 4.4-33.3-6.7s-4.4-25.9 6.7-33.3l61.7-41.1c18.4-12.3 40-18.8 62.1-18.8H384c34.7 0 62.9 27.6 64 62c14.6 11.7 24 29.7 24 50c0 4.5-.5 8.8-1.3 13c15.4 11.7 25.3 30.2 25.3 51c0 6.5-1 12.8-2.8 18.7C504.8 238.3 512 254.3 512 272c0 35.3-28.6 64-64 64l-92.3 0c4.7 10.4 8.7 21.2 11.8 32.2l5.7 20c10.9 38.2-11.2 78.1-49.4 89zM32 384c-17.7 0-32-14.3-32-32V128c0-17.7 14.3-32 32-32H96c17.7 0 32 14.3 32 32V352c0 17.7-14.3 32-32 32H32z"/></svg>
+                                    <svg (click)="toggleDislikeClick(activity.placeName, (i * 2) + ind + 1 + i)" *ngIf="isDisiked(activity.placeName, (i * 2) + ind + 1 + i)" class="cursor-pointer"  xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 512 512"><path d="M313.4 479.1c26-5.2 42.9-30.5 37.7-56.5l-2.3-11.4c-5.3-26.7-15.1-52.1-28.8-75.2H464c26.5 0 48-21.5 48-48c0-18.5-10.5-34.6-25.9-42.6C497 236.6 504 223.1 504 208c0-23.4-16.8-42.9-38.9-47.1c4.4-7.3 6.9-15.8 6.9-24.9c0-21.3-13.9-39.4-33.1-45.6c.7-3.3 1.1-6.8 1.1-10.4c0-26.5-21.5-48-48-48H294.5c-19 0-37.5 5.6-53.3 16.1L202.7 73.8C176 91.6 160 121.6 160 153.7V192v48 24.9c0 29.2 13.3 56.7 36 75l7.4 5.9c26.5 21.2 44.6 51 51.2 84.2l2.3 11.4c5.2 26 30.5 42.9 56.5 37.7zM32 384H96c17.7 0 32-14.3 32-32V128c0-17.7-14.3-32-32-32H32C14.3 96 0 110.3 0 128V352c0 17.7 14.3 32 32 32z"/></svg>
+                                </span>
+                                        <!-- <p>{{[activity.coordinates.longitude,activity.coordinates.latitude]}}</p> -->
                                     </div>
-                                    <div class="">
-                                        <span class="flex gap-5 items-center">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="35"
-                                                viewBox="0 0 28 35" fill="none">
-                                                <path
-                                                    d="M21.7127 34.8678H23.8255C24.8945 34.8678 25.7727 33.8398 25.9 32.543L28 6.47901H21.6364V0.0737305H19.1291V6.47901H12.8036L13.1855 10.1798C15.3618 10.9232 17.3982 12.2675 18.62 13.7541C20.4527 15.9999 21.7127 18.3248 21.7127 22.1205V34.8678ZM0 33.2863V31.7047H19.1291V33.2863C19.1291 34.1403 18.5564 34.8678 17.8182 34.8678H1.27273C0.572727 34.8678 0 34.1403 0 33.2863ZM19.1291 22.2154C19.1291 9.56304 0 9.56304 0 22.2154H19.1291ZM0 25.3785H19.0909V28.5416H0V25.3785Z"
-                                                    fill="black" />
-                                            </svg>
-                                            <p
-                                                class="text-[#1F2937] capitalize text-xl font-semibold text-['IBM_Plex_Sans']">
-                                                food</p>
-                                        </span>
-                                        <div class="flex flex-col py-[14px]">
-                                            <p class="text-xl font-normal text-[#000] font-['IBM_Plex_Sans']">Budget</p>
-                                            <p class="text-xl font-normal text-[#000] font-['IBM_Plex_Sans']">
-                                                &#8377;{{estimatedCostData.food}} per meal
-                                            </p>
-                                        </div>
-                                        <div class="flex flex-col pb-3">
-                                            <p class="text-xl font-normal text-[#000] font-['IBM_Plex_Sans']">Fancy Meal
-                                            </p>
-                                            <p class="text-xl font-normal text-[#000] font-['IBM_Plex_Sans']">
-                                                &#8377;{{estimatedCostData.fancyMeal}} per
-                                                meal</p>
-                                        </div>
+                                    <div
+                                        class="xxsm:w-full sm:w-[30%] flex xxsm:justify-center md:justify-end items-center xxsm:pt-">
+                                        <img [src]="activity.imageUrl"
+                                            class="xxsm:w-full rounded-md w-full object-cover sm:h-full">
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <hr>
 
-                        <!-- Local -->
-                        <div class="pt-12">
+                    </div>
+
+                    <div [ngClass]="{'overlay' : isGenerating === true }"></div>
+                    
+                    <!-- regenrate button -->
+                    <div class="flex pt-12 items-center justify-center">
+                        <button [disabled]="(likedPlaces.size < 1 && dislikedPlaces.size < 1) || allSpotsLocation.length === 0" (click)="reGerenerateData()" 
+                        class="flex justify-center shadow-[0_2px_4px_0px_rgba(0,0,0,0.25)] items-center gap-2 bg-[#448343] text-white rounded-full py-2 px-6" 
+                        [ngClass]="{'cursor-not-allowed bg-[#8fc58e] text-yellow-50': likedPlaces.size < 1 && dislikedPlaces.size < 1}">
+                                <span class="bg-white w-6 h-6 rounded-full flex justify-center items-center text-[#448343]">
+                                    <i [ngClass]="{'loader' : isGenerating }" class="fa fa-refresh" aria-hidden="true"></i>
+                                </span>
+                                <span>
+                                    <p class="text-lg font-medium">Regenerate Plans</p>
+                                </span>
+                                <!-- <div class="loader"></div> -->
+                        </button>
+                    </div>
+                    <!-- estimated cost -->
+                    <div class="pt-12">
+                        <div
+                            class="bg-white sm:max-h-[300px] md:h-[338px] border border-[#E5E7EB] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] rounded-md">
+                            <p class="pt-3 text-[#1F2937] text-2xl text-center font-semibold text-['IBM_Plex_Sans']">
+                                Estimated Cost (INR)</p>
                             <div
-                                class="bg-white border border-[#E5E7EB] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] rounded-md">
-                                <div class="py-6 px-2">
-                                    <p
-                                        class="text-[#1F2937] xxsm:text-xl sm:text-2xl font-semibold  text-center text-['IBM_Plex_Sans']">
-                                        Local Cuisine
-                                    </p>
-                                    <div class="pt-[14px] px-7 flex justify-center">
-                                        <ul
-                                            class="list-disc xxsm:text-lg sm:text-xl flex flex-col text-[#000] font-normal">
-                                            <li *ngFor="let food of localCuisine" class="pb-1">{{food}}</li>
-                                        </ul>
+                                class="w-full pt-10 flex md:gap-4 xxsm:gap-10 xxsm:justify-center sm:justify-between xxsm:flex-wrap sm:flex-nowrap xxsm:px-2 sm:px-7 md:px-14">
+                                <div class="">
+                                    <span class="flex gap-5 items-center">
+                                        <svg class="" xmlns="http://www.w3.org/2000/svg" width="28" height="35"
+                                            viewBox="0 0 28 35" fill="none">
+                                            <path
+                                                d="M23 14.9822H15C14.4696 14.9822 13.9609 15.244 13.5858 15.7101C13.2107 16.1762 13 16.8083 13 17.4675V24.9234H2V10.7572L14 2.72968L26.53 11.1051L27.47 8.91807L14.47 0.219535C14.3253 0.123801 14.1639 0.0737305 14 0.0737305C13.8361 0.0737305 13.6747 0.123801 13.53 0.219535L0.53 8.91807C0.370321 9.02372 0.236697 9.18122 0.143364 9.3738C0.0500301 9.56637 0.00048271 9.78679 0 10.0116V34.8645H2V27.4087H26V34.8645H28V21.1954C28 19.5476 27.4732 17.9672 26.5355 16.802C25.5979 15.6368 24.3261 14.9822 23 14.9822ZM15 24.9234V17.4675H23C23.7956 17.4675 24.5587 17.8602 25.1213 18.5594C25.6839 19.2585 26 20.2067 26 21.1954V24.9234H15Z"
+                                                fill="black" />
+                                        </svg>
+                                        <p
+                                            class="text-[#1F2937] capitalize text-xl font-semibold text-['IBM_Plex_Sans']">
+                                            accommodation</p>
+                                    </span>
+                                    <div class="flex flex-col justify-start py-[14px]">
+                                        <p class="text-xl font-normal text-[#000] font-['IBM_Plex_Sans']">Hostel</p>
+                                        <p class="text-xl font-normal text-[#000] font-['IBM_Plex_Sans']">
+                                            &#8377;{{tripDetailsSecondary?.estimatedBudget?.accommodationCost?.hostel}}
+                                            per
+                                            night</p>
+                                    </div>
+                                    <div class="flex flex-col justify-start">
+                                        <p class="text-xl font-normal text-[#000] font-['IBM_Plex_Sans']">Hotel</p>
+                                        <p class="text-xl font-normal text-[#000] font-['IBM_Plex_Sans']">
+                                            &#8377;{{tripDetailsSecondary?.estimatedBudget?.accommodationCost?.hotel}}
+                                            per
+                                            night</p>
+                                    </div>
+                                </div>
+                                <div class="">
+                                    <span class="flex gap-5 items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="35"
+                                            viewBox="0 0 28 35" fill="none">
+                                            <path
+                                                d="M21.7127 34.8678H23.8255C24.8945 34.8678 25.7727 33.8398 25.9 32.543L28 6.47901H21.6364V0.0737305H19.1291V6.47901H12.8036L13.1855 10.1798C15.3618 10.9232 17.3982 12.2675 18.62 13.7541C20.4527 15.9999 21.7127 18.3248 21.7127 22.1205V34.8678ZM0 33.2863V31.7047H19.1291V33.2863C19.1291 34.1403 18.5564 34.8678 17.8182 34.8678H1.27273C0.572727 34.8678 0 34.1403 0 33.2863ZM19.1291 22.2154C19.1291 9.56304 0 9.56304 0 22.2154H19.1291ZM0 25.3785H19.0909V28.5416H0V25.3785Z"
+                                                fill="black" />
+                                        </svg>
+                                        <p
+                                            class="text-[#1F2937] capitalize text-xl font-semibold text-['IBM_Plex_Sans']">
+                                            food</p>
+                                    </span>
+                                    <div class="flex flex-col py-[14px]">
+                                        <p class="text-xl font-normal text-[#000] font-['IBM_Plex_Sans']">Budget</p>
+                                        <p class="text-xl font-normal text-[#000] font-['IBM_Plex_Sans']">
+                                            &#8377;{{tripDetailsSecondary?.estimatedBudget.foodCost.budget}} per meal
+                                        </p>
+                                    </div>
+                                    <div class="flex flex-col pb-3">
+                                        <p class="text-xl font-normal text-[#000] font-['IBM_Plex_Sans']">Fancy Meal
+                                        </p>
+                                        <p class="text-xl font-normal text-[#000] font-['IBM_Plex_Sans']">
+                                            &#8377;{{tripDetailsSecondary?.estimatedBudget.foodCost.fancyMeal}} per
+                                            meal</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <!-- high rated -->
-                        <div class="pt-12">
-                            <div
-                                class="bg-white border border-[#E5E7EB] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] rounded-md">
-                                <div class="py-6">
-                                    <p
-                                        class="text-[#1F2937]  xxsm:text-xl sm:text-2xl font-semibold  text-center text-['IBM_Plex_Sans']">
-                                        High Rated Restaurants
-                                    </p>
-                                    <div class="pt-[14px] px-7 flex justify-center">
-                                        <ul
-                                            class="list-disc xxsm:text-lg sm:text-xl flex flex-col text-[#000] font-normal">
-                                            <li *ngFor="let restaurants of highRatetRestaurants" class="pb-1">
-                                                {{restaurants}}</li>
-                                        </ul>
-                                    </div>
+                    </div>
+                    <!-- Local -->
+                    <div class="pt-12">
+                        <div
+                            class="bg-white border border-[#E5E7EB] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] rounded-md">
+                            <div class="py-6 px-2">
+                                <p
+                                    class="text-[#1F2937] xxsm:text-xl sm:text-2xl font-semibold  text-center text-['IBM_Plex_Sans']">
+                                    Local Cuisine
+                                </p>
+                                <div class="pt-[14px] px-7 flex justify-center">
+                                    <ul class="list-disc xxsm:text-lg sm:text-xl flex flex-col text-[#000] font-normal">
+                                        <li *ngFor="let food of tripDetailsSecondary.localCuisine" class="pb-1">
+                                            {{food.name}}-{{food.comment}}</li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
-                        <!-- sugggest -->
-                        <div class="pt-12">
-                            <div
-                                class="bg-white border border-[#E5E7EB] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] rounded-md">
-                                <div class="py-6 px-2">
-                                    <p
-                                        class="text-[#1F2937] text-center xxsm:text-xl sm:text-2xl font-semibold text-['IBM_Plex_Sans']">
-                                        Suggestions
-                                    </p>
-                                    <div class="pt-[14px] px-7 flex justify-center">
-                                        <ul
-                                            class="list-disc xxsm:text-base sm:text-lg flex flex-col text-[#000] font-normal">
-                                            <li class="pb-1" *ngFor="let sugst of suggestionsData, let i = index"
-                                                [innerHTML]="wrapWithAnchorTag(sugst, i === 0 ? 'Ola or Uber' : i === 1 ? 'historical charm' : i === 2 ? 'Tulshi Baug' : i === 3 ? 'Khadakwasla Dam' : i === 4 ? 'Koregaon Park' : '', 'https://www.example.com/custom-link')">
-                                            </li>
-                                        </ul>
-                                    </div>
+                    </div>
+                    <!-- high rated -->
+                    <div class="pt-12">
+                        <div
+                            class="bg-white border border-[#E5E7EB] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] rounded-md">
+                            <div class="py-6">
+                                <p
+                                    class="text-[#1F2937]  xxsm:text-xl sm:text-2xl font-semibold  text-center text-['IBM_Plex_Sans']">
+                                    High Rated Restaurants
+                                </p>
+                                <div class="pt-[14px] px-7 flex justify-center">
+                                    <ul class="list-disc xxsm:text-lg sm:text-xl flex flex-col text-[#000] font-normal">
+                                        <li *ngFor="let restaurants of tripDetailsSecondary.highRatedRestaurants"
+                                            class="pb-1">
+                                            {{restaurants.name}}-{{restaurants.comment}}</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- sugggest -->
+                    <div class="pt-12">
+                        <div
+                            class="bg-white border border-[#E5E7EB] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] rounded-md">
+                            <div class="py-6 px-2">
+                                <p
+                                    class="text-[#1F2937] text-center xxsm:text-xl sm:text-2xl font-semibold text-['IBM_Plex_Sans']">
+                                    Suggestions
+                                </p>
+                                <div class="pt-[14px] px-7 flex justify-center">
+                                    <ul
+                                        class="list-disc xxsm:text-base sm:text-lg flex flex-col text-[#000] font-normal">
+                                        <li class="pb-1"
+                                            *ngFor="let sugst of tripDetailsSecondary.suggestions, let i = index"
+                                            [innerHTML]="wrapWithAnchorTag(sugst, i === 0 ? 'Ola or Uber' : i === 1 ? 'historical charm' : i === 2 ? 'Tulshi Baug' : i === 3 ? 'Khadakwasla Dam' : i === 4 ? 'Koregaon Park' : '', 'https://www.example.com/custom-link')">
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <!-- Q n A -->
                     <div class="pt-12">
-                        <div class="py-7 bg-white border border-[#E5E7EB] rounded-md px-5 justify-start w-fit">
-                            <ul *ngFor="let item of triviaData"
+                        <div class="py-7 bg-white border border-[#E5E7EB] rounded-md px-5 w-full justify-start w-fit">
+                            <ul *ngFor="let item of tripDetailsSecondary.trivia"
                                 class="list-disc xxsm:text-base sm:text-lg flex flex-col text-[#000] font-normal">
                                 <span class="flex gap-1">
                                     <p>Q:</p>
@@ -498,20 +536,101 @@
                                     <p class="text-sm font-bold">Copy URL</p>
                                 </span>
                             </div>
+
                         </div>
                     </div>
                 </div>
                 <!-- map sec -->
-                <div class="xxsm:w-full md:w-2/5 xxsm:px-2 lg:px-0 h-[88.4vh] sticky top-[77px]">
+                <div class="xxsm:w-full md:w-2/5 xxsm:px-2 lg:px-0 xxsm:h-[60vh] md:h-[88.4vh] sticky top-[77px]">
                     <div id="map" class="h-full w-full">
-                        <div class="absolute bottom-2 xxsm:right-4 md:right-2 z-30 flex flex-col divide-y-2">
+
+                        <!-- card in map on hover -->
+
+                        <div *ngIf="cardHover" class="absolute z-50 bottom-1 left-0"
+                            style="width:-webkit-fill-available;">
+                            <div class="px-4">
+                                <span (click)="closeCard()" class="absolute right-3 top-[-10px] hover:cursor-pointer"><i
+                                        class="fa fa-times-circle" style="font-size: 20px;"></i></span>
+                                <div class="mb-5 w-full bg-white min-h-[200px] sm:max-h-fit shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] p-4 border border-[#E5E7EB] rounded-md flex xxsm:flex-col-reverse sm:flex-row xxsm:gap-3 md:gap-9">
+
+                                    <div class="xxsm:w-full sm:w-[70%] flex flex-col md:justify-between">
+                                        <p class="text-lg underline underline-offset-2 font-medium text-[#1F2937] font-['IBM_Plex_Sans'] flex items-center">
+                                            {{mapCardObj.placeName}}</p>
+                                        <div class="flex items-center justify-start gap-2 pb-2">
+                                            <p class="text-sm font-normal text-[#1F2937] font-['IBM_Plex_Sans']">
+                                                {{mapCardObj.cityName}}</p>
+                                            <span
+                                                class="w-[1px] h-[2px] flex justify-center items-center rounded-full bg-[#3F3F46]"></span>
+                                            <p class="text-sm font-normal text-[#1F2937] font-['IBM_Plex_Sans'] z-[70]">
+                                                {{mapCardObj.time}}</p>
+                                        </div>
+                                        <p class="text-base font-normal text-[#1F2937] font-['IBM_Plex_Sans']">{{mapCardObj.details}}</p>
+                                        <!-- tooltip -->
+                                        <div *ngIf="showTooltip" class="absolute xxsm:hidden md:block bottom-[67px] z-[100] left-7 w-fit xxsm:mt-2 sm:mt-[8px] border-2">
+                                            <div class="text-white bg-gray-600 px-2 py-[6px] rounded-sm text-sm flex gap-1 justify-center items-center">
+                                              <span>{{mapCardObj.crowd}} area !</span>
+                                            </div>
+                                            <div class="absolute bottom-[-4px] left-6 z-[-2] w-5 h-4 bg-gray-600 border-2 rotate-45 transform -translate-x-1/2"></div>
+                                        </div>
+
+                                         <!-- 1stticket tooltip -->
+                                         <div *ngIf="showTicketTooltip" class="absolute z-[100] xxsm:hidden md:block bottom-[70px] right-[15vw] w-fit xxsm:mt-2 sm:mt-[8px] border-2">
+                                            <div class="text-white bg-gray-600 px-2 py-[6px] rounded-sm text-sm flex gap-1 justify-center items-center">
+                                              <span>Click to book ticket</span>
+                                            </div>
+                                            <div class="absolute bottom-[-4px] right-4 z-[-2] w-5 h-4 bg-gray-600 border-2 rotate-45 transform -translate-x-1/2"></div>
+                                        </div>
+
+                                         <!-- 2 ticket tooltip -->
+                                         <div *ngIf="showSecondTicketTooltip" class="absolute z-[100] xxsm:hidden md:block bottom-[70px] sm:right-[30vw] md:right-[13vw] w-fit xxsm:mt-2 sm:mt-[8px] border-2">
+                                            <div class="text-white bg-gray-600 px-2 py-[6px] rounded-sm text-sm flex gap-1 justify-center items-center">
+                                              <span>Click to book ticket</span>
+                                            </div>
+                                            <div class="absolute bottom-[-4px] right-4 z-[-2] w-5 h-4 bg-gray-600 border-2 rotate-45 transform -translate-x-1/2"></div>
+                                        </div>
+
+                                        <div class="flex gap-2 items-center justify-between mt-2">
+                                            <span (mouseover)="toggleTooltip()" (mouseleave)="toggleTooltip()">
+                                                <img *ngIf="mapCardObj.crowd === 'Highly crowded'" src="../../assets/img/highCrowed.png" width="30px">
+                                                <img *ngIf="mapCardObj.crowd === 'Less crowded'" src="../../assets/img/lowCrowed.jpg" width="25px">
+                                                <img *ngIf="mapCardObj.crowd === 'Moderately crowded'" src="../../assets/img/midCrowd.png" width="25px">
+                                            </span>
+                                            <div class="flex gap-4">
+                                                <span (mouseover)="showTicketTooltip = !showTicketTooltip" (mouseleave)="showTicketTooltip = !showTicketTooltip">
+                                                    <a href="https://www.makemytrip.com/flights/" target="_blank"><img *ngIf="tripDetailsSecondary.bestTravellingMode === 'Plane'" src="../../assets/img/svgForActivityies/plane.svg" style="width: 20px;"></a>
+                                                    <a href="https://www.makemytrip.com/railways/" target="_blank"> <img *ngIf="tripDetailsSecondary.bestTravellingMode === 'Train'" src="../../assets/img/svgForActivityies/train.svg" style="width: 20px;"></a>
+                                                    <a href="https://www.makemytrip.com/bus-tickets/" target="_blank"><img *ngIf="tripDetailsSecondary.bestTravellingMode === 'Bus'" src="../../assets/img/svgForActivityies/bus.svg" style="width: 20px;"></a>
+                                                    <a href="https://www.cruisebay.com/" target="_blank"><img *ngIf="tripDetailsSecondary.bestTravellingMode === 'Ship'" src="../../assets/img/svgForActivityies/ship.svg" style="width: 20px;"></a>
+                                                </span>
+                                                <span (mouseover)="showSecondTicketTooltip = !showSecondTicketTooltip" (mouseleave)="showSecondTicketTooltip = !showSecondTicketTooltip">
+                                                    <a href="https://www.makemytrip.com/flights/" target="_blank"> <img *ngIf="tripDetailsSecondary.secondBestTravellingMode=== 'Plane'" src="../../assets/img/svgForActivityies/plane.svg" style="width: 20px;"></a>
+                                                    <a href="https://www.cruisebay.com/" target="_blank"><img *ngIf="tripDetailsSecondary.secondBestTravellingMode === 'Ship'" src="../../assets/img/svgForActivityies/ship.svg" style="width: 20px;"></a>
+                                                    <a href="https://www.makemytrip.com/railways/" target="_blank"> <img *ngIf="tripDetailsSecondary.secondBestTravellingMode === 'Train'" src="../../assets/img/svgForActivityies/train.svg" style="width: 20px;"></a>
+                                                    <a href="https://www.makemytrip.com/bus-tickets/" target="_blank"><img *ngIf="tripDetailsSecondary.secondBestTravellingMode === 'Bus'" src="../../assets/img/svgForActivityies/bus.svg" style="width: 20px;"></a>
+                                                </span>
+                                            </div>
+                                            
+                                        </div>
+
+                                    </div>
+                                    <div
+                                        class="xxsm:w-full sm:w-[30%] flex xxsm:justify-center md:justify-end items-center xxsm:pt-">
+                                        <img src="../../assets/img/agakhanPune_Palace.jpg"
+                                            class="xxsm:w-full rounded-md w-full object-cover sm:h-full">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- <div class="absolute bottom-2 xxsm:right-4 md:right-2 z-30 flex flex-col divide-y-2">
                             <button class="bg-white w-fit h-fit p-2 rounded-sm hover:bg-slate-100" (click)="zoomIn()">
                                 <svg xmlns="http://www.w3.org/2000/svg" height="16" width="14" viewBox="0 0 448 512"><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg>
                             </button>
                             <button class="bg-white w-fit h-fit p-2 rounded-sm hover:bg-slate-100" (click)="zoomOut()">
                                 <svg xmlns="http://www.w3.org/2000/svg" height="16" width="14" viewBox="0 0 448 512"><path d="M432 256c0 17.7-14.3 32-32 32L48 288c-17.7 0-32-14.3-32-32s14.3-32 32-32l352 0c17.7 0 32 14.3 32 32z"/></svg>
                             </button>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>

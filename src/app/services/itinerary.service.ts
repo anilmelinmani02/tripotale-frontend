@@ -1,26 +1,48 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { Observable } from 'rxjs';
+import { Observable, Subject, catchError, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ItineraryService {
-  private citiesApi = 'http://localhost:8000/api/IND/states-cities';
-  private apiUrl = 'http://localhost:8000/api/itineraryData';
-  private commentApi = 'http://localhost:8000/api/comments'
- 
+  baseUrl: string = `https://us-central1-tripotale-f1db9.cloudfunctions.net/api2/`;
 
+  private commentApi = 'http://localhost:8000/api/comments'
+   // Subject to emit tripPlan data
+  tripPlanSource = new Subject<any>();
+  tripPlan$ = this.tripPlanSource.asObservable();
+  aiResponse: any[]=[];
+  userRequestedData: any;
 
   constructor(
     private firestore: AngularFirestore,
     private http: HttpClient
   ) { }
 
-  getItineraryData(selectedCity: string): Observable<any> {
-    const requestData = { selectCity: [selectedCity] };
-    return this.http.post<any>(this.apiUrl, requestData);
+  getItineraryData(userReqData: any) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+      timeout: 600000,
+    };
+
+    // Make the HTTP request and tap into the response to emit tripPlan data
+    // return this.http.post<any>(`${this.baseUrl}getItineraryDetails`, userReqData, httpOptions)
+    //   .pipe(
+    //     tap(tripPlan => this.tripPlanSource.next(tripPlan)),
+    //     catchError(error => {
+    //       console.error('Error while generating trip plan:', error);
+    //       throw error;
+    //     })
+    //   );
+    return this.http.post<any>(`${this.baseUrl}getItineraryDetails`, userReqData, httpOptions)
+  }
+
+  getTripPlanObservable(): Observable<any> {
+    return this.tripPlanSource.asObservable();
   }
 
   // comment data
@@ -30,12 +52,12 @@ export class ItineraryService {
 
   // get all indianCities
   getCitiesData(): Observable<any> {
-    return this.http.get<any>(this.citiesApi);
+    return this.http.get<any>(`${this.baseUrl}IND/states-cities`);
   }
 
   // add form data to firestore
   addData(data: any): Promise<any> {
-    return this.firestore.collection('itineraryData').add(data);
+    return this.firestore.collection('userRequest').add(data);
   }
 
   // get data from firestore

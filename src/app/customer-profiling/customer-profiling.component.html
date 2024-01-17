@@ -10,8 +10,7 @@
       <!-- form -->
       <form [formGroup]="myForm">
         <div class="w-full">
-          <label class="font-normal md:text-2xl whitespace-nowrap" #selectCityInput>Are you planning to visit multiple
-            cities?</label>
+          <label class="font-normal md:text-2xl whitespace-nowrap" #selectCityInput>Are you planning to visit multiplecities?</label>
           <div class="pt-5 pb-12">
             <div class="relative" #cityList>
               <div [ngClass]="{'border-2 border-red-500' : showRequireCity}"
@@ -75,7 +74,6 @@
             </div>
 
           </div>
-
 
           <label class="font-normal md:text-2xl whitespace-nowrap" #peopleCountInput>How many people are going?</label>
           <div class="relative">
@@ -146,13 +144,31 @@
             </div>
           </div>
 
+          
+          <label class="font-normal md:text-2xl whitespace-nowrap" #journeyStartDateInput>Select start date to travel.</label>
+          <div class="pt-5">
+            <div class="relative">
+              <input formControlName="journeyStartDate" type="date" [min]="minDate" [ngClass]="{'border-2 border-red-500 outline-[#ea4444]': myForm.get('journeyStartDate')?.invalid && !ischoosedStartDate}"
+              class="block w-full bg-transparent border border-black text-[] font-normal xxsm:text-lg sm:text-xl xxsm:py-1 sm:py-3  px-4 mt-5 rounded-lg mb-12 pl-8">
+            </div>
+          </div>
+
+          <label class="font-normal md:text-2xl whitespace-nowrap" #journeyEndDateInput>Select end date of travel.</label>
+          <div class="pt-5">
+            <div class="relative">
+              <input formControlName="journeyEndDate"  type="date" 
+              [ngClass]="{'border-2 border-red-500 outline-[#ea4444]': myForm.get('journeyEndDate')?.invalid && !ischoosedEndDate}"
+              class="block w-full bg-transparent border border-black text-[] font-normal xxsm:text-lg sm:text-xl xxsm:py-1 sm:py-3  px-4 mt-5 rounded-lg mb-12 pl-8">
+            </div>
+          </div>
+
           <label class="font-normal md:text-2xl whitespace-nowrap" #activitiesSelection>Which activities are you
             interested in?</label>
           <p *ngIf="showReqActivity" class="text-red-600 absolute">Please select at least one activity</p>
           <div
-            class=" grid items-center cursor-pointer xxsm:justify-items-center sm:justify-items-stretch sm:grid-cols-2 md:grid-cols-3 pb-6 pt-8 gap-4 pb-12">
+            class=" grid items-center xxsm:justify-items-center sm:justify-items-stretch sm:grid-cols-2 md:grid-cols-3 pb-6 pt-8 gap-4">
             <div (click)="selectInterestActivity(activity)"
-              class="w-[253px] h-[98px] border-2 rounded-lg border-[#93969A]"
+              class="w-[253px] h-[98px] border-2 rounded-lg cursor-pointer border-[#93969A]"
               [class.border-cyan-500]="activity.isChoosed" [class.bg-[#f2f4f8]]="activity.isChoosed"
               *ngFor="let activity of interestedActivities">
               <div class="p-4 flex flex-col gap-2">
@@ -168,9 +184,9 @@
           <label class="font-normal md:text-2xl whitespace-nowrap" #travelModeSelection>How do you like to travel?</label>
           <p *ngIf="showReqTravelMode === true" class="text-red-600 absolute">Please select at least one mode of travel</p>
           <div
-            class="grid cursor-pointer items-center xxsm:justify-items-center sm:justify-items-stretch sm:grid-cols-2 md:grid-cols-3 pb-6 pt-8 gap-4">
+            class="grid items-center xxsm:justify-items-center sm:justify-items-stretch sm:grid-cols-2 md:grid-cols-3 pb-6 pt-8 gap-4">
             <div (click)="selectModeOfTravel(mode)" id="card"
-              class="w-[253px] h-[98px] border-2 rounded-lg border-[#93969A]" [class.border-cyan-500]="mode.isSelected"
+              class="w-[253px] h-[98px] cursor-pointer border-2 rounded-lg border-[#93969A]" [class.border-cyan-500]="mode.isSelected"
               [class.bg-[#f2f4f8]]="mode.isSelected" *ngFor="let mode of modesOfTravel">
               <div class="p-4 flex flex-col gap-2">
                 <span>
@@ -183,6 +199,7 @@
             </div>
           </div>
         </div>
+        <div [ngClass]="{'overlay' : loading == true}"></div>
 
         <div class="pb-28 xxsm:flex sm:block justify-center">
           <!-- <button [disabled]="myForm.invalid || selectedActivities.length < 1 || selectedCities.length < 1 || (selectedModeOfTravell == '')" [ngClass]="{'disable-btn' : myForm.invalid || selectedActivities.length < 1 || selectedCities.length < 1 || (selectedModeOfTravell == '')}" (click)="onSubmit()"
@@ -190,9 +207,19 @@
         </button> -->
           <button (click)="onSubmit()"
             class="flex justify-center items-center w-32 xxsm:h-8 sm:h-[43px] text-base p-4 leading-none font-bold rounded text-white bg-black mt-4">Submit
+            <div *ngIf="loading" class="loading ps-1">
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
           </button>
+
         </div>
       </form>
+      <app-error-modal #errorModalComponent></app-error-modal>
+
     </div>
   </div>
 </div>

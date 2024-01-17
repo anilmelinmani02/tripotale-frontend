@@ -16,6 +16,7 @@ import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import {  HttpClientModule } from '@angular/common/http';
 import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.component';
+import { ErrorModalComponent } from './alertModal/error-modal/error-modal.component';
 
 
 const firebaseConfig = {
@@ -40,6 +41,7 @@ const firebaseConfig = {
     LoginComponent,
     RegisterComponent,
     ForgotPasswordComponent,
+    ErrorModalComponent,
   ],
   imports: [
     BrowserModule,
