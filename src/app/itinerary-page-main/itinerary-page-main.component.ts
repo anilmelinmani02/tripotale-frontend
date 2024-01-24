@@ -1,4 +1,4 @@
-import { Component, DebugElement, Input, OnInit, Renderer2 } from '@angular/core';
+import { Component, DebugElement, Input, NgZone, OnInit, Renderer2 } from '@angular/core';
 import { ItineraryService } from '../services/itinerary.service';
 import Map from 'ol/Map';
 import TileLayer from 'ol/layer/Tile';
@@ -6,7 +6,7 @@ import OSM from 'ol/source/OSM';
 import View from 'ol/View';
 import Overlay from 'ol/Overlay';
 import { fromLonLat } from 'ol/proj';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import Feature from 'ol/Feature';
@@ -16,6 +16,8 @@ import Icon from 'ol/style/Icon';
 import { boundingExtent } from 'ol/extent';
 import { easeOut } from 'ol/easing';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { ToastrService, GlobalConfig } from 'ngx-toastr';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-itinerary-page-main',
@@ -39,6 +41,8 @@ export class ItineraryPageMainComponent implements OnInit {
   currentZoom: any;
   coordinates: any[] = [];
   selectedCities: any;
+  userId: any;
+  docId: any;
   gptResponse: any;
   allDaysTripPlans: any[] = [];
   days: any[] = [];
@@ -59,67 +63,84 @@ export class ItineraryPageMainComponent implements OnInit {
   showTicketTooltip: boolean = false;
   showSecondTicketTooltip: boolean = false;
   isGenerating: boolean = false;
+  itineraryURL: string;
+  isUserLoggedIn: any = '';
+  showModal: boolean = false;
+  isCollectionStoredInDB: boolean = false;
+  isCollectionSaved:boolean =false;
+  loading: boolean = false;
 
-  constructor (
+  constructor(
     private itineraryService: ItineraryService,
-    private renderer: Renderer2,
+    private router: Router,
     private route: ActivatedRoute,
     private firestore: AngularFirestore,
+    private toastr: ToastrService,
+    private http: HttpClient
   ) {
+    this.toastr.toastrConfig.positionClass = 'toast-top-center';
     this.route.queryParams.subscribe((params => {
-    this.selectedCities = params;
+      this.userId = params['userId'];
+      this.docId = params['docId'];
+      this.selectedCities = params['selectCity'];
     }));
-
+    this.itineraryURL = window.location.href;
     this.userRequestedData = itineraryService.userRequestedData;
-    console.log('user req data --- )>', this.userRequestedData);
-
-    firestore.collection('users').get().subscribe((result)=>{
-      console.log('data recived from firebase databae -->', result);
-    })
+    this.isUserLoggedIn = sessionStorage.getItem('logedIn');
+    console.log('is user logged in--', this.isUserLoggedIn);
   }
-  // all[0]?.tripPlans.forEach(trip=>{console.log(trip)})
   ngOnInit() {
-    console.log("all respon from gpt...", this.itineraryService?.aiResponse);
+    // fetch itinerary data object from firestore DB
+    this.firestore.doc(`/users/${this.userId}/tripPlans/${this.docId}`).valueChanges().subscribe((res: any) => {
+      console.log("user trip-plan from firestore database", res);
+      this.gptResponse = res.userTrip;
 
-    this.gptResponse = this.itineraryService?.aiResponse[0]?.userTrip;
-
-    console.log("gptResponse=>", this.gptResponse);
-
-    // day-wise trip plans
-    this.allDaysTripPlans = this.gptResponse?.tripPlans
-    console.log('day-wise trip plans=>', this.allDaysTripPlans);
-    this.allDaysTripPlans.forEach(act => {
-      // this.allActivities.push(act?.activities)
-      this.allActivities.push(act?.activities)
-    })
-    console.log("all activites --->", this.allActivities);
-
-    this.city1 = this.allDaysTripPlans[0].moreAboutCity
-
-    // cordinates
-    this.allDaysTripPlans.forEach(plans => {
-      plans.activities.forEach((cords: any) => {
-        this.allSpotsLocation.push([cords.coordinates.longitude, cords.coordinates.latitude])
+      console.log("gptResponse=>", this.gptResponse);
+      // day-wise trip plans
+      this.allDaysTripPlans = this.gptResponse?.tripPlans
+      console.log('day-wise trip plans=>', this.allDaysTripPlans);
+      this.allDaysTripPlans.forEach(act => {
+        // this.allActivities.push(act?.activities)
+        this.allActivities.push(act?.activities)
       })
-    })
-    console.log("places to pin", this.allSpotsLocation);
+      console.log("all activites --->", this.allActivities);
 
-    this.citiImageUrl = this.city1.cityImageUrl;
+      this.city1 = this.allDaysTripPlans[0].moreAboutCity
 
-    // for estimated,cuisin,sugg..
-    this.tripDetailsSecondary = this.gptResponse?.moreTripDetails
-    console.log("tripDetails", this.tripDetailsSecondary);
-    // cuision
-    this.localCuisine = this.tripDetailsSecondary.localCuisine
-    // shoulderMonths
-    this.shoulderMonths = this.tripDetailsSecondary.shoulderMonths.cities
-    console.log("shoulderMonths", this.shoulderMonths);
+      // cordinates
+      this.allDaysTripPlans.forEach(plans => {
+        plans.activities.forEach((cords: any) => {
+          this.allSpotsLocation.push([cords.coordinates.longitude, cords.coordinates.latitude])
+        })
+      })
+      console.log("places to pin", this.allSpotsLocation);
 
+      this.citiImageUrl = this.city1.cityImageUrl;
+
+      // for estimated,cuisin,sugg..
+      this.tripDetailsSecondary = this.gptResponse?.moreTripDetails
+      console.log("tripDetails", this.tripDetailsSecondary);
+      // cuision
+      this.localCuisine = this.tripDetailsSecondary.localCuisine
+      // shoulderMonths
+      this.shoulderMonths = this.tripDetailsSecondary.shoulderMonths
+      console.log("shoulderMonths", this.shoulderMonths);
+
+      // initilizing Map
+      this.initializeMap();
+
+    },
+      (error) => {
+        console.log('error occured while fetching data from firebase', error);
+      })
+
+    // here is old way of fetch data from api and bind directly to ui side.
+    // this.gptResponse = this.itineraryService?.aiResponse[0]?.userTrip;
   }
 
   ngAfterViewInit() {
     // initilizing Map
-    this.initializeMap();
+    // this.initializeMap();
   }
 
   initializeMap() {
@@ -300,60 +321,105 @@ export class ItineraryPageMainComponent implements OnInit {
   }
 
   reGerenerateData(): void {
-    this.isGenerating = true ;
-    console.log("liked places-->", this.likedPlaces);
-    console.log("disliked places-->", this.dislikedPlaces);
-    // const reactedPlaces = { likedPlaces: this.likedPlaces, dislikedPlaces: this.dislikedPlaces }
-    this.userRequestedData.userReq.preferredPlaces = Array.from(this.likedPlaces);
-    this.userRequestedData.userReq.notPreferredPlaces = Array.from(this.dislikedPlaces);
-
-    this.itineraryService.getItineraryData(this.userRequestedData).subscribe(
-      (regeneratedPlan) => {
-        this.gptResponse = "";
-        console.log("regeneratedPlan", regeneratedPlan);
-        // stop loader
-        this.isGenerating = false;
-
-        this.gptResponse = regeneratedPlan.userTrip;
-        // day-wise trip plans
-        this.allDaysTripPlans = this.gptResponse?.tripPlans
-        console.log('day-wise trip plans=>', this.allDaysTripPlans);
-        this.allDaysTripPlans.forEach(act => {
-          // this.allActivities.push(act?.activities)
-          this.allActivities.push(act?.activities)
-        })
-        console.log("all activites --->", this.allActivities);
-
-        this.city1 = this.allDaysTripPlans[0].moreAboutCity
-
-        // cordinates
-        this.allDaysTripPlans.forEach(plans => {
-          plans.activities.forEach((cords: any) => {
-            this.allSpotsLocation.push([cords.coordinates.longitude, cords.coordinates.latitude])
+    if (this.isUserLoggedIn == "true") {
+      this.isGenerating = true;
+      console.log("liked places-->", this.likedPlaces);
+      console.log("disliked places-->", this.dislikedPlaces);
+      // const reactedPlaces = { likedPlaces: this.likedPlaces, dislikedPlaces: this.dislikedPlaces }
+      this.userRequestedData.userReq.preferredPlaces = Array.from(this.likedPlaces);
+      this.userRequestedData.userReq.notPreferredPlaces = Array.from(this.dislikedPlaces);
+  
+      this.itineraryService.getItineraryData(this.userRequestedData).subscribe(
+        (regeneratedPlan) => {
+          this.gptResponse = "";
+          console.log("regeneratedPlan", regeneratedPlan);
+          // stop loader
+          this.isGenerating = false;
+  
+          this.gptResponse = regeneratedPlan.userTrip;
+          // day-wise trip plans
+          this.allDaysTripPlans = this.gptResponse?.tripPlans
+          console.log('day-wise trip plans=>', this.allDaysTripPlans);
+          this.allDaysTripPlans.forEach(act => {
+            // this.allActivities.push(act?.activities)
+            this.allActivities.push(act?.activities)
           })
+          console.log("all activites --->", this.allActivities);
+  
+          this.city1 = this.allDaysTripPlans[0].moreAboutCity
+  
+          // cordinates
+          this.allDaysTripPlans.forEach(plans => {
+            plans.activities.forEach((cords: any) => {
+              this.allSpotsLocation.push([cords.coordinates.longitude, cords.coordinates.latitude])
+            })
+          })
+          console.log("places to pin", this.allSpotsLocation);
+  
+          this.citiImageUrl = this.city1.cityImageUrl;
+  
+          // for estimated,cuisin,sugg..
+          this.tripDetailsSecondary = this.gptResponse?.moreTripDetails
+          console.log("tripDetails", this.tripDetailsSecondary);
+          // cuision
+          this.localCuisine = this.tripDetailsSecondary.localCuisine
+          // shoulderMonths
+          this.shoulderMonths = this.tripDetailsSecondary.shoulderMonths.cities
+          console.log("shoulderMonths", this.shoulderMonths);
+  
+        },
+        error => {
+          console.error('Error while Regenerating trip plan:', error);
+          this.isGenerating = false;
         })
-        console.log("places to pin", this.allSpotsLocation);
+    } else {
+      this.showModal = true;
+    }
 
-        this.citiImageUrl = this.city1.cityImageUrl;
-
-        // for estimated,cuisin,sugg..
-        this.tripDetailsSecondary = this.gptResponse?.moreTripDetails
-        console.log("tripDetails", this.tripDetailsSecondary);
-        // cuision
-        this.localCuisine = this.tripDetailsSecondary.localCuisine
-        // shoulderMonths
-        this.shoulderMonths = this.tripDetailsSecondary.shoulderMonths.cities
-        console.log("shoulderMonths", this.shoulderMonths);
-
-      },
-      error => {
-        console.error('Error while Regenerating trip plan:', error);
-        this.isGenerating = false;
-      })
   }
 
-  toggleTooltip(){
+  toggleTooltip() {
     this.showTooltip = !this.showTooltip
   }
 
+  shareUrl() {
+    if (this.isUserLoggedIn == "true") {
+
+      navigator.clipboard.writeText(this.itineraryURL).then(() => {
+        this.toastr.success('URL copied to clipboard', '', {
+        });
+      })
+        .catch(err => {
+          this.toastr.error('Error in copying text to clipboard');
+          console.error('Error in copying text to clipboard: ', err);
+        })
+    }else{
+      this.showModal = true;
+    }
+  }
+
+  onSaveCollectionClick(){
+    this.isCollectionStoredInDB = !this.isCollectionStoredInDB;
+    if (this.isUserLoggedIn == "true") {
+      this.loading = true;
+      // to update the save status in firestore
+      this.itineraryService.updateCollectionSaveStatus(this.docId, this.userId, this.isCollectionStoredInDB).subscribe((res) => {
+        this.toastr.success('Collectoin is updated successfully !');
+        this.loading = false;
+        this.isCollectionSaved = !this.isCollectionSaved
+      },
+      (error) => {
+        console.error('Error updating collection save status:', error);
+        this.loading = false;
+        this.toastr.error("Failed to update collection, Try again...")
+      });
+    }
+    else{
+      this.showModal = true
+    }
+  }
+
+  goToLogin(){
+    this.router.navigate(['login'])
+  }
 }

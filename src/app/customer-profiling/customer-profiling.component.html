@@ -15,8 +15,7 @@
             <div class="relative" #cityList>
               <div [ngClass]="{'border-2 border-red-500' : showRequireCity}"
                 class="flex flex-row-reverse bg-transparent rounded border border-black">
-                <input formControlName="selectCity"
-                  class="relative block outline-0 w-full  bg-transparent  text-[#0006] font-normal xsm:text-lg sm:text-xl xxsm:py-1 sm:py-3  px-4 rounded"
+                <input formControlName="selectCity" class="relative block outline-0 border-0 focus:outline-none focus:border-0 focus:ring-0 w-full bg-transparent  text-[#0006] font-normal xsm:text-lg sm:text-xl xxsm:py-1 sm:py-3  px-4 rounded"
                   type="text" id="searchInput" [(ngModel)]="searchQuery" (input)="onSearch()" (click)="onInputFocus()"
                   (blur)="onInputBlur()">
                 <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
@@ -95,7 +94,7 @@
                   [ngStyle]="{'background' : peopleCount > 49 ? '#b4b4b4' : ''}"
                   [ngClass]="{'cursor-text': peopleCount > 49}"
                   class="select-none xxsm:w-7 sm:w-9 xxsm:h-7 sm:h-9 rounded-full border cursor-pointer bg-[#F5F5F5] hover:text-[#F5F5F5] hover:bg-[#1f2937] border-[#3D3C3C]  md:hover:w-[39px] md:hover:h-[39px] flex justify-center items-center xxsm:text-xl">
-                  <p class="pb-[3px]">+</p>
+                  <span class="pb-[3px]">+</span>
                 </button>
               </div>
             </div>
@@ -107,7 +106,7 @@
               <div [ngClass]="{'border-2 border-red-500' : unselectedCandidate}"
                 class="flex flex-row-reverse border bg-transparent border-black rounded ">
                 <input formControlName="selectCandidate" [(ngModel)]="selectedCandidate" (click)="showCandidate()"
-                  class="relative block outline-0 w-full  bg-transparent font-normal xsm:text-lg sm:text-xl xxsm:py-1 sm:py-3  px-4 rounded"
+                  class="relative block focus:outline-0 focus:ring-0 focus:border-0 outline-0 border-0 w-full  bg-transparent font-normal xsm:text-lg sm:text-xl xxsm:py-1 sm:py-3  px-4 rounded"
                   type="text">
                 <div class="flex ps-2 items-center gap-1">
                 </div>

@@ -17,6 +17,10 @@ import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import {  HttpClientModule } from '@angular/common/http';
 import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.component';
 import { ErrorModalComponent } from './alertModal/error-modal/error-modal.component';
+import { BrowserAnimationsModule, provideAnimations } from '@angular/platform-browser/animations';
+
+import { ToastrModule, provideToastr} from 'ngx-toastr';
+import { CommonModule } from '@angular/common';
 
 
 const firebaseConfig = {
@@ -44,6 +48,8 @@ const firebaseConfig = {
     ErrorModalComponent,
   ],
   imports: [
+    CommonModule,
+    BrowserAnimationsModule,
     BrowserModule,
     AppRoutingModule,
     FormsModule,
@@ -53,6 +59,7 @@ const firebaseConfig = {
     AngularFireAuthModule,
     AngularFireModule,
     HttpClientModule,
+    ToastrModule.forRoot( {positionClass: 'inline' }),
     
   ],
   providers: [],

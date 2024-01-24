@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth.service';
 
@@ -9,8 +10,13 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class RegisterComponent {
   registrationForm!: FormGroup;
+  userId: string = '';
 
-  constructor(private formBuilder: FormBuilder,private auth:AuthService) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private auth:AuthService,
+    private firestore: AngularFirestore,
+    ) {
 
    }
 
@@ -24,10 +30,14 @@ export class RegisterComponent {
 
   onSubmit():void {
     if(this.registrationForm.valid){
-      console.log(this.registrationForm.value);
-      this.auth.register(this.registrationForm.value.email, this.registrationForm.value.password)
+      const uniqueString = this.generateUniqueString(this.registrationForm.value.email);
+      sessionStorage.setItem('loginIdentifier', uniqueString);
+      console.log("uid", uniqueString);
+      // console.log(this.registrationForm.value);
+       this.userId = this.registrationForm.value.email
+       this.firestore.collection('referralCodes').doc(this.userId).set({ code: uniqueString });
+       this.auth.register(this.registrationForm.value.email, this.registrationForm.value.password)
     }
-    
   }
   
   passwordMatchValidator(registrationForm: any) {
@@ -35,6 +45,26 @@ export class RegisterComponent {
     const confirmPassword = registrationForm.get('confirmPassword').value;
 
     return password === confirmPassword ? null : { mismatch: true };
+  }
+
+
+  generateRandomCharacters(length: number): string {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let result = '';
+    for (let i = 0; i < length; i++) {
+      const randomIndex = Math.floor(Math.random() * characters.length);
+      result += characters.charAt(randomIndex);
+    }
+    return result;
+  }
+  
+  generateUniqueString(email: string): string {
+    // Add additional random characters
+    const additionalRandomCharacters = this.generateRandomCharacters(5);
+  
+    const timestamp = new Date().getTime();
+    const uniqueString = `${email}_${timestamp}_${additionalRandomCharacters}`;
+    return uniqueString;
   }
 
 }

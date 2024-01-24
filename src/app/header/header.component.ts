@@ -8,13 +8,15 @@ import { Router } from '@angular/router';
 })
 export class HeaderComponent {
   isLogedIn: any;
+  leftCreadits:any;
   constructor(private router:Router){
-
+    this.leftCreadits = localStorage.getItem('remainingAttempt');
+    console.log('left creadits', this.leftCreadits);
      this.checkLogin()
   }
 
   checkLogin(){
-    this.isLogedIn = localStorage.getItem('logedIn'); 
+    this.isLogedIn = sessionStorage.getItem('logedIn'); 
     console.log(this.isLogedIn);
   }
 
@@ -22,9 +24,9 @@ export class HeaderComponent {
     this.router.navigate([router]);
   }
   onClickOnLogOut(){
-    localStorage.setItem('logedIn','false');
+    sessionStorage.setItem('logedIn','false');
     this.checkLogin();
-    localStorage.removeItem('userId');
+    sessionStorage.removeItem('userId');
     this.router.navigate([''])
   }
 }

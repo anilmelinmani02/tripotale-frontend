@@ -4,6 +4,7 @@ import { AbstractControl, FormBuilder, FormGroup, NgModel, Validators } from '@a
 import { ActivatedRoute, Router } from '@angular/router'
 import { ItineraryService } from '../services/itinerary.service';
 import { ErrorModalComponent } from '../../app/alertModal/error-modal/error-modal.component';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 
 
 interface ModesOfTravelInterface {
@@ -146,17 +147,18 @@ export class CustomerProfilingComponent implements OnInit {
   loading: boolean = false;
   userInfo:any;
   faildToGenerate: boolean = false;
-
+  remainingAttempt: number = 5 ;
   myForm: FormGroup;
 
   constructor(private fb: FormBuilder,
     private router: Router,
     private http: HttpClient,
     private itineraryService: ItineraryService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private firestore: AngularFirestore,
   ) {
 
-    this.userInfo = {loginStatus:localStorage.getItem('logedIn'),userId:localStorage.getItem("userId")} 
+    this.userInfo = {loginStatus:sessionStorage.getItem('logedIn'),userId:sessionStorage.getItem("userId")} 
     
     this.minDate = this.formatStartDate(new Date())
 
@@ -214,7 +216,7 @@ export class CustomerProfilingComponent implements OnInit {
     this.myForm.get('modeOfTravell')?.setValue(this.selectedModeOfTravell)
 
     this.itineraryData = (this.myForm.value);
-    let logedUserId = localStorage.getItem('userId');
+    let logedUserId = sessionStorage.getItem('userId');
     this.itineraryData.userId = logedUserId;
     this.itineraryData.journeyStartFrom = this.journey?.from;
     console.log('form value', this.myForm.value);
@@ -271,32 +273,48 @@ export class CustomerProfilingComponent implements OnInit {
       this.unselectedCandidate = true;
     }
 
-    // add data to firestore
+    // add data to firestore  
+    
+    // if (this.myForm.valid && this.selectedActivities.length > 0 && this.selectedCities.length > 0 && (this.selectedModeOfTravell !== '')) {
+    //   this.loading = true;
+    //   this.itineraryService.addData(this.itineraryData)
+    //     .then(res => {
+    //       console.log('data is added in firestore ', res);
+    //     })
+    //     .catch(err => {
+    //       console.error(err)
+    //     })
+    // }
+
     if (this.myForm.valid && this.selectedActivities.length > 0 && this.selectedCities.length > 0 && (this.selectedModeOfTravell !== '')) {
       this.loading = true;
-      this.itineraryService.addData(this.itineraryData)
-        .then(res => {
-          console.log('data is added in firestore ', res);
-        })
-        .catch(err => {
-          console.error(err)
-        })
-    }
-
-    if (this.myForm.valid && this.selectedActivities.length > 0 && this.selectedCities.length > 0 && (this.selectedModeOfTravell !== '')) {
-
     var reqestedData: any={userReq:this.itineraryData,userInfo:this.userInfo};
     // store reqestedData data in service.
     this.itineraryService.userRequestedData = reqestedData;
-
     // console.log("user reqested Data",reqestedData);
+
     this.itineraryService.getItineraryData(reqestedData).subscribe(
-      tripPlan => {  
-        this.itineraryService.aiResponse.push(tripPlan);      
-        console.log('Generated Trip Plan:', tripPlan);
+      (tripPlan: any) => {
+        // reduce free trials by 1 
+        this.remainingAttempt--;
+        const leftCreadits =  this.remainingAttempt.toString();
+        
+        localStorage.setItem('remainingAttempt', leftCreadits)
+        
+        console.log(`remaining attempt==>${this.remainingAttempt}`)
+        this.itineraryService.aiResponse.push(tripPlan?.tripPlan);      
+        console.log('Generated Trip Plan:', tripPlan.tripPlan);
+        console.log('firebase doc id:', tripPlan?.additionalDetails);
         this.loading = false;
         if (this.myForm.valid && this.selectedActivities.length > 0 && this.selectedCities.length > 0 && (this.selectedModeOfTravell !== '')) {
-          this.router.navigate(['/itinarary-details'], { queryParams: this.itineraryData.selectCity })
+          // this.router.navigate(['/itinarary-details'], { queryParams: this.itineraryData.selectCity })
+          this.router.navigate(['/itinarary-details'], {
+            queryParams: {
+              userId: tripPlan?.additionalDetails.user,
+              docId: tripPlan?.additionalDetails.docId,
+              selectCity: this.itineraryData.selectCity,
+            },
+          });
         }
       },
       error => {

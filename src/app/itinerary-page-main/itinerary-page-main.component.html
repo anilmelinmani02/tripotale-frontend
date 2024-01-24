@@ -8,36 +8,98 @@
                 <div class="xxsm:w-full md:w-3/5 xxsm:px-2 md:ps-[10px]">
                     <!-- save n share -->
                     <div class="flex justify-end gap-2 p-2 pe-0">
-                        <div class="bg-white flex justify-center gap-2 rounded-lg items-center p-2 cursor-pointer">
+                        <button *ngIf="isCollectionSaved === false" (click)="onSaveCollectionClick()" data-tooltip-target="tooltip-default" data-tooltip-placement="bottom" class="bg-white hover:bg-[black] hover:text-white hover:border-[#64acae] save-and-share-btn shadow-md hover:shadow-blue-100  flex justify-center gap-2 rounded-lg items-center p-2">
                             <span>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="17" height="16" viewBox="0 0 17 16"
-                                    fill="none">
+                                    fill="currentColor">
                                     <path
                                         d="M3.3133 15.2498C3.41743 15.3075 3.5351 15.3363 3.65409 15.3331C3.77308 15.3299 3.88906 15.295 3.98997 15.2318L8.96997 12.1192L13.95 15.2318C14.0509 15.2949 14.1668 15.3298 14.2858 15.3329C14.4048 15.3361 14.5224 15.3073 14.6265 15.2496C14.7306 15.1919 14.8173 15.1074 14.8777 15.0049C14.9381 14.9023 14.97 14.7855 14.97 14.6665V2.6665C14.97 2.13607 14.7593 1.62736 14.3842 1.25229C14.0091 0.877218 13.5004 0.666504 12.97 0.666504H4.96997C4.43954 0.666504 3.93083 0.877218 3.55576 1.25229C3.18068 1.62736 2.96997 2.13607 2.96997 2.6665V14.6665C2.96991 14.7855 3.00172 14.9024 3.0621 15.005C3.12247 15.1076 3.20921 15.1921 3.3133 15.2498ZM4.3033 2.6665C4.3033 2.48969 4.37354 2.32012 4.49857 2.1951C4.62359 2.07008 4.79316 1.99984 4.96997 1.99984H12.97C13.1468 1.99984 13.3164 2.07008 13.4414 2.1951C13.5664 2.32012 13.6366 2.48969 13.6366 2.6665V13.4665L9.3233 10.7705C9.21735 10.7043 9.09492 10.6692 8.96997 10.6692C8.84502 10.6692 8.72259 10.7043 8.61664 10.7705L4.3033 13.4665V2.6665Z"
-                                        fill="black" />
+                                        fill="" />
                                 </svg>
                             </span>
-                            <span>
-                                <p class="text-[#1F2937] text-sm font-medium">Save to Collection</p>
+                            <span >
+                                <p class="text-sm font-medium">Save to Collection</p>
                             </span>
-                        </div>
-                        <div class="bg-white flex justify-center gap-2 rounded-lg items-center p-2 cursor-pointer">
+                            <div *ngIf="loading" class="loading">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                        </button>
+
+                        <button *ngIf="isCollectionSaved === true" (click)="onSaveCollectionClick()" data-tooltip-target="tooltip-default" data-tooltip-placement="bottom" class="bg-white hover:bg-[black] hover:text-white hover:border-[#64acae] save-and-share-btn shadow-md hover:shadow-blue-100  flex justify-center gap-2 rounded-lg items-center p-2">
                             <span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" id="save"><path fill="#6563ff" d="M6 5a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v13.131a1 1 0 0 1-1.555.832l-3.89-2.593a1 1 0 0 0-1.11 0l-3.89 2.593A1 1 0 0 1 6 18.131V5Z"></path></svg>
+                            </span>
+                            <span >
+                                <p class="text-sm font-medium">Saved to Collection</p>
+                            </span>
+                            <div *ngIf="loading" class="loading ps-1">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                        </button>
+                        <!--Save Collection tooltip  -->
+                        <div id="tooltip-default" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-700 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
+                            Save Collection
+                            <div class="tooltip-arrow" data-popper-arrow></div>
+                        </div>
+
+                        <button (click)="shareUrl()" data-tooltip-target="tooltip-share" data-tooltip-placement="bottom"  class="bg-white save-and-share-btn hover:bg-[black] hover:text-white hover:border-[#64acae] shadow-md hover:shadow-blue-100 flex justify-center gap-2 rounded-lg items-center p-2">
+                            <span class="hover:text-white">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="17" height="16" viewBox="0 0 17 16"
-                                    fill="none">
+                                    fill="currentColor">
                                     <path
                                         d="M14.3486 2.3815C13.6775 1.71047 12.7673 1.3335 11.8182 1.3335C10.8692 1.3335 9.95902 1.71047 9.2879 2.3815L8.25857 3.41083C8.19489 3.47233 8.14411 3.54589 8.10917 3.62723C8.07423 3.70856 8.05584 3.79604 8.05507 3.88456C8.0543 3.97308 8.07117 4.06087 8.10469 4.1428C8.13821 4.22473 8.18771 4.29917 8.2503 4.36176C8.3129 4.42436 8.38733 4.47386 8.46926 4.50738C8.5512 4.5409 8.63898 4.55777 8.7275 4.557C8.81602 4.55623 8.9035 4.53784 8.98484 4.5029C9.06617 4.46796 9.13974 4.41717 9.20123 4.3535L10.2306 3.32416C10.6585 2.91616 11.227 2.68854 11.8182 2.68854C12.4095 2.68854 12.978 2.91616 13.4059 3.32416C13.8268 3.74533 14.0632 4.3164 14.0632 4.91183C14.0632 5.50726 13.8268 6.07833 13.4059 6.4995L12.3766 7.52883C12.3129 7.59033 12.2621 7.66389 12.2272 7.74523C12.1922 7.82656 12.1738 7.91404 12.1731 8.00256C12.1723 8.09108 12.1892 8.17887 12.2227 8.2608C12.2562 8.34273 12.3057 8.41717 12.3683 8.47976C12.4309 8.54236 12.5053 8.59186 12.5873 8.62538C12.6692 8.6589 12.757 8.67577 12.8455 8.675C12.934 8.67423 13.0215 8.65584 13.1028 8.6209C13.1842 8.58596 13.2577 8.53517 13.3192 8.4715L14.3486 7.44216C15.0196 6.77105 15.3966 5.86087 15.3966 4.91183C15.3966 3.96279 15.0196 3.05261 14.3486 2.3815ZM3.11123 13.6188C3.78235 14.2899 4.69253 14.6668 5.64157 14.6668C6.59061 14.6668 7.50078 14.2899 8.1719 13.6188L9.20123 12.5895C9.32267 12.4638 9.38987 12.2954 9.38835 12.1206C9.38683 11.9458 9.31672 11.7786 9.19311 11.655C9.06951 11.5313 8.9023 11.4612 8.7275 11.4597C8.5527 11.4582 8.3843 11.5254 8.25857 11.6468L7.22923 12.6762C6.80134 13.0842 6.2328 13.3118 5.64157 13.3118C5.05033 13.3118 4.48179 13.0842 4.0539 12.6762C3.633 12.255 3.39656 11.6839 3.39656 11.0885C3.39656 10.4931 3.633 9.922 4.0539 9.50083L5.08323 8.4715C5.14691 8.41 5.1977 8.33644 5.23263 8.2551C5.26757 8.17376 5.28596 8.08628 5.28673 7.99776C5.2875 7.90925 5.27064 7.82146 5.23711 7.73953C5.20359 7.6576 5.15409 7.58316 5.0915 7.52057C5.0289 7.45797 4.95447 7.40847 4.87254 7.37495C4.79061 7.34143 4.70282 7.32456 4.6143 7.32533C4.52578 7.3261 4.4383 7.34449 4.35696 7.37943C4.27563 7.41437 4.20206 7.46516 4.14057 7.52883L3.11123 8.55816C2.44021 9.22928 2.06323 10.1395 2.06323 11.0885C2.06323 12.0375 2.44021 12.9477 3.11123 13.6188Z"
-                                        fill="black" />
+                                        fill="" />
                                     <path
                                         d="M6.67141 10.7255C6.75899 10.7257 6.84574 10.7086 6.92665 10.675C7.00755 10.6415 7.081 10.5922 7.14274 10.5301L11.2634 6.41279C11.3271 6.3513 11.3779 6.27773 11.4128 6.1964C11.4477 6.11506 11.4661 6.02758 11.4669 5.93906C11.4677 5.85054 11.4508 5.76275 11.4173 5.68082C11.3838 5.59889 11.3343 5.52446 11.2717 5.46186C11.2091 5.39927 11.1346 5.34977 11.0527 5.31625C10.9708 5.28273 10.883 5.26586 10.7945 5.26663C10.706 5.2674 10.6185 5.28579 10.5371 5.32073C10.4558 5.35567 10.3822 5.40645 10.3207 5.47013L6.20007 9.58746C6.10687 9.68069 6.0434 9.79947 6.01769 9.92877C5.99197 10.0581 6.00518 10.1921 6.05562 10.3139C6.10607 10.4357 6.1915 10.5398 6.3011 10.6131C6.41071 10.6863 6.53957 10.7254 6.67141 10.7255Z"
-                                        fill="black" />
+                                        fill="" />
                                 </svg>
                             </span>
                             <span>
-                                <p class="text-[#1F2937] text-sm font-medium">Share</p>
+                                <p class="hover:text-white text-sm font-medium">Share</p>
                             </span>
+                        </button>
+                        <!-- tooltip-share -->
+                        <div id="tooltip-share" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-700 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
+                            Click to copy URL
+                            <div class="tooltip-arrow" data-popper-arrow></div>
                         </div>
                     </div>
+
+
+                    <!-- modal for go login  -->
+                    <div id="popup-modal" tabindex="-1"  [ngClass]="{'hidden': !showModal, 'flex': showModal}" class="select-none hidden overflow-y-auto overlay overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                        <div class="relative p-4 w-full max-w-md max-h-full">
+                            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                                <button (click)="showModal = false" type="button" class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="popup-modal">
+                                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                                    </svg>
+                                    <span class="sr-only">Close modal</span>
+                                </button>
+                                <div class="p-4 md:p-5 text-center">
+                                    <svg class="mx-auto mb-4 text-black w-12 h-12" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 20 20">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                                    </svg>
+                                    <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">You need to login ...!</h3>
+                                    <button (click)="goToLogin()" data-modal-hide="popup-modal" type="button" class="text-white bg-black hover:ring-2 focus:outline-none focus:ring-cyan-500 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center me-2">
+                                        Login
+                                    </button>
+                                    <button (click)="showModal = false" data-modal-hide="popup-modal" type="button" class="text-gray-500 bg-white hover:bg-gray-100 hover:ring-2 hover:ring-red-300 focus:outline-none rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    
                     <!--city img -->
                     <div class="mb-3">
                         <!-- <div style="border-radius: 0px 0px 50px 50px; background: rgba(0, 0, 0, 0.40); background: rgba(0, 0, 0, 0.40);"
@@ -52,8 +114,7 @@
                         </div>
                     </div>
                     <!-- city details -->
-                    <div
-                        class="px-8 flex gap-2 justify-between flex-wrap items-center bg-white shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] border border-[#E5E7EB] rounded-[14px] min-h-[78px]">
+                    <div class="px-8 flex gap-x-[2vw]  justify-stretch flex-wrap items-center bg-white shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] border border-[#E5E7EB] rounded-[14px] min-h-[78px]">
                         <div class="flex justify-between items-center">
                             <div class="flex gap-2 items-center">
                                 <span>
@@ -204,16 +265,53 @@
                                 </span>
                             </div>
                         </div>
+
+                        <div *ngFor="let city of shoulderMonths" class="flex justify-between items-center">
+                            <div class="flex gap-2 items-center">
+                                <span>
+                                    Shoulder months:
+                                </span>
+                                <span>
+                                    <p class="text-base font-normal text-[#18181B] font-['IBM_Plex_Sans']">
+                                        {{city.shoulderMonths}}
+                                    </p>
+                                </span>
+                            </div>
+                        </div>
+                        <div *ngFor="let city of shoulderMonths" class="flex justify-between items-center">
+                            <div class="flex gap-2 items-center">
+                                <span>
+                                   Peak Month:
+                                </span>
+                                <span>
+                                    <p class="text-base font-normal text-[#18181B] font-['IBM_Plex_Sans']">
+                                        {{city.peakMonth}}
+                                    </p>
+                                </span>
+                            </div>
+                        </div>
+                        <div *ngFor="let city of shoulderMonths" class="flex justify-between items-center">
+                            <div class="flex gap-2 items-center">
+                                <span>
+                                    months to avoid:
+                                </span>
+                                <span>
+                                    <p class="text-base font-normal text-[#18181B] font-['IBM_Plex_Sans']">
+                                        {{city.monthsToAvoid}}
+                                    </p>
+                                </span>
+                            </div>
+                        </div>
                     </div>
                     <!-- shoulder months for visiting -->
-                    <div
+                    <!-- <div
                         class="px-8 mt-5 bg-white shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] border border-[#E5E7EB] rounded-[14px] min-h-[78px]">
                         <div *ngFor="let city of shoulderMonths">
                             <p class="text-[#1F2937] text-2xl font-semibold text-center py-3">Shoulder months for a
                                 trip- {{city.cityName}}</p>
                             <p class="pb-3"><span class="font-medium">{{city.months}}- </span>{{ city.seasonsInfo }}</p>
                         </div>
-                    </div>
+                    </div> -->
                     <!-- 1 Day Itinerary of city -->
                     <div class="pt-11 px-2">
                         <p class="text-[#1F2937] text-2xl font-semibold pb-5">1 Day Itinerary of
@@ -348,8 +446,7 @@
 
                     </div>
 
-                    <div [ngClass]="{'overlay' : isGenerating === true }"></div>
-                    
+                    <div [ngClass]="{'overlay' : isGenerating === true}"></div>
                     <!-- regenrate button -->
                     <div class="flex pt-12 items-center justify-center">
                         <button [disabled]="(likedPlaces.size < 1 && dislikedPlaces.size < 1) || allSpotsLocation.length === 0" (click)="reGerenerateData()" 
@@ -414,14 +511,14 @@
                                     <div class="flex flex-col py-[14px]">
                                         <p class="text-xl font-normal text-[#000] font-['IBM_Plex_Sans']">Budget</p>
                                         <p class="text-xl font-normal text-[#000] font-['IBM_Plex_Sans']">
-                                            &#8377;{{tripDetailsSecondary?.estimatedBudget.foodCost.budget}} per meal
+                                            &#8377;{{tripDetailsSecondary?.estimatedBudget?.foodCost.budget}} per meal
                                         </p>
                                     </div>
                                     <div class="flex flex-col pb-3">
                                         <p class="text-xl font-normal text-[#000] font-['IBM_Plex_Sans']">Fancy Meal
                                         </p>
                                         <p class="text-xl font-normal text-[#000] font-['IBM_Plex_Sans']">
-                                            &#8377;{{tripDetailsSecondary?.estimatedBudget.foodCost.fancyMeal}} per
+                                            &#8377;{{tripDetailsSecondary?.estimatedBudget?.foodCost.fancyMeal}} per
                                             meal</p>
                                     </div>
                                 </div>
@@ -546,7 +643,7 @@
 
                         <!-- card in map on hover -->
 
-                        <div *ngIf="cardHover" class="absolute z-50 bottom-1 left-0"
+                        <div *ngIf="cardHover" class="xxsm:hidden sm:block absolute z-10 bottom-1 left-0"
                             style="width:-webkit-fill-available;">
                             <div class="px-4">
                                 <span (click)="closeCard()" class="absolute right-3 top-[-10px] hover:cursor-pointer"><i
@@ -571,7 +668,7 @@
                                               <span>{{mapCardObj.crowd}} area !</span>
                                             </div>
                                             <div class="absolute bottom-[-4px] left-6 z-[-2] w-5 h-4 bg-gray-600 border-2 rotate-45 transform -translate-x-1/2"></div>
-                                        </div>
+                                        </div>                                        
 
                                          <!-- 1stticket tooltip -->
                                          <div *ngIf="showTicketTooltip" class="absolute z-[100] xxsm:hidden md:block bottom-[70px] right-[15vw] w-fit xxsm:mt-2 sm:mt-[8px] border-2">
@@ -597,15 +694,15 @@
                                             </span>
                                             <div class="flex gap-4">
                                                 <span (mouseover)="showTicketTooltip = !showTicketTooltip" (mouseleave)="showTicketTooltip = !showTicketTooltip">
-                                                    <a href="https://www.makemytrip.com/flights/" target="_blank"><img *ngIf="tripDetailsSecondary.bestTravellingMode === 'Plane'" src="../../assets/img/svgForActivityies/plane.svg" style="width: 20px;"></a>
+                                                    <a href="https://www.makemytrip.com/flights/" target="_blank"><img *ngIf="tripDetailsSecondary.bestTravellingMode === 'Plane'" src="../../assets/img/plane.webp" style="width: 20px;"></a>
                                                     <a href="https://www.makemytrip.com/railways/" target="_blank"> <img *ngIf="tripDetailsSecondary.bestTravellingMode === 'Train'" src="../../assets/img/svgForActivityies/train.svg" style="width: 20px;"></a>
-                                                    <a href="https://www.makemytrip.com/bus-tickets/" target="_blank"><img *ngIf="tripDetailsSecondary.bestTravellingMode === 'Bus'" src="../../assets/img/svgForActivityies/bus.svg" style="width: 20px;"></a>
+                                                    <a href="https://www.makemytrip.com/bus-tickets/" target="_blank"><img *ngIf="tripDetailsSecondary.bestTravellingMode === 'Bus'" src="../../assets/img/busNew.jpg" style="width: 20px;"></a>
                                                     <a href="https://www.cruisebay.com/" target="_blank"><img *ngIf="tripDetailsSecondary.bestTravellingMode === 'Ship'" src="../../assets/img/svgForActivityies/ship.svg" style="width: 20px;"></a>
                                                 </span>
                                                 <span (mouseover)="showSecondTicketTooltip = !showSecondTicketTooltip" (mouseleave)="showSecondTicketTooltip = !showSecondTicketTooltip">
-                                                    <a href="https://www.makemytrip.com/flights/" target="_blank"> <img *ngIf="tripDetailsSecondary.secondBestTravellingMode=== 'Plane'" src="../../assets/img/svgForActivityies/plane.svg" style="width: 20px;"></a>
+                                                    <a href="https://www.makemytrip.com/flights/" target="_blank"> <img *ngIf="tripDetailsSecondary.secondBestTravellingMode=== 'Plane'" src="../../assets/img/planeNew.jpg" style="width: 20px;"></a>
                                                     <a href="https://www.cruisebay.com/" target="_blank"><img *ngIf="tripDetailsSecondary.secondBestTravellingMode === 'Ship'" src="../../assets/img/svgForActivityies/ship.svg" style="width: 20px;"></a>
-                                                    <a href="https://www.makemytrip.com/railways/" target="_blank"> <img *ngIf="tripDetailsSecondary.secondBestTravellingMode === 'Train'" src="../../assets/img/svgForActivityies/train.svg" style="width: 20px;"></a>
+                                                    <a href="https://www.makemytrip.com/railways/" target="_blank"> <img *ngIf="tripDetailsSecondary.secondBestTravellingMode === 'Train'" src="../../assets/img/trainNew.jpg" style="width: 20px;"></a>
                                                     <a href="https://www.makemytrip.com/bus-tickets/" target="_blank"><img *ngIf="tripDetailsSecondary.secondBestTravellingMode === 'Bus'" src="../../assets/img/svgForActivityies/bus.svg" style="width: 20px;"></a>
                                                 </span>
                                             </div>
