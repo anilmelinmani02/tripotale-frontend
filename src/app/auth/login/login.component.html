@@ -12,7 +12,7 @@
       <span class="error-text">Please enter a valid email address.</span>
     </div>
     
-    <label for="password" class="justify-between">password</label>
+    <label for="password" class="justify-between">Password</label>
     <input class="border" type="password" id="password" formControlName="password" [class.invalid]="myForm.get('password')?.invalid && myForm.get('password')?.touched" />
     
     <div *ngIf="myForm.get('password')?.hasError('required') && myForm.get('password')?.touched" class="error-message">
@@ -23,7 +23,7 @@
       <span class="error-text">Please enter a valid password address.</span>
     </div>
   <div class="">
-    <div class="text-end"><a class="text-blue-500" routerLink="/forgot">forgot Password?</a> </div>
+    <div class="text-end"><a class="text-blue-500" routerLink="/forgot">Forgot Password?</a> </div>
 
     <button class="btn1 w-full mt-2" type="submit" (click)="login()">Login</button>
   </div>

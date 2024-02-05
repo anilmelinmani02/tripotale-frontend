@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/compat/auth'
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root'
@@ -8,21 +9,37 @@ import { AngularFireAuth } from '@angular/fire/compat/auth'
 export class AuthService {
   GoogleAuthProvider: any;
   auth: any;
-  authTocken : any; 
-  constructor( private afu : AngularFireAuth, private router : Router) { }
+  authToken : any;
+  isVerified: any; 
+  constructor( 
+    private afu : AngularFireAuth,
+    private router : Router,
+    private toastr: ToastrService
+    ) {
+      this.toastr.toastrConfig.positionClass = 'toast-top-center';
+     }
 
-  register(email: string, password: string) {
-    this.afu.createUserWithEmailAndPassword(email,password).then((res)=>{  
-      alert('registertion Successfully ....!');
+  register(email: string, password: string): Promise<boolean>  {
+    return new Promise<boolean>((resolve, reject) => {
+    this.afu.createUserWithEmailAndPassword(email,password)
+    .then((res)=>{  
+      this.toastr.success('Registration has been completed');
       res.user?.sendEmailVerification();
-      alert('please verify  your email');
-      console.log(res)
+      console.log(res);
+      // this.router.navigate(['/login']);
+      resolve(true);
       
-      this.router.navigate(['/login']);
-    }),(err: { message: any; }) =>{
-      alert(err.message);
-      this.router.navigate(['/register'])
-    }
+    })
+    .catch((err) => {
+      if (err.code === 'auth/email-already-in-use') {
+        this.toastr.error('This email is already registered.');
+      } else {
+        this.toastr.error('Registration failed. Please try again later.');
+      }
+      console.error(err);
+      resolve(false);
+    })
+    });
   }
 
   login(email: string, password: string) {
@@ -45,7 +62,15 @@ export class AuthService {
       alert('something went wrong')
     })
   }
-  isAuthenticated(){
-    return localStorage.getItem(this.authTocken)
+
+  // isAuthenticated(){
+  //   return localStorage.getItem(this.authToken)
+  // }
+
+  isAuthenticated() {
+    return this.afu.authState.subscribe((res=>{
+      console.log("is verified----", res?.emailVerified );
+     this.isVerified = res?.emailVerified
+    }))
   }
 }

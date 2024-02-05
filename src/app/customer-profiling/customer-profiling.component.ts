@@ -147,9 +147,15 @@ export class CustomerProfilingComponent implements OnInit {
   loading: boolean = false;
   userInfo:any;
   faildToGenerate: boolean = false;
-  remainingAttempt: number = 5 ;
   myForm: FormGroup;
+  leftCredits: number = 0;
+  leftCreaditsDocId: string = '';
+  showCreaditModal: boolean = false;
+  loggedUserRefCode: string = '';
+  refereeList: any[] = [];
+  updatedCredits: number = 0;
 
+;
   constructor(private fb: FormBuilder,
     private router: Router,
     private http: HttpClient,
@@ -157,10 +163,35 @@ export class CustomerProfilingComponent implements OnInit {
     private route: ActivatedRoute,
     private firestore: AngularFirestore,
   ) {
-
     this.userInfo = {loginStatus:sessionStorage.getItem('logedIn'),userId:sessionStorage.getItem("userId")} 
-    
     this.minDate = this.formatStartDate(new Date())
+
+     // fetch creadits from DB
+    // this.firestore.collection('users').doc(this.userInfo.userId).collection('referrals').get().subscribe((querySnapshot) => {
+    //   querySnapshot.forEach((doc) => {
+    //     this.leftCreadits = doc.data()['leftCreadits'];
+    //     console.log('gotCreadits:', this.leftCreadits);
+
+    //     this.leftCreaditsDocId = doc.id;
+    //   });
+    // })
+
+    const referralDocRef = this.firestore.collection('users').doc(this.userInfo.userId).collection('referrals').doc('referralDoc');
+      referralDocRef.get().subscribe(res => {
+        const data = res.data();
+        if (data) {
+          for (const key in data) {
+            if (Object.prototype.hasOwnProperty.call(data, key)) {
+                if (key === 'leftCredits') {
+                     this.leftCredits = data[key];
+                    const updatedCredits = this.leftCredits.toString();
+                    sessionStorage.setItem('leftCredits', updatedCredits)
+                }
+            }
+        }
+      }
+    })
+
 
     this.myForm = this.fb.group({
       selectCity: [''],
@@ -292,48 +323,104 @@ export class CustomerProfilingComponent implements OnInit {
     // store reqestedData data in service.
     this.itineraryService.userRequestedData = reqestedData;
     // console.log("user reqested Data",reqestedData);
+      if (this.leftCredits > 0) {
+        this.showCreaditModal = false;
+        this.itineraryService.getItineraryData(reqestedData).subscribe(
+          (tripPlan: any) => {
+            this.itineraryService.aiResponse.push(tripPlan?.tripPlan);      
+            console.log('Generated Trip Plan:', tripPlan.tripPlan);
+            console.log('firebase doc id:', tripPlan?.additionalDetails);
+    
+                    // reduce creadits by 1 for each success itinerary. 
+                    if (this.leftCredits > 0) {
+                      const updatedLeftCreadits = this.leftCredits - 1;
+                
+                      // Update 'leftCreadits' in Firestore
 
-    this.itineraryService.getItineraryData(reqestedData).subscribe(
-      (tripPlan: any) => {
-        // reduce free trials by 1 
-        this.remainingAttempt--;
-        const leftCreadits =  this.remainingAttempt.toString();
-        
-        localStorage.setItem('remainingAttempt', leftCreadits)
-        
-        console.log(`remaining attempt==>${this.remainingAttempt}`)
-        this.itineraryService.aiResponse.push(tripPlan?.tripPlan);      
-        console.log('Generated Trip Plan:', tripPlan.tripPlan);
-        console.log('firebase doc id:', tripPlan?.additionalDetails);
+                      const referralDocRef = this.firestore.collection('users').doc(this.userInfo.userId).collection('referrals').doc('referralDoc');
+                      referralDocRef.get().subscribe(res => {
+                        const data = res.data();
+                        if (data) {
+                          for (const key in data) {
+                            if (Object.prototype.hasOwnProperty.call(data, key)) {
+                                if (key === 'leftCredits') {
+                                     this.leftCredits = data[key];
+                                     this.updatedCredits =  this.leftCredits - 1;
+                                     this.itineraryService.updatedCredits = this.updatedCredits;
+                                    // this.updatedCredits = this.leftCredits.toString();
+                                    // sessionStorage.setItem('leftCredits', this.updatedCredits)
+                                }
+                                if (key === 'referredTo') {
+                                  const allRefree = data[key];
+                                  this.refereeList = allRefree;
+                              }
+                            }
+                        }
+
+                        const updatedObj = {
+                          leftCredits: this.updatedCredits,
+                          referredTo: this.refereeList
+                        };
+                      // update object in DB
+                        referralDocRef.update(updatedObj);
+                      }
+                    })
+                    
+                    } else {
+                      console.log('All credits left.');
+                      window.alert('Your all creadits left you need to reffer to friend for get more credits !!!')
+                    }
+    
+            this.loading = false;
+            if (this.myForm.valid && this.selectedActivities.length > 0 && this.selectedCities.length > 0 && (this.selectedModeOfTravell !== '')) {
+              // this.router.navigate(['/itinarary-details'], { queryParams: this.itineraryData.selectCity })
+              this.router.navigate(['/itinarary-details'], {
+                queryParams: {
+                  userId: tripPlan?.additionalDetails.user,
+                  docId: tripPlan?.additionalDetails.docId,
+                  selectCity: this.itineraryData.selectCity,
+                },
+              });
+            }
+          },
+          error => {
+            console.error('Error while generating trip plan:', error);
+            this.loading = false;
+            this.faildToGenerate = true
+            this.errorModalComponent.errorMessage = 'An error occurred while generating trip plan. Please try again later.';
+            this.errorModalComponent.openModal();
+            if(this.errorModalComponent.showModal === false ){
+              this.faildToGenerate = false
+            }
+          }
+        )
+      } else {
+        this.itineraryService.getRefrralCode(this.userInfo.userId).subscribe((res)=>{
+          this.loggedUserRefCode = res.refCode;
+          console.log("refrralCode=", this.loggedUserRefCode);
+        },
+        (error)=>{
+          console.log(error);
+          
+        })
         this.loading = false;
-        if (this.myForm.valid && this.selectedActivities.length > 0 && this.selectedCities.length > 0 && (this.selectedModeOfTravell !== '')) {
-          // this.router.navigate(['/itinarary-details'], { queryParams: this.itineraryData.selectCity })
-          this.router.navigate(['/itinarary-details'], {
-            queryParams: {
-              userId: tripPlan?.additionalDetails.user,
-              docId: tripPlan?.additionalDetails.docId,
-              selectCity: this.itineraryData.selectCity,
-            },
-          });
-        }
-      },
-      error => {
-        console.error('Error while generating trip plan:', error);
-        this.loading = false;
-        this.faildToGenerate = true
-        this.errorModalComponent.errorMessage = 'An error occurred while generating trip plan. Please try again later.';
-        this.errorModalComponent.openModal();
-        if(this.errorModalComponent.showModal === false ){
-          this.faildToGenerate = false
-        }
+        this.faildToGenerate = true;
+        this.showCreaditModal = true;
       }
-    )
     }
 
     // }
     // this.myForm.reset();
     // this.selectedCities = [];
     this.myForm.get('selectCity')?.setValue('');
+  }
+
+  closeCreaditsModal(){
+    this.showCreaditModal = false;
+  }
+
+  goToHowItWorks(){
+    this.router.navigate(['/how-it-works'])
   }
 
   @ViewChild('candidateList') candidateList!: ElementRef;

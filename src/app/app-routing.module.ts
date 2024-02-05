@@ -8,6 +8,8 @@ import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
 import { AuthGuard } from './auth.guard';
 import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.component';
+import { HowItWorksComponent } from './how-it-works/how-it-works.component';
+import { ReferralDetailsComponent } from './referral-details/referral-details.component';
 
 const routes: Routes = [
   { path: '' , redirectTo:'home', pathMatch: 'full'},
@@ -19,6 +21,8 @@ const routes: Routes = [
   { path: 'home', component:HomeComponent, canActivate: [AuthGuard]},
   { path: 'itinerary' , component:ItineraryPageComponent, canActivate: [AuthGuard]},
   { path: 'itinarary-details', component:ItineraryPageMainComponent},
+  { path: 'help', component:HowItWorksComponent },
+  { path: 'refrralDetrails', component:ReferralDetailsComponent },
 ];
 
 @NgModule({

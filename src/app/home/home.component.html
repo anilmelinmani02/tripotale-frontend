@@ -7,7 +7,7 @@
                 <div class="md:w-1/2 xxsm:py-2 sm:py-8 md:py-24 xsm:px-2 md:px-0 xsm:w-full xxsm:w-full">
                     <div class="xsm:flex xxsm:flex xsm:flex-col xxsm:flex-col xxsm:items-center md:items-start">
                         <div class="bg-[#E5EDFF] py-2 xxsm:mt-6 pe-[10px] ps-5 w-fit rounded-[39px]">
-                            <p class="text-[#4F7DF3] text-sm font-bold">✈ • Explore the wonderful with rhe Help of AI
+                            <p class="text-[#4F7DF3] text-sm font-bold">✈ • Explore the wonderful with the help of AI
                             </p>
                         </div>
                         <div class="mt-5 sm:flex gap-2 md:block">
@@ -38,17 +38,17 @@
                     class="mb-7 rounded-2xl w-full bg-white p-5 sm:mx-16 lg:mx-36 xxsm:mx-2  xxsm:px-4 flex gap-5 xxsm:flex-col md:flex-row">
                     <div class="xxsm:w-full flex xxsm:justify-center xxsm:items-center gap-5">
                         <input formControlName="from" type="text" [ngStyle]="{'border': searchForm.get('from')?.invalid && searchForm.get('from')?.touched ? '1px solid red' : ''}"
-                            class="rounded-md w-32 max-w-[270px] flex-grow flex-shrink border-0 py-1.5 xxsm:px-2 sm:px-7 text-[#070707] ring-1 ring-inset ring-gray-300 placeholder:text-[#070707] sm:text-sm sm:leading-8"
-                            placeholder="from">
+                            class="rounded-md w-32 max-w-[270px] flex-grow flex-shrink py-1.5 xxsm:px-2 sm:px-7 text-[#070707] border-[1px] border-gray-300 placeholder:text-[#070707] sm:text-sm sm:leading-8 focus:ring-0"
+                            placeholder="From">
                         <img src="../../assets/img/span.cursor-pointer.png" class="absolute" alt="">
                         <input formControlName="to" type="text" [ngStyle]="{'border': searchForm.get('to')?.invalid && searchForm.get('to')?.touched ? '1px solid red' : ''}"
-                            class="rounded-md w-32 max-w-[270px] flex-grow flex-shrink border-0 py-1.5 xxsm:px-2 sm:px-7 text-[#070707] ring-1 ring-inset ring-gray-300 placeholder:text-[#070707] sm:text-sm sm:leading-8"
+                            class="rounded-md w-32 max-w-[270px] flex-grow flex-shrink py-1.5 xxsm:px-2 sm:px-7 text-[#070707] border-[1px] border-gray-300 placeholder:text-[#070707] sm:text-sm sm:leading-8 focus:ring-0"
                             placeholder="To">
                     </div>
                     <div
                         class="xxsm:w-full flex xxsm:justify-center md:justify-start xxsm:items-center xxsm:gap-2 sm:gap-5 lg:gap-8">
                         <input formControlName="date" type="date" [ngStyle]="{'border': searchForm.get('date')?.invalid && searchForm.get('date')?.touched ? '1px solid red' : ''}"
-                        class="textbox-n" class="rounded-md w-32 max-w-[270px] lg:max-w-[350px] flex-grow flex-shrink border-0 py-[5px] xxsm:px-2 sm:px-7 text-[#070707] ring-1 ring-inset ring-gray-300 placeholder:text-[#070707] sm:text-sm sm:leading-8"
+                        class="textbox-n" class="rounded-md w-32 max-w-[270px] lg:max-w-[350px] flex-grow flex-shrink py-[5px] xxsm:px-2 sm:px-7 text-[#070707] border-[1px] border-gray-300 placeholder:text-[#070707] sm:text-sm sm:leading-8 focus:ring-0"
                         [min]="minDate">
                         <button (click)="onSubmit()" [disabled]="searchForm.invalid" [ngStyle]="{'background': searchForm.invalid ? 'gray' : 'black'}"
                             class="max-w-[170px] flex-grow flex-shrink h-full text-sm text-center xsm:py-1 sm:py-2 flex items-center justify-center sm:font-bold rounded text-white">Search</button>
@@ -80,7 +80,7 @@
             <!-- what we offer -->
             <div
                 class="w-full xxsm:px-2 sm:px-16 lg:px-36 pb-7 flex justify-center items-center gap-5 xxsm:flex-col md:flex-row">
-                <p class="text-[#181E4B] font-['Nunito'] xxsm:text-3xl sm:text-4xl font-normal">What we Offer</p>
+                <p class="text-[#181E4B] font-['Nunito'] xxsm:text-3xl sm:text-4xl font-normal">What We Offer ?</p>
             </div>
             <div
                 class="w-full xxsm:px-2 sm:px-16 lg:px-36 flex justify-between items-center gap-5 xxsm:flex-col md:flex-row">
@@ -108,7 +108,7 @@
                         <p>3.</p>
                     </div>
                     <div class="w-5/6xxsm:text-base xsm:text-lg sm:text-xl font-bold flex items-center">
-                        <p>Time and Money Saving:</p>
+                        <p>Time and Money Saving</p>
                     </div>
                 </div>
             </div>
@@ -265,7 +265,7 @@
                         Find your
                         favorite destination </p>
                 </div>
-                <span class="flex items-center justify-center xxsm:gap-2 sm:gap-4 md:gap-6 cursor-pointer">
+                <span class="flex items-center justify-center xxsm:gap-2 sm:gap-4 md:gap-4 cursor-pointer">
                     <p class="text-[#4475F2] font-sans xxsm:text-sm xsm:text-base font-semibold">List</p>
                     <svg xmlns="http://www.w3.org/2000/svg" width="7" height="14" viewBox="0 0 7 14" fill="none">
                         <path d="M1.73291 1.9043L6.00053 7.22249L1.73291 12.5407" stroke="#4737FF" stroke-width="2"
@@ -396,7 +396,7 @@
                     <p class="text-[#14183E] font-['Manrope'] xxsm:text-xl md:text-3xl font-extrabold">Gallery Tourism &
                         Blog Travel</p>
                 </div>
-                <span class="flex items-center justify-center xxsm:gap-2 sm:gap-4 md:gap-6 cursor-pointer">
+                <span class="flex items-center justify-center xxsm:gap-2 sm:gap-4 md:gap-4 cursor-pointer">
                     <p class="text-[#4475F2] font-sans text-base font-semibold">List</p>
                     <svg xmlns="http://www.w3.org/2000/svg" width="7" height="14" viewBox="0 0 7 14" fill="none">
                         <path d="M1.73291 1.9043L6.00053 7.22249L1.73291 12.5407" stroke="#4737FF" stroke-width="2"
@@ -405,9 +405,9 @@
                 </span>
             </div>
             <!-- vid -->
-            <div class="md:flex gap-2">
-                <div class="md:w-1/4 h-[455px] rounded-lg ">
-                    <div class="h-full bg-white rounded-lg sm:px-14 sm:py-12 md:px-0 md:py-0 imgShadowbox">
+            <div class="flex xxsm:flex-col md:flex-row gap-y-4 gap-x-2">
+                <div class="md:w-1/4 max-h-[455px] rounded-lg">
+                    <div class=" h-full bg-white rounded-lg imgShadowbox">
                         <div class="h-[200px]">
                             <img src="../../assets/img/img4.png" class="h-full w-full object-cover rounded-lg">
                         </div>
@@ -419,7 +419,7 @@
                     </div>
                 </div>
                 <div
-                    class="rounded-lg gradient-background-mob md:w-3/4 h-[455px] xxsm:mt-9 md:mt-0 flex items-center justify-center imgShadowbox">
+                    class="rounded-lg gradient-background-mob md:w-3/4 h-[455px] w-full md:mt-0 flex items-center justify-center imgShadowbox">
                     <!-- Second column (75% width) -->
                     <div
                         class="w-[92px] h-[92px] bg-[#23A6F0] cursor-pointer flex items-center justify-center rounded-full">
@@ -441,7 +441,7 @@
                 the reviews from users who have used the Tripotale app and website to decide where to go on their next
                 vacation? check below!</p>
             <div class="w-full">
-                <div class="sm:grid-cols-3 gap-3 md:flex justify-between">
+                <div class="xxsm:flex sm:gap-2 xxsm:flex-col md:flex-row justify-between">
                     <div
                         class="bg-white imgShadowbox md:py-10 md:px-9 xxsm:py-10 xxsm:px-9 rounded-md md:w-[350px] md:h-[455px] xxsm:flex flex-col items-center shadow-[0_4px_4px_0px_rgba(0,0,0,0.25)]">
                         <div class="w-[150px] h-[150px] rounded-full mb-7">
@@ -490,7 +490,7 @@
                         <p class="text-[#252B42] text-sm font-semibold pt-4">XYZ</p>
                     </div>
                     <div
-                        class="bg-white imgShadowbox md:py-10 md:px-9 xxsm:py-10 xxsm:px-9 rounded-md md:w-[350px] md:h-[455px] xxsm:flex flex-col items-center xxsm:mt-8 md:mt-0 shadow-[0_4px_4px_0px_rgba(0,0,0,0.25)]">
+                        class="bg-white imgShadowbox md:py-10 md:px-9 xxsm:py-10 xxsm:px-9 rounded-md md:w-[350px] md:h-[455px] xxsm:flex flex-col items-center xxsm:mt-6 md:mt-0 shadow-[0_4px_4px_0px_rgba(0,0,0,0.25)]">
                         <div class="w-[150px] h-[150px] rounded-full mb-7">
                             <img src="../../assets/img/cover (2).png" alt="">
                         </div>
@@ -537,7 +537,7 @@
                         <p class="text-[#252B42] text-sm font-semibold pt-4">XYZ</p>
                     </div>
                     <div
-                        class="bg-white imgShadowbox md:py-10 md:px-9 xxsm:py-10 xxsm:px-9 rounded-md md:w-[350px] md:h-[455px] xxsm:flex flex-col items-center xxsm:mt-8 md:mt-0 shadow-[0_4px_4px_0px_rgba(0,0,0,0.25)]">
+                        class="bg-white imgShadowbox md:py-10 md:px-9 xxsm:py-10 xxsm:px-9 rounded-md md:w-[350px] md:h-[455px] xxsm:flex flex-col items-center xxsm:mt-6 md:mt-0 shadow-[0_4px_4px_0px_rgba(0,0,0,0.25)]">
                         <div class="w-[150px] h-[150px] rounded-full mb-7">
                             <img src="../../assets/img/cover.jpg" alt="">
                         </div>
@@ -618,7 +618,7 @@
         <div class="w-full bg-[#333232] h-[487px] xxsm:px-2 sm:px-16 lg:px-36">
             <div class="xxsm:w-full xxsm:px-6 sm:px-0 md:w-1/2">
                 <p class="text-2xl font-bold text-[#FFF] pt-14 xxsm:text-center md:text-start">tripotle</p>
-                <p class="text-[#fff] text-sm font-normal pt-4">tRIPOTALE is a AI website or service application that
+                <p class="text-[#fff] text-sm font-normal pt-4">Tripotale is a AI website or service application that
                     helps you choose or recommend places that appear to be ‘hidden gems’ to become more known and
                     visited Read More</p>
                 <div class="flex flex-col pt-8 gap-6">
@@ -628,7 +628,7 @@
                     </span>
                     <span class="flex gap-2">
                         <img src="../../assets/img/sms.png" alt="">
-                        <p class="text-[#9A9EA6] text-sm font-normal">TRIPOTALE&#64;gmail.com</p>
+                        <p class="text-[#9A9EA6] text-sm font-normal">tripotale&#64;gmail.com</p>
                     </span>
                     <span class="flex gap-2">
                         <img src="../../assets/img/location.png" alt="">

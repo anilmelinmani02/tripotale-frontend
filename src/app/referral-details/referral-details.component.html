@@ -1,0 +1,83 @@
+<div class="bg-blue-50 w-full h-[100vh]">
+    <app-header></app-header>
+    <div class="bg-blue-100 ref-bg xxsm:px-3 sm:px-16 lg:px-36 pb-4 rounded-b-2xl shadow-md">
+        <div>
+            <p
+                class="text-[#181E4B] font-['Nunito'] xxsm:text-xl xsm:text-2xl sm:text-4xl md:text-5xl xxsm:py-4 sm:py-5 md:py-8 font-extrabold xxsm:text-center">
+                Invite friends to tripotale
+            </p>
+        </div>
+        <p class="xxsm:text-base xsm:text-lg sm:text-xl">Invite your friends to join Tripotale and earn more credits!
+            For every friend you refer to Tripotale, you'll both receive 5 credits as a welcome gift from us to find
+            your favorite destination.</p>
+        <p class="xxsm:text-base xsm:text-lg sm:text-xl my-2">Spread the word and start earning today!</p>
+    </div>
+
+    <div class="xxsm:px-3 sm:px-16 lg:px-36">
+        <div class="border-b-2 border-violet-200 flex justify-between items-center pt-12 xxsm:pb-6 sm:pb-10">
+            <div class="flex flex-col">
+                <span class="flex xxsm:gap-6 sm:gap-12 items-center">
+                    <p class="xxsm:text-lg xsm:text-xl sm:text-2xl font-medium"> {{userId}}</p>
+                    <p class="xxsm:font-normal sm:font-medium pt-1">Availabel Credits: {{leftCredits}}</p>
+                </span>
+                <span class="flex xxsm:gap-3 sm:gap-8 items-center min-h-[36px]">
+                    <p *ngIf="!fetchingRefCode" class="xxsm:text-base xsm:text-lg sm:text-xl font-normal py-1"> {{loggedUserRefCode}}</p>
+                    <svg *ngIf="!fetchingRefCode" (click)="copyRefCode()" class="w-4 hover:fill-violet-500 hover:w-[17px] cursor-pointer" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M384 336H192c-8.8 0-16-7.2-16-16V64c0-8.8 7.2-16 16-16l140.1 0L400 115.9V320c0 8.8-7.2 16-16 16zM192 384H384c35.3 0 64-28.7 64-64V115.9c0-12.7-5.1-24.9-14.1-33.9L366.1 14.1c-9-9-21.2-14.1-33.9-14.1H192c-35.3 0-64 28.7-64 64V320c0 35.3 28.7 64 64 64zM64 128c-35.3 0-64 28.7-64 64V448c0 35.3 28.7 64 64 64H256c35.3 0 64-28.7 64-64V416H272v32c0 8.8-7.2 16-16 16H64c-8.8 0-16-7.2-16-16V192c0-8.8 7.2-16 16-16H96V128H64z"/></svg>
+                </span>
+                <div *ngIf="fetchingRefCode" role="status" class="max-w-sm animate-pulse relative bottom-[25px] z-50">
+                    <div class="h-4 bg-gray-300 rounded-full dark:bg-gray-700 max-w-[23rem]"></div>
+                </div>
+            </div>
+
+            <!-- <div class="relative">
+                <i class="fa fa-star-o" style="font-size:56px ; color:gold"></i>
+                <span class="absolute top-[16px] right-[18px] font-medium">{{leftCredits}}</span>
+            </div> -->
+        </div>
+
+    </div>
+
+    <div class="xxsm:px-3 sm:px-16 lg:px-36 pb-4 xxsm:pt-8 sm:pt-10 ">
+        <div class=" flex justify-center items-center gap-3 xsm:px-4 sm:px-0">
+            <div class="border-2 xxsm:min-w-[60px] sm:max-w-[140px] flex-1 border-[#9599bb]"></div>
+            <p
+                class="xxsm:text-base xsm:text-lg sm:text-2xl font-bold py-1 text-center w-fit text-[#20275e] font-['Nunito']">
+                My Referral Network</p>
+            <div class="border-2 xxsm:min-w-[60px] sm:max-w-[140px] flex-1 border-[#9599bb]"></div>
+        </div>
+    </div>
+
+    <div class="flex justify-center items-center bg-blue-50">
+        <div class="xxsm:px-3 sm:px-16 lg:px-36 pb-6 xxsm:min-w-full sm:min-w-fit max-w-2xl">
+            <div *ngFor="let friend of allRefree; let i = index" class="shadow-md bg-[#fbfdff] border-gray-300 rounded-md border mb-4 xxsm:min-w-full sm:min-w-[50vw] ">
+                <div class="flex xxsm:gap-0 sm:gap-8 xxsm:flex-col sm:flex-row xxsm:items-start sm:items-center justify-between px-4 py-1.5 ">
+                    <div class="flex gap-6 items-center">
+                        <span class="w-9 h-9 bg-slate-50 rounded-full xxsm:relative xxsm:top-3 sm:static flex justify-center items-center capitalize font-medium border-2 border-gray-300 outline outline-2 outline-[#afafff]">
+                            {{friend.referee.charAt(0)}}
+                        </span>
+                        <p class="xxsm:text-base xxsm:font-semibold">{{friend.referee}}</p>
+                    </div>
+                    <p class="xxsm:ps-14 sm:ps-0 xxsm:text-sm">{{ friend.timestamp.seconds  | date: 'short' }}</p>
+                </div>
+            </div>
+            <div class="" *ngIf="allRefree.length < 1 && loading == false">
+                <div class="absolute py-3 px-6 max-w-[50vw]">
+                     <p class="xxsm:text-base xsm:text-xl sm:text-2xl font-medium font-['Sofia',sans-serif] font-effect-outline "> You haven't been referred to anyone yet! </p>
+                     <p class="xxsm:hidden sm:block font-['Sofia',sans-serif]"> Referre and get more credits !</p>
+                     <p class="xxsm:hidden sm:block font-['Sofia',sans-serif]"> Happy exploring!</p>
+                </div>
+                <img class="min-h-[200px]" src="../../assets/img/refrrlImg.jpg" alt="">
+            </div> 
+        </div>
+    </div>
+    <div [ngClass]="{'overlay' : loading == true}"></div>
+    <div *ngIf="loading" class="dot-spinner">
+        <div class="dot-spinner__dot"></div>
+        <div class="dot-spinner__dot"></div>
+        <div class="dot-spinner__dot"></div>
+        <div class="dot-spinner__dot"></div>
+        <div class="dot-spinner__dot"></div>
+        <div class="dot-spinner__dot"></div>
+        <div class="dot-spinner__dot"></div>
+        <div class="dot-spinner__dot"></div>
+    </div></div>

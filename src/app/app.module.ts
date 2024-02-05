@@ -21,6 +21,8 @@ import { BrowserAnimationsModule, provideAnimations } from '@angular/platform-br
 
 import { ToastrModule, provideToastr} from 'ngx-toastr';
 import { CommonModule } from '@angular/common';
+import { HowItWorksComponent } from './how-it-works/how-it-works.component';
+import { ReferralDetailsComponent } from './referral-details/referral-details.component';
 
 
 const firebaseConfig = {
@@ -46,6 +48,8 @@ const firebaseConfig = {
     RegisterComponent,
     ForgotPasswordComponent,
     ErrorModalComponent,
+    HowItWorksComponent,
+    ReferralDetailsComponent,
   ],
   imports: [
     CommonModule,

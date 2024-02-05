@@ -14,7 +14,7 @@ export class ItineraryService {
   tripPlan$ = this.tripPlanSource.asObservable();
   aiResponse: any[]=[];
   userRequestedData: any;
-  leftCreadits: number = 5;
+  updatedCredits: number = 0;
 
   constructor(
     private firestore: AngularFirestore,
@@ -57,7 +57,14 @@ export class ItineraryService {
   //   return this.firestore.collection('userRequest').add(data);
   // }
 
-  // get data from firestore
+  // get userId from refCode
+  getUserId(refCode: string): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}getUserId/${refCode}`);
+  }
+  // get userId from refCode
+  getRefrralCode(userId: string): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}getRefCode/${userId}`);
+  }
 
   getFirestoreData(): Observable<any[]> {
     return this.firestore.collection('users').valueChanges();

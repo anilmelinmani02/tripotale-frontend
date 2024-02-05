@@ -3,10 +3,10 @@
         <h3 class="text-center text-2xl font-semibold">Register Form </h3>
 
     </div>
-    <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="registrationForm">
 
         <label for="email">Email:</label>
-        <input class="border" type="email" id="email" formControlName="email"
+        <input class="border focus:ring-0 focus:ring-0" type="email" id="email" formControlName="email"
             [class.invalid]="registrationForm.get('email')?.invalid && registrationForm.get('email')?.touched" />
 
         <div *ngIf="registrationForm.get('email')?.hasError('required') && registrationForm.get('email')?.touched"
@@ -20,7 +20,7 @@
         </div>
 
         <label for="password">password:</label>
-        <input class="border" type="password" id="password" formControlName="password"
+        <input class="border focus:ring-0" type="password" id="password" formControlName="password"
             [class.invalid]="registrationForm.get('password')?.invalid && registrationForm.get('password')?.touched" />
 
         <div *ngIf="registrationForm.get('password')?.hasError('required') && registrationForm.get('password')?.touched"
@@ -34,14 +34,17 @@
         </div>
 
         <label for="confirmPassword">Confirm Password:</label>
-        <input class="border" type="password" id="confirmPassword" formControlName="confirmPassword">
+        <input class="border focus:ring-0" type="password" id="confirmPassword" formControlName="confirmPassword">
+
+        <label for="refferalCode">Enter refferal code:  (Optional)</label>
+        <input [(ngModel)]="refCode" class="border" type="text" id="confirmPassword" formControlName="refferalCode">
 
         <div *ngIf="registrationForm.hasError('mismatch')">
             Passwords do not match.
         </div>
-        <div>
-            <button type="submit" [disabled]="registrationForm.invalid">Register</button>
-
+        <div class="flex gap-2">
+            <button type="submit" [disabled]="registrationForm.invalid" (click)="onSubmit()">Register</button>
+            <button (click)="searchUserId(refCode)" type="button">View Referrer</button>
         </div>
 
         <span>if you have already account than goto <a class="text-blue-600 font-medium" routerLink="/login">Login</a></span>
