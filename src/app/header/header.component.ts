@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -15,14 +15,15 @@ export class HeaderComponent {
   leftCreaditsDocId: string = '';
   userId: any = '';
   loading: boolean = false;
-  showModal: boolean = false;
   loggedUserRefCode: any;
+  showCreditsTooltip: boolean = false;
 
   constructor(
     private router: Router,
     private firestore: AngularFirestore,
     private toastr: ToastrService,
-    private itineraryService : ItineraryService
+    private itineraryService : ItineraryService,
+    private elementRef: ElementRef
   ) {
     this.toastr.toastrConfig.positionClass = 'toast-top-center';
 
@@ -74,10 +75,10 @@ export class HeaderComponent {
     this.router.navigate(['/help'])
   }
   goToRefDetails(){
-    this.showModal = !this.showModal;
     this.router.navigate(['/refrralDetrails'])
   }
-  showReferralData(){
-    this.showModal = !this.showModal;
+
+  toggleCreditsTootip(){
+    this.showCreditsTooltip = true
   }
 }

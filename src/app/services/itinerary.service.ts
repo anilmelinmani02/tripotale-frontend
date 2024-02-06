@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { Observable, Subject, catchError, tap } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, catchError, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +13,6 @@ export class ItineraryService {
   tripPlanSource = new Subject<any>();
   tripPlan$ = this.tripPlanSource.asObservable();
   aiResponse: any[]=[];
-  userRequestedData: any;
   updatedCredits: number = 0;
 
   constructor(

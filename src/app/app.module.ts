@@ -63,7 +63,10 @@ const firebaseConfig = {
     AngularFireAuthModule,
     AngularFireModule,
     HttpClientModule,
-    ToastrModule.forRoot( {positionClass: 'inline' }),
+    ToastrModule.forRoot( {
+      positionClass: 'inline',
+      timeOut: 2500,
+    }),
     
   ],
   providers: [],

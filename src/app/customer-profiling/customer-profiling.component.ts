@@ -320,8 +320,9 @@ export class CustomerProfilingComponent implements OnInit {
     if (this.myForm.valid && this.selectedActivities.length > 0 && this.selectedCities.length > 0 && (this.selectedModeOfTravell !== '')) {
       this.loading = true;
     var reqestedData: any={userReq:this.itineraryData,userInfo:this.userInfo};
-    // store reqestedData data in service.
-    this.itineraryService.userRequestedData = reqestedData;
+    // store reqestedData data in session storage.
+    sessionStorage.setItem('sharedObject', JSON.stringify(reqestedData))
+
     // console.log("user reqested Data",reqestedData);
       if (this.leftCredits > 0) {
         this.showCreaditModal = false;
@@ -420,7 +421,7 @@ export class CustomerProfilingComponent implements OnInit {
   }
 
   goToHowItWorks(){
-    this.router.navigate(['/how-it-works'])
+    this.router.navigate(['/refrralDetrails'])
   }
 
   @ViewChild('candidateList') candidateList!: ElementRef;

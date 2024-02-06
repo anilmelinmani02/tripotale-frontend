@@ -121,7 +121,7 @@
                         </div>
                     </div>
                     <!-- city details -->
-                    <div class="px-8 flex gap-x-[2vw]  justify-stretch flex-wrap items-center bg-white shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] border border-[#E5E7EB] rounded-[14px] min-h-[78px]">
+                    <div class="px-8 py-3 flex gap-x-[2vw]  justify-stretch flex-wrap items-center bg-white shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] border border-[#E5E7EB] rounded-[14px] min-h-[78px]">
                         <div class="flex justify-between items-center">
                             <div class="flex gap-2 items-center">
                                 <span>
@@ -275,7 +275,7 @@
 
                         <div *ngFor="let city of shoulderMonths" class="flex justify-between items-center">
                             <div class="flex gap-2 items-center">
-                                <span>
+                                <span class="font-medium">
                                     Shoulder months:
                                 </span>
                                 <span>
@@ -287,8 +287,8 @@
                         </div>
                         <div *ngFor="let city of shoulderMonths" class="flex justify-between items-center">
                             <div class="flex gap-2 items-center">
-                                <span>
-                                   Peak Month:
+                                <span class="font-medium">
+                                   Peak Months:
                                 </span>
                                 <span>
                                     <p class="text-base font-normal text-[#18181B] font-['IBM_Plex_Sans']">
@@ -299,8 +299,8 @@
                         </div>
                         <div *ngFor="let city of shoulderMonths" class="flex justify-between items-center">
                             <div class="flex gap-2 items-center">
-                                <span>
-                                    months to avoid:
+                                <span class="font-medium">
+                                    Months to avoid:
                                 </span>
                                 <span>
                                     <p class="text-base font-normal text-[#18181B] font-['IBM_Plex_Sans']">
@@ -323,10 +323,8 @@
                     <div class="pt-11 px-2">
                         <p class="text-[#1F2937] text-2xl font-semibold pb-5">1 Day Itinerary of
                             {{city1?.cityName}}</p>
-                        <div
-                            class="px-8 flex w-full justify-between flex-wrap items-center bg-white shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] border border-[#E5E7EB] rounded-[14px] min-h-[78px]">
-                            <div
-                                class="xxsm:w-full flex gap-3 flex-wrap xxsm:justify-evenly sm:justify-start items-center">
+                        <div class="px-8 flex w-full justify-between flex-wrap items-center bg-white shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] border border-[#E5E7EB] rounded-[14px] min-h-[78px]">
+                            <div class="xxsm:w-full flex gap-3 py-2 flex-wrap xxsm:justify-between sm:justify-start items-center">
                                 <!-- <div class="xxsm:w-full md:w-1/2 flex justify-between items-center">  -->
                                 <div class="flex justify-between items-center">
                                     <div class="flex gap-2 items-center">
@@ -456,8 +454,8 @@
                     <div [ngClass]="{'overlay' : isGenerating === true}"></div>
                     <!-- regenrate button -->
                     <div class="flex pt-12 items-center justify-center">
-                        <button [disabled]="(likedPlaces.size < 1 && dislikedPlaces.size < 1) || allSpotsLocation.length === 0" (click)="reGerenerateData()" 
-                        class="flex justify-center shadow-[0_2px_4px_0px_rgba(0,0,0,0.25)] items-center gap-2 bg-[#448343] text-white rounded-full py-2 px-6" 
+                        <button [disabled]="(likedPlaces.size < 1 && dislikedPlaces.size < 1) || allSpotsLocation.length === 0" (click)="reGenerateData()" 
+                        class=" flex justify-center shadow-[0_2px_4px_0px_rgba(0,0,0,0.25)] items-center gap-2 bg-[#448343] text-white rounded-full py-2 px-6" 
                         [ngClass]="{'cursor-not-allowed bg-[#8fc58e] text-yellow-50': likedPlaces.size < 1 && dislikedPlaces.size < 1}">
                                 <span class="bg-white w-6 h-6 rounded-full flex justify-center items-center text-[#448343]">
                                     <i [ngClass]="{'loader' : isGenerating }" class="fa fa-refresh" aria-hidden="true"></i>

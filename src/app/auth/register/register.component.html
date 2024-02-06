@@ -1,52 +1,56 @@
 <div class="login-container">
     <div>
-        <h3 class="text-center text-2xl font-semibold">Register Form </h3>
+        <h3 class="text-center text-2xl font-semibold">Register</h3>
 
     </div>
     <form [formGroup]="registrationForm">
 
-        <label for="email">Email:</label>
-        <input class="border focus:ring-0 focus:ring-0" type="email" id="email" formControlName="email"
-            [class.invalid]="registrationForm.get('email')?.invalid && registrationForm.get('email')?.touched" />
+        <label for="email" #emailField>Email</label>
+        <div class="relative mb-5">
+            <input class="border focus:ring-0 " type="email" id="email" formControlName="email"
+                [class.invalid]="registrationForm.get('email')?.invalid && registrationForm.get('email')?.touched" />
 
-        <div *ngIf="registrationForm.get('email')?.hasError('required') && registrationForm.get('email')?.touched"
-            class="error-message">
-            <span class="error-text">Email is required.</span>
+            <div *ngIf="registrationForm.get('email')?.hasError('required') && registrationForm.get('email')?.touched"
+                class="absolute top-[40px] error-message">
+                <span class="error-text">Email is required.</span>
+            </div>
+
+            <div *ngIf="registrationForm.get('email')?.hasError('email') && registrationForm.get('email')?.touched"
+                class="error-message absolute top-[40px]">
+                <span class="error-text">Please enter a valid email address.</span>
+            </div>
         </div>
 
-        <div *ngIf="registrationForm.get('email')?.hasError('email') && registrationForm.get('email')?.touched"
-            class="error-message">
-            <span class="error-text">Please enter a valid email address.</span>
-        </div>
-
-        <label for="password">password:</label>
+        <label for="password" #passwordField>password</label>
+        <div class="relative mb-5">
         <input class="border focus:ring-0" type="password" id="password" formControlName="password"
             [class.invalid]="registrationForm.get('password')?.invalid && registrationForm.get('password')?.touched" />
 
         <div *ngIf="registrationForm.get('password')?.hasError('required') && registrationForm.get('password')?.touched"
-            class="error-message">
+            class="error-message absolute top-[40px]">
             <span class="error-text">password is required.</span>
         </div>
-
-        <div *ngIf="registrationForm.get('password')?.hasError('password') && registrationForm.get('password')?.touched"
-            class="error-message">
-            <span class="error-text">Please enter a valid password address.</span>
         </div>
 
-        <label for="confirmPassword">Confirm Password:</label>
+        <label for="confirmPassword" #confPasswordField>Confirm Password</label>
+        <div class="relative mb-5">
         <input class="border focus:ring-0" type="password" id="confirmPassword" formControlName="confirmPassword">
 
-        <label for="refferalCode">Enter refferal code:  (Optional)</label>
+        <div *ngIf="registrationForm.hasError('mismatch') && registrationForm.get('confirmPassword')?.touched " class="error-message absolute top-[45px]">
+            <span class="error-text">Passwords do not match.</span>
+        </div>
+        </div>
+
+        <label for="refferalCode">Enter refferal code (Optional)</label>
         <input [(ngModel)]="refCode" class="border" type="text" id="confirmPassword" formControlName="refferalCode">
 
-        <div *ngIf="registrationForm.hasError('mismatch')">
-            Passwords do not match.
-        </div>
-        <div class="flex gap-2">
-            <button type="submit" [disabled]="registrationForm.invalid" (click)="onSubmit()">Register</button>
-            <button (click)="searchUserId(refCode)" type="button">View Referrer</button>
+        
+        <div class="flex gap-2 py-3">
+            <button type="submit" (click)="onSubmit()">Register</button>
+            <!-- <button (click)="searchUserId(refCode)" type="button">View Referrer</button> -->
         </div>
 
-        <span>if you have already account than goto <a class="text-blue-600 font-medium" routerLink="/login">Login</a></span>
+        <span>if you have already account than goto <a class="text-blue-600 font-medium"
+                routerLink="/login">Login</a></span>
     </form>
 </div>

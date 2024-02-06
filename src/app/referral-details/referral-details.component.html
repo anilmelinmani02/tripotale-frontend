@@ -16,9 +16,9 @@
     <div class="xxsm:px-3 sm:px-16 lg:px-36">
         <div class="border-b-2 border-violet-200 flex justify-between items-center pt-12 xxsm:pb-6 sm:pb-10">
             <div class="flex flex-col">
-                <span class="flex xxsm:gap-6 sm:gap-12 items-center">
-                    <p class="xxsm:text-lg xsm:text-xl sm:text-2xl font-medium"> {{userId}}</p>
-                    <p class="xxsm:font-normal sm:font-medium pt-1">Availabel Credits: {{leftCredits}}</p>
+                <span class="flex items-center flex-wrap">
+                    <p class="xxsm:text-lg xsm:text-xl sm:text-2xl font-medium pe-2"> {{userId}}</p>
+                    <p class="xxsm:font-medium xxsm:text-sm xsm:text-base xsm:pt-[0.4rem] whitespace-nowrap">Availabel Credits: {{leftCredits}}</p>
                 </span>
                 <span class="flex xxsm:gap-3 sm:gap-8 items-center min-h-[36px]">
                     <p *ngIf="!fetchingRefCode" class="xxsm:text-base xsm:text-lg sm:text-xl font-normal py-1"> {{loggedUserRefCode}}</p>

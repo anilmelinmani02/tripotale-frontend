@@ -85,11 +85,15 @@ export class ItineraryPageMainComponent implements OnInit {
       this.selectedCities = params['selectCity'];
     }));
     this.itineraryURL = window.location.href;
-    this.userRequestedData = itineraryService.userRequestedData;
     this.isUserLoggedIn = sessionStorage.getItem('logedIn');
     console.log('is user logged in--', this.isUserLoggedIn);
   }
   ngOnInit() {
+    const storedObject = sessionStorage.getItem('sharedObject');
+    if (storedObject) {
+      this.userRequestedData = JSON.parse(storedObject);
+    }
+
     // fetch itinerary data object from firestore DB
     this.firestore.doc(`/users/${this.userId}/tripPlans/${this.docId}`).valueChanges().subscribe((res: any) => {
       console.log("user trip-plan from firestore database", res);
@@ -320,7 +324,7 @@ export class ItineraryPageMainComponent implements OnInit {
     return this.dislikedCardNumbers.includes(cardNumber);
   }
 
-  reGerenerateData(): void {
+  reGenerateData(): void {
     if (this.isUserLoggedIn == "true") {
       this.isGenerating = true;
       console.log("liked places-->", this.likedPlaces);

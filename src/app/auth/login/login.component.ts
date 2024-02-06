@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -14,6 +14,9 @@ export class LoginComponent {
   password!: string;
   myForm!:FormGroup
 
+  @ViewChild('emailField', { static: false }) emailField!: ElementRef;
+  @ViewChild('passwordField', { static: false }) passwordField!: ElementRef;
+
   constructor(
     private fb: FormBuilder,
     private auth: AuthService,
@@ -23,7 +26,7 @@ export class LoginComponent {
 
     this.toastr.toastrConfig.positionClass = 'toast-top-center';
     this.myForm = this.fb.group({
-      email:['',[Validators.required]],
+      email:['',[Validators.required , Validators.email]],
       password:['',[Validators.required]]
 
     })
@@ -49,6 +52,30 @@ export class LoginComponent {
           this.toastr.error('Please verify your email before login')
         }
       })
+      .catch(error => {
+        
+        if (error.code == 'auth/invalid-credential') {
+          this.toastr.error('Oops! Incorrect password or email. Please try again.');
+        } else {
+          if (error.code === "auth/too-many-requests") {
+            this.toastr.error('Maximum failed attempts exceeded, Try again later.');
+          }
+          else{
+          this.toastr.error('An error occurred. Please try again later.');
+          }
+        }
+      });
+    }
+    else{
+      if (this.myForm.get('email')?.invalid) {
+        this.emailField.nativeElement.focus();
+      }
+      if (this.myForm.get('password')?.invalid) {
+        this.passwordField.nativeElement.focus();
+      }
+      if ( this.myForm.get('email')?.invalid && this.myForm.get('password')?.invalid) {
+        this.emailField.nativeElement.focus();
+      }
     }
 
   }

@@ -25,3 +25,8 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+
+.toast-container {
+  min-width: fit-content !important ;
+  text-wrap: wrap;
+}

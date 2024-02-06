@@ -8,35 +8,22 @@
       <button (click)="goToHelp()" class="xsm:test-sm sm:text-base md:text-lg lg:text-xl font-semibold">Help</button>
     </div>
     <div class="flex items-center xxsm:gap-1 sm:gap-4">
-      <button *ngIf="isLogedIn == 'true'" (click)="showReferralData()" class="xxsm:text-sm sm:text-base md:text-[17px] lg:text-xl xxsm:font-medium xsm:font-semibold">My Refrrals</button>
-      <span *ngIf="isLogedIn == 'true'">
-      <i  class="fa fa-gift text-[35px]" aria-hidden="true"></i>
-      <span class="bg-purple-700 text-white rounded-full w-4 h-4 flex items-center justify-center absolute top-4 p-2">
-        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"></span>
-        <p class="text-[10px]">{{leftCredits}}</p></span>
-      </span>
+      <button *ngIf="isLogedIn == 'true'" (click)="goToRefDetails()" class="xxsm:text-sm sm:text-base md:text-[17px] lg:text-xl xxsm:font-medium xsm:font-semibold">My Refrrals</button>
+      <div data-tooltip-target="credits-tooltip" (mouseenter)="showCreditsTooltip = true" (mouseleave)="showCreditsTooltip = false" *ngIf="isLogedIn == 'true'">
+        <i class="fa fa-gift text-[35px]" aria-hidden="true"></i>
 
-      <!-- refrral modal -->
-      <div id="popup-modal" tabindex="-1"  [ngClass]="{'hidden': !showModal, 'flex': showModal}" class="select-none hidden overflow-y-auto overlay overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-        <div class="absolute top-[55px] sm:right-[10vw] p-4 w-full max-w-md max-h-full">
-            <div class="relative bg-blue-50 rounded-lg shadow dark:bg-gray-700">
-                <button (click)="showModal = false" type="button" class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="popup-modal">
-                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-                    </svg>
-                    <span class="sr-only">Close modal</span>
-                </button>
-                <div class="p-4 md:p-5 text-center">
-                    <h3 class="mb-5 text-lg font-bold text-gray-800 dark:text-gray-400 border-b-2 hover:border-gray-700 pb-3">My referrals </h3>
-                    <!-- <p class="mb-5 text-base font-normal text-gray-600 dark:text-gray-400 text-wrap select-text">{{loggedUserRefCode}}</p> -->
-                  <p class="font-medium inline-flex items-center">Left credits : </p>  {{leftCredits}}
-                </div>
-                <div class="flex justify-center items-center py-3">
-                  <button (click)="goToRefDetails()" class="bg-black text-white px-5 rounded-md py-2">View details</button>
-                </div>
-            </div>
+        <div *ngIf="showCreditsTooltip" class="absolute z-[100] xxsm:hidden md:block bottom-[70px] right-[101px] top-[50px] h-fit w-fit xxsm:mt-2 sm:mt-[8px]">
+          <div class="text-white bg-black px-2 py-[6px] rounded-lg text-sm flex gap-1 justify-center items-center">
+            <span>Left Credits: {{leftCredits}}</span>
+          </div>
+          <div class="absolute top-[-2px] right-4 z-[-2] w-5 h-4 bg-black rotate-45 transform -translate-x-1/2"></div>
+      </div>
+
+        <div class="bg-purple-700 text-white rounded-full w-4 h-4 flex items-center justify-center absolute top-4 p-2">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"></span>
+          <p class="text-[10px]">{{leftCredits}}</p>
         </div>
-    </div>
+      </div>
 
       <button routerLink="/login" *ngIf="isLogedIn =='false' || isLogedIn == null"
           class="xsm:text-sm xsm:font-semibold hover:cursor-pointer w-32 sm:h-[43px] sm:text-base px-4 xxsm:py-1 xsm:py-2 whitespace-nowrap sm:font-bold rounded text-white bg-black ">Sign

@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -7,6 +7,7 @@ import * as firebase from 'firebase/compat';
 import { timestamp } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { ItineraryService } from 'src/app/services/itinerary.service';
+import { ToastrService, GlobalConfig } from 'ngx-toastr';
 
 @Component({
   selector: 'app-register',
@@ -25,15 +26,21 @@ export class RegisterComponent {
   oldCredits: number = 0;
   updatedCredits: number = 0;
 
+  @ViewChild('emailField', { static: false }) emailField!: ElementRef;
+  @ViewChild('passwordField', { static: false }) passwordField!: ElementRef;
+  @ViewChild('confPasswordField', { static: false }) confPasswordField!: ElementRef;
+
   constructor(
     private formBuilder: FormBuilder,
     private auth: AuthService,
     private firestore: AngularFirestore,
     private itineraryService: ItineraryService,
     private http: HttpClient,
-    private router: Router
-  ) {
+    private router: Router,
+    private toastr: ToastrService,
 
+  ) {
+    this.toastr.toastrConfig.positionClass = 'toast-top-center';
 
   }
 
@@ -50,6 +57,31 @@ export class RegisterComponent {
   }
 
   onSubmit(): void {
+    if (this.registrationForm.get('email')?.invalid) {
+      this.emailField.nativeElement.focus();
+    }
+    else {
+      if (this.registrationForm.get('password')?.invalid) {
+        this.passwordField.nativeElement.focus();
+      }
+      else {
+        if (this.registrationForm.get('confirmPassword')?.invalid) {
+          this.confPasswordField.nativeElement.focus();
+        }
+        else {
+          if (this.registrationForm.get('email')?.invalid || this.registrationForm.get('password')?.invalid) {
+            this.emailField.nativeElement.focus();
+          }
+        }
+      }
+    }
+
+
+    if (this.registrationForm.get('email')?.invalid && this.registrationForm.get('password')?.invalid) {
+
+      this.emailField.nativeElement.focus();
+    }
+
     if (this.registrationForm.valid) {
       this.auth.register(this.registrationForm.value.email, this.registrationForm.value.password)
         .then((success) => {
@@ -69,6 +101,9 @@ export class RegisterComponent {
             console.log('Failed to register ');
           }
         });
+    }
+    else {
+      this.toastr.error('Please fill out all required fields.')
     }
   }
 
@@ -141,7 +176,7 @@ export class RegisterComponent {
   //     });
   // }
 
- 
+
   registerUserWithRefCode(refCode: string) {
     // 1st register user and add 5 credits to his account 
     this.registerWithoutRefcode();
@@ -196,12 +231,17 @@ export class RegisterComponent {
     )
   }
 
-    // search UserId from refCOde
-  searchUserId(refCode: string) {
-    this.itineraryService.getUserId(refCode).subscribe(
-      response => {
-        console.log('User ID:', response.userId);
-      }
-    )
-  }
+  // search UserId from refCOde
+
+  // searchUserId(refCode: string) {
+  //   if (this.registrationForm.get('refferalCode')?.value.length > 0) {
+  //     this.itineraryService.getUserId(refCode).subscribe(
+  //       response => {
+  //         console.log('User ID:', response.userId);
+  //       }
+  //     )
+  //   } else {
+  //     console.log('Enter the referrel code');
+  //   }
+  // }
 }

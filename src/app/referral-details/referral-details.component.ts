@@ -60,7 +60,7 @@ export class ReferralDetailsComponent {
     },
     (error)=>{
       this.loading  = false;
-      toastr.error('Something went wrong !')
+      // toastr.error('Something went wrong !')
     }
     )
   }
