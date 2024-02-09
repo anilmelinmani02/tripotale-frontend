@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
@@ -14,25 +13,23 @@ import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
-import {  HttpClientModule } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.component';
 import { ErrorModalComponent } from './alertModal/error-modal/error-modal.component';
-import { BrowserAnimationsModule, provideAnimations } from '@angular/platform-browser/animations';
-
-import { ToastrModule, provideToastr} from 'ngx-toastr';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
 import { CommonModule } from '@angular/common';
 import { HowItWorksComponent } from './how-it-works/how-it-works.component';
 import { ReferralDetailsComponent } from './referral-details/referral-details.component';
 
-
 const firebaseConfig = {
-  apiKey: "AIzaSyDp7yyM3_72459eJ2sd6DF6JDzHzBOhHXU",
-  authDomain: "tripotale-f1db9.firebaseapp.com",
-  projectId: "tripotale-f1db9",
-  storageBucket: "tripotale-f1db9.appspot.com",
-  messagingSenderId: "152516444939",
-  appId: "1:152516444939:web:70cc71eb653aea866a980e",
-  measurementId: "G-JMQ061HFB5"
+  apiKey: 'AIzaSyDp7yyM3_72459eJ2sd6DF6JDzHzBOhHXU',
+  authDomain: 'tripotale-f1db9.firebaseapp.com',
+  projectId: 'tripotale-f1db9',
+  storageBucket: 'tripotale-f1db9.appspot.com',
+  messagingSenderId: '152516444939',
+  appId: '1:152516444939:web:70cc71eb653aea866a980e',
+  measurementId: 'G-JMQ061HFB5',
 };
 
 @NgModule({
@@ -63,13 +60,12 @@ const firebaseConfig = {
     AngularFireAuthModule,
     AngularFireModule,
     HttpClientModule,
-    ToastrModule.forRoot( {
+    ToastrModule.forRoot({
       positionClass: 'inline',
       timeOut: 2500,
     }),
-    
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

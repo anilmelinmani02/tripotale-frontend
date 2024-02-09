@@ -5,24 +5,20 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent {
   searchForm: FormGroup;
-  journey:any;
+  journey: any;
   minDate: string;
 
-  constructor(
-    private fb: FormBuilder,
-    private router: Router,
-    ) {
-      
-      this.minDate = this.formatDate(new Date())
+  constructor(private fb: FormBuilder, private router: Router) {
+    this.minDate = this.formatDate(new Date());
 
     this.searchForm = this.fb.group({
       from: ['', Validators.required],
       to: [''],
-      date: ['',Validators.required]
+      date: ['', Validators.required],
     });
   }
 
@@ -34,8 +30,9 @@ export class HomeComponent {
   }
 
   onSubmit() {
-    this.journey = this.searchForm.value
-    console.log('journey:', this.journey );
-    this.router.navigate(['/customer-profilling'], {queryParams: this.journey})
+    this.journey = this.searchForm.value;
+    this.router.navigate(['/customer-profilling'], {
+      queryParams: this.journey,
+    });
   }
 }

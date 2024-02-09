@@ -1,45 +1,93 @@
-<nav class="flex h-[77] w-100 justify-between items-center bg-white p-4 border-b-2">
+<nav
+  class="flex h-[77] w-100 justify-between items-center bg-white p-4 border-b-2"
+>
   <div class="flex flex-shrink-1 text-white sm:mr-6 xxsm:mr-3">
-    <button (click)="goToHome()"
-        class="font-bold xsm:text-xl sm:text-2xl md:text-3xl text-[#000]">Tripotale</button>
+    <button
+      (click)="goToHome()"
+      class="font-bold xsm:text-xl sm:text-2xl md:text-3xl text-[#000]"
+    >
+      Tripotale
+    </button>
   </div>
   <div class="w-full flex-grow flex justify-between md:w-auto items-center">
     <div class="text-sm md:flex-grow">
-      <button (click)="goToHelp()" class="xsm:test-sm sm:text-base md:text-lg lg:text-xl font-semibold">Help</button>
+      <button
+        (click)="goToHelp()"
+        class="xsm:test-sm sm:text-base md:text-lg lg:text-xl font-semibold"
+      >
+        Help
+      </button>
     </div>
     <div class="flex items-center xxsm:gap-1 sm:gap-4">
-      <button *ngIf="isLogedIn == 'true'" (click)="goToRefDetails()" class="xxsm:text-sm sm:text-base md:text-[17px] lg:text-xl xxsm:font-medium xsm:font-semibold">My Refrrals</button>
-      <div data-tooltip-target="credits-tooltip" (mouseenter)="showCreditsTooltip = true" (mouseleave)="showCreditsTooltip = false" *ngIf="isLogedIn == 'true'">
+      <button
+        *ngIf="isLogedIn == 'true'"
+        (click)="goToRefDetails()"
+        class="xxsm:text-sm sm:text-base md:text-[17px] lg:text-xl xxsm:font-medium xsm:font-semibold"
+      >
+        My Refrrals
+      </button>
+      <div
+        data-tooltip-target="credits-tooltip"
+        (mouseenter)="showCreditsTooltip = true"
+        (mouseleave)="showCreditsTooltip = false"
+        *ngIf="isLogedIn == 'true'"
+      >
         <i class="fa fa-gift text-[35px]" aria-hidden="true"></i>
-
-        <div *ngIf="showCreditsTooltip" class="absolute z-[100] xxsm:hidden md:block bottom-[70px] right-[101px] top-[50px] h-fit w-fit xxsm:mt-2 sm:mt-[8px]">
-          <div class="text-white bg-black px-2 py-[6px] rounded-lg text-sm flex gap-1 justify-center items-center">
-            <span>Left Credits: {{leftCredits}}</span>
+        <div
+          *ngIf="showCreditsTooltip"
+          class="absolute z-[100] xxsm:hidden md:block bottom-[70px] right-[101px] top-[50px] h-fit w-fit xxsm:mt-2 sm:mt-[8px]"
+        >
+          <div
+            class="text-white bg-black px-2 py-[6px] rounded-lg text-sm flex gap-1 justify-center items-center"
+          >
+            <span>Left Credits: {{ leftCredits }}</span>
           </div>
-          <div class="absolute top-[-2px] right-4 z-[-2] w-5 h-4 bg-black rotate-45 transform -translate-x-1/2"></div>
-      </div>
-
-        <div class="bg-purple-700 text-white rounded-full w-4 h-4 flex items-center justify-center absolute top-4 p-2">
-          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"></span>
-          <p class="text-[10px]">{{leftCredits}}</p>
+          <div
+            class="absolute top-[-2px] right-4 z-[-2] w-5 h-4 bg-black rotate-45 transform -translate-x-1/2"
+          ></div>
+        </div>
+        <div
+          class="bg-purple-700 text-white rounded-full w-4 h-4 flex items-center justify-center absolute top-4 p-2"
+        >
+          <span
+            class="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"
+          ></span>
+          <p class="text-[10px]">{{ leftCredits }}</p>
         </div>
       </div>
-
-      <button routerLink="/login" *ngIf="isLogedIn =='false' || isLogedIn == null"
-          class="xsm:text-sm xsm:font-semibold hover:cursor-pointer w-32 sm:h-[43px] sm:text-base px-4 xxsm:py-1 xsm:py-2 whitespace-nowrap sm:font-bold rounded text-white bg-black ">Sign
-          In</button>
-          <button (click)="onClickOnLogOut()" *ngIf="isLogedIn=='true'"
-          class="xsm:text-sm ms-1 xsm:font-semibold hover:cursor-pointer sm:h-[43px] sm:text-base xxsm:px-2 sm:px-4 xxsm:py-1 xsm:py-2 whitespace-nowrap sm:font-bold rounded text-white bg-black ">
-          Log out
-          <span *ngIf="loading === true" class="pl-1" role="status">
-            <svg aria-hidden="true" class="inline w-6 h-6 text-gray-200 animate-spin dark:text-gray-600 fill-red-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
-                <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/>
-            </svg>
-            <span class="sr-only">Loading...</span>
+      <button
+        routerLink="/login"
+        *ngIf="isLogedIn == 'false' || isLogedIn == null"
+        class="xsm:text-sm xsm:font-semibold hover:cursor-pointer w-32 sm:h-[43px] sm:text-base px-4 xxsm:py-1 xsm:py-2 whitespace-nowrap sm:font-bold rounded text-white bg-black"
+      >
+        Sign In
+      </button>
+      <button
+        (click)="onClickOnLogOut()"
+        *ngIf="isLogedIn == 'true'"
+        class="xsm:text-sm ms-1 xsm:font-semibold hover:cursor-pointer sm:h-[43px] sm:text-base xxsm:px-2 sm:px-4 xxsm:py-1 xsm:py-2 whitespace-nowrap sm:font-bold rounded text-white bg-black"
+      >
+        Log out
+        <span *ngIf="loading === true" class="pl-1" role="status">
+          <svg
+            aria-hidden="true"
+            class="inline w-6 h-6 text-gray-200 animate-spin dark:text-gray-600 fill-red-600"
+            viewBox="0 0 100 101"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+              fill="currentColor"
+            />
+            <path
+              d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+              fill="currentFill"
+            />
+          </svg>
+          <span class="sr-only">Loading...</span>
         </span>
-        </button>
-
+      </button>
     </div>
   </div>
 </nav>

@@ -12,21 +12,24 @@ import { HowItWorksComponent } from './how-it-works/how-it-works.component';
 import { ReferralDetailsComponent } from './referral-details/referral-details.component';
 
 const routes: Routes = [
-  { path: '' , redirectTo:'home', pathMatch: 'full'},
-  // { path: '' , redirectTo:'login', pathMatch: 'full'},
-  { path: 'login', component: LoginComponent},
-  { path: 'forgot', component:  ForgotPasswordComponent},
-  { path: 'register', component: RegisterComponent},
-  { path: 'customer-profilling', component:CustomerProfilingComponent},
-  { path: 'home', component:HomeComponent, canActivate: [AuthGuard]},
-  { path: 'itinerary' , component:ItineraryPageComponent, canActivate: [AuthGuard]},
-  { path: 'itinarary-details', component:ItineraryPageMainComponent},
-  { path: 'help', component:HowItWorksComponent },
-  { path: 'refrralDetrails', component:ReferralDetailsComponent },
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: 'login', component: LoginComponent },
+  { path: 'forgot', component: ForgotPasswordComponent },
+  { path: 'register', component: RegisterComponent },
+  { path: 'customer-profilling', component: CustomerProfilingComponent },
+  { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
+  {
+    path: 'itinerary',
+    component: ItineraryPageComponent,
+    canActivate: [AuthGuard],
+  },
+  { path: 'itinarary-details', component: ItineraryPageMainComponent },
+  { path: 'help', component: HowItWorksComponent },
+  { path: 'refrralDetrails', component: ReferralDetailsComponent },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

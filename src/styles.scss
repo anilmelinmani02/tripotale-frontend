@@ -1,13 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import 'ol/ol.css';
+@import "ol/ol.css";
 :root {
-    --background-color: #DEF6FF;
-  }
-// :root {
-//     --color: #181E4B;
-//   }
+  --background-color: #def6ff;
+}
 ::-webkit-scrollbar {
   width: 10px;
 }
@@ -15,13 +12,11 @@
   background: #f1f1f1;
 }
 
-/* Handle */
 ::-webkit-scrollbar-thumb {
   background: #888;
   border-radius: 5px;
 }
 
-/* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
 }

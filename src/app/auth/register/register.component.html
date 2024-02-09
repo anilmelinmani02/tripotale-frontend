@@ -1,56 +1,105 @@
 <div class="login-container">
-    <div>
-        <h3 class="text-center text-2xl font-semibold">Register</h3>
+  <div>
+    <h3 class="text-center text-2xl font-semibold">Register</h3>
+  </div>
+  <form [formGroup]="registrationForm">
+    <label for="email" #emailField>Email</label>
+    <div class="relative mb-5">
+      <input
+        class="border focus:ring-0"
+        type="email"
+        id="email"
+        formControlName="email"
+        [class.invalid]="
+          registrationForm.get('email')?.invalid &&
+          registrationForm.get('email')?.touched
+        "
+      />
 
+      <div
+        *ngIf="
+          registrationForm.get('email')?.hasError('required') &&
+          registrationForm.get('email')?.touched
+        "
+        class="absolute top-[40px] error-message"
+      >
+        <span class="error-text">Email is required.</span>
+      </div>
+
+      <div
+        *ngIf="
+          registrationForm.get('email')?.hasError('email') &&
+          registrationForm.get('email')?.touched
+        "
+        class="error-message absolute top-[40px]"
+      >
+        <span class="error-text">Please enter a valid email address.</span>
+      </div>
     </div>
-    <form [formGroup]="registrationForm">
 
-        <label for="email" #emailField>Email</label>
-        <div class="relative mb-5">
-            <input class="border focus:ring-0 " type="email" id="email" formControlName="email"
-                [class.invalid]="registrationForm.get('email')?.invalid && registrationForm.get('email')?.touched" />
+    <label for="password" #passwordField>password</label>
+    <div class="relative mb-5">
+      <input
+        class="border focus:ring-0"
+        type="password"
+        id="password"
+        formControlName="password"
+        [class.invalid]="
+          registrationForm.get('password')?.invalid &&
+          registrationForm.get('password')?.touched
+        "
+      />
 
-            <div *ngIf="registrationForm.get('email')?.hasError('required') && registrationForm.get('email')?.touched"
-                class="absolute top-[40px] error-message">
-                <span class="error-text">Email is required.</span>
-            </div>
+      <div
+        *ngIf="
+          registrationForm.get('password')?.hasError('required') &&
+          registrationForm.get('password')?.touched
+        "
+        class="error-message absolute top-[40px]"
+      >
+        <span class="error-text">password is required.</span>
+      </div>
+    </div>
 
-            <div *ngIf="registrationForm.get('email')?.hasError('email') && registrationForm.get('email')?.touched"
-                class="error-message absolute top-[40px]">
-                <span class="error-text">Please enter a valid email address.</span>
-            </div>
-        </div>
+    <label for="confirmPassword" #confPasswordField>Confirm Password</label>
+    <div class="relative mb-5">
+      <input
+        class="border focus:ring-0"
+        type="password"
+        id="confirmPassword"
+        formControlName="confirmPassword"
+      />
 
-        <label for="password" #passwordField>password</label>
-        <div class="relative mb-5">
-        <input class="border focus:ring-0" type="password" id="password" formControlName="password"
-            [class.invalid]="registrationForm.get('password')?.invalid && registrationForm.get('password')?.touched" />
+      <div
+        *ngIf="
+          registrationForm.hasError('mismatch') &&
+          registrationForm.get('confirmPassword')?.touched
+        "
+        class="error-message absolute top-[45px]"
+      >
+        <span class="error-text">Passwords do not match.</span>
+      </div>
+    </div>
 
-        <div *ngIf="registrationForm.get('password')?.hasError('required') && registrationForm.get('password')?.touched"
-            class="error-message absolute top-[40px]">
-            <span class="error-text">password is required.</span>
-        </div>
-        </div>
+    <label for="refferalCode">Enter refferal code (Optional)</label>
+    <input
+      [(ngModel)]="refCode"
+      class="border"
+      type="text"
+      id="confirmPassword"
+      formControlName="refferalCode"
+    />
 
-        <label for="confirmPassword" #confPasswordField>Confirm Password</label>
-        <div class="relative mb-5">
-        <input class="border focus:ring-0" type="password" id="confirmPassword" formControlName="confirmPassword">
+    <div class="flex gap-2 py-3">
+      <button type="submit" (click)="onSubmit()">Register</button>
+      <!-- <button (click)="searchUserId(refCode)" type="button">View Referrer</button> -->
+    </div>
 
-        <div *ngIf="registrationForm.hasError('mismatch') && registrationForm.get('confirmPassword')?.touched " class="error-message absolute top-[45px]">
-            <span class="error-text">Passwords do not match.</span>
-        </div>
-        </div>
-
-        <label for="refferalCode">Enter refferal code (Optional)</label>
-        <input [(ngModel)]="refCode" class="border" type="text" id="confirmPassword" formControlName="refferalCode">
-
-        
-        <div class="flex gap-2 py-3">
-            <button type="submit" (click)="onSubmit()">Register</button>
-            <!-- <button (click)="searchUserId(refCode)" type="button">View Referrer</button> -->
-        </div>
-
-        <span>Already have an account? <a class="text-blue-600 font-medium"
-                routerLink="/login">Login here</a></span>
-    </form>
+    <span
+      >Already have an account?
+      <a class="text-blue-600 font-medium" routerLink="/login"
+        >Login here</a
+      ></span
+    >
+  </form>
 </div>

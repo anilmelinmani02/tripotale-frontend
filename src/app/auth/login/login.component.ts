@@ -7,12 +7,12 @@ import { AuthService } from 'src/app/services/auth.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent {
   email!: string;
   password!: string;
-  myForm!:FormGroup
+  myForm!: FormGroup;
 
   @ViewChild('emailField', { static: false }) emailField!: ElementRef;
   @ViewChild('passwordField', { static: false }) passwordField!: ElementRef;
@@ -21,65 +21,63 @@ export class LoginComponent {
     private fb: FormBuilder,
     private auth: AuthService,
     private router: Router,
-    private toastr: ToastrService,
-    ) {
-
+    private toastr: ToastrService
+  ) {
     this.toastr.toastrConfig.positionClass = 'toast-top-center';
     this.myForm = this.fb.group({
-      email:['',[Validators.required , Validators.email]],
-      password:['',[Validators.required]]
-
-    })
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required]],
+    });
   }
-  ngOnInit(){
-    const isLoggedIn = localStorage.getItem('authToken')? true :false
-    if(isLoggedIn){
-      this.router.navigate(['/login'])
+  ngOnInit() {
+    const isLoggedIn = localStorage.getItem('authToken') ? true : false;
+    if (isLoggedIn) {
+      this.router.navigate(['/login']);
     }
-
   }
 
-  login(){
-    if(this.myForm.valid){
-      this.auth.login(this.myForm.value.email, this.myForm.value.password).then(res =>{
-        sessionStorage.setItem('logedIn', 'true');        
-        sessionStorage.setItem('userId', this.myForm.value.email)
-        // this.router.navigate(['/home']);
-        if(res.user?.emailVerified == true){
-          this.toastr.success('Logged in successfully.')
-          this.router.navigate(['/home']);
-        }else{
-          this.toastr.error('Please verify your email before login')
-        }
-      })
-      .catch(error => {
-        
-        if (error.code == 'auth/invalid-credential') {
-          this.toastr.error('Oops! Incorrect password or email. Please try again.');
-        } else {
-          if (error.code === "auth/too-many-requests") {
-            this.toastr.error('Maximum failed attempts exceeded, Try again later.');
+  login() {
+    if (this.myForm.valid) {
+      this.auth
+        .login(this.myForm.value.email, this.myForm.value.password)
+        .then((res) => {
+          sessionStorage.setItem('logedIn', 'true');
+          sessionStorage.setItem('userId', this.myForm.value.email);
+          if (res.user?.emailVerified == true) {
+            this.toastr.success('Logged in successfully.');
+            this.router.navigate(['/home']);
+          } else {
+            this.toastr.error('Please verify your email before login');
           }
-          else{
-          this.toastr.error('An error occurred. Please try again later.');
+        })
+        .catch((error) => {
+          if (error.code == 'auth/invalid-credential') {
+            this.toastr.error(
+              'Oops! Incorrect password or email. Please try again.'
+            );
+          } else {
+            if (error.code === 'auth/too-many-requests') {
+              this.toastr.error(
+                'Maximum failed attempts exceeded, Try again later.'
+              );
+            } else {
+              this.toastr.error('An error occurred. Please try again later.');
+            }
           }
-        }
-      });
-    }
-    else{
+        });
+    } else {
       if (this.myForm.get('email')?.invalid) {
         this.emailField.nativeElement.focus();
       }
       if (this.myForm.get('password')?.invalid) {
         this.passwordField.nativeElement.focus();
       }
-      if ( this.myForm.get('email')?.invalid && this.myForm.get('password')?.invalid) {
+      if (
+        this.myForm.get('email')?.invalid &&
+        this.myForm.get('password')?.invalid
+      ) {
         this.emailField.nativeElement.focus();
       }
     }
-
   }
-
-
-
 }

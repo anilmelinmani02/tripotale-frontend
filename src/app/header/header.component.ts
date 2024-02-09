@@ -7,7 +7,7 @@ import { ItineraryService } from '../services/itinerary.service';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss']
+  styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent {
   isLogedIn: any;
@@ -22,36 +22,33 @@ export class HeaderComponent {
     private router: Router,
     private firestore: AngularFirestore,
     private toastr: ToastrService,
-    private itineraryService : ItineraryService,
+    private itineraryService: ItineraryService,
     private elementRef: ElementRef
   ) {
     this.toastr.toastrConfig.positionClass = 'toast-top-center';
-
     this.checkLogin();
 
     // Fetch creadits from DB
-  
     this.userId = sessionStorage.getItem('userId');
-
     if (this.userId !== null) {
-
-    const referralDocRef = this.firestore.collection('users').doc(this.userId).collection('referrals').doc('referralDoc');
-
-    referralDocRef.valueChanges().subscribe((data: any) => {
-      if (data && 'leftCredits' in data) {
-        this.leftCredits = data.leftCredits;
-        sessionStorage.setItem('leftCredits', this.leftCredits.toString());
-      }
-    });
+      const referralDocRef = this.firestore
+        .collection('users')
+        .doc(this.userId)
+        .collection('referrals')
+        .doc('referralDoc');
+      referralDocRef.valueChanges().subscribe((data: any) => {
+        if (data && 'leftCredits' in data) {
+          this.leftCredits = data.leftCredits;
+          sessionStorage.setItem('leftCredits', this.leftCredits.toString());
+        }
+      });
     } else {
       console.error('userId is null. Cannot fetch creadits.');
     }
-
   }
 
   checkLogin() {
     this.isLogedIn = sessionStorage.getItem('logedIn');
-    console.log(this.isLogedIn);
   }
 
   redirectTo(router: string) {
@@ -64,21 +61,23 @@ export class HeaderComponent {
     this.checkLogin();
     sessionStorage.removeItem('userId');
     this.loading = false;
-    this.toastr.success('Logged out successfully !')
-    this.router.navigate([''])
-  }
-
-  goToHome(){
+    this.toastr.success('Logged out successfully !');
     this.router.navigate(['']);
   }
-  goToHelp(){
-    this.router.navigate(['/help'])
-  }
-  goToRefDetails(){
-    this.router.navigate(['/refrralDetrails'])
+
+  goToHome() {
+    this.router.navigate(['']);
   }
 
-  toggleCreditsTootip(){
-    this.showCreditsTooltip = true
+  goToHelp() {
+    this.router.navigate(['/help']);
+  }
+
+  goToRefDetails() {
+    this.router.navigate(['/refrralDetrails']);
+  }
+
+  toggleCreditsTootip() {
+    this.showCreditsTooltip = true;
   }
 }

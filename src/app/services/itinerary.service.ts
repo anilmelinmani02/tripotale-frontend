@@ -4,21 +4,18 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { BehaviorSubject, Observable, Subject, catchError, tap } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ItineraryService {
   baseUrl: string = `https://us-central1-tripotale-f1db9.cloudfunctions.net/api2/`;
 
-   // Subject to emit tripPlan data
+  // Subject to emit tripPlan data
   tripPlanSource = new Subject<any>();
   tripPlan$ = this.tripPlanSource.asObservable();
-  aiResponse: any[]=[];
+  aiResponse: any[] = [];
   updatedCredits: number = 0;
 
-  constructor(
-    private firestore: AngularFirestore,
-    private http: HttpClient
-  ) { }
+  constructor(private firestore: AngularFirestore, private http: HttpClient) {}
 
   getItineraryData(userReqData: any) {
     const httpOptions = {
@@ -28,7 +25,11 @@ export class ItineraryService {
       timeout: 600000,
     };
 
-    return this.http.post<any>(`${this.baseUrl}getItineraryDetails`, userReqData, httpOptions)
+    return this.http.post<any>(
+      `${this.baseUrl}getItineraryDetails`,
+      userReqData,
+      httpOptions
+    );
   }
 
   getTripPlanObservable(): Observable<any> {
@@ -41,20 +42,18 @@ export class ItineraryService {
   }
 
   // save-collection
-  saveCollection(savingStatus:any):Observable<any>{
-    return this.http.post<any>(`${this.baseUrl}save-collection`,savingStatus)
+  saveCollection(savingStatus: any): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}save-collection`, savingStatus);
   }
 
-  updateCollectionSaveStatus(docId: string, userId: string, isSavedToCollection: boolean): Observable<any> {
+  updateCollectionSaveStatus(
+    docId: string,
+    userId: string,
+    isSavedToCollection: boolean
+  ): Observable<any> {
     const body = { docId, userId, isSavedToCollection };
     return this.http.put(`${this.baseUrl}update-save-to-collection`, body);
   }
-
-  // add form data to firestore
-
-  // addData(data: any): Promise<any> {
-  //   return this.firestore.collection('userRequest').add(data);
-  // }
 
   // get userId from refCode
   getUserId(refCode: string): Observable<any> {

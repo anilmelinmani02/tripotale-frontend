@@ -3,7 +3,7 @@ import { Component, Input } from '@angular/core';
 @Component({
   selector: 'app-itinerary-card',
   templateUrl: './itinerary-card.component.html',
-  styleUrls: ['./itinerary-card.component.scss']
+  styleUrls: ['./itinerary-card.component.scss'],
 })
 export class ItineraryCardComponent {
   @Input() cardData: any;

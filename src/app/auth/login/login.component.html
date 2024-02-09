@@ -1,44 +1,81 @@
-<div class="login-container ">
+<div class="login-container">
   <h2 class="text-center text-2xl font-semibold">Login</h2>
   <form [formGroup]="myForm">
-
     <label for="email">Email</label>
 
     <div class="relative mb-2">
-      <input #emailField class="border focus:ring-0 mb-5" type="email" id="email" formControlName="email"
-        [class.invalid]="myForm.get('email')?.invalid && myForm.get('email')?.touched" />
-        <!-- req err sms -->
-      <div *ngIf="myForm.get('email')?.hasError('required') && myForm.get('email')?.touched" class="error-message">
+      <input
+        #emailField
+        class="border focus:ring-0 mb-5"
+        type="email"
+        id="email"
+        formControlName="email"
+        [class.invalid]="
+          myForm.get('email')?.invalid && myForm.get('email')?.touched
+        "
+      />
+      <div
+        *ngIf="
+          myForm.get('email')?.hasError('required') &&
+          myForm.get('email')?.touched
+        "
+        class="error-message"
+      >
         <span class="error-text absolute top-[45px]">Email is required.</span>
       </div>
-      <!-- err msm -->
-      <div *ngIf="myForm.get('email')?.hasError('email') && myForm.get('email')?.touched" class="error-message">
-        <span class="error-text absolute top-[45px]">Please enter a valid email address.</span>
+      <div
+        *ngIf="
+          myForm.get('email')?.hasError('email') && myForm.get('email')?.touched
+        "
+        class="error-message"
+      >
+        <span class="error-text absolute top-[45px]"
+          >Please enter a valid email address.</span
+        >
       </div>
     </div>
 
     <label for="password" class="justify-between">Password</label>
 
     <div class="relative">
-      <input #passwordField class="border focus:ring-0 mb-5" type="password" id="password" formControlName="password"
-        [class.invalid]="myForm.get('password')?.invalid && myForm.get('password')?.touched" />
-        <!-- req err msg -->
-      <div *ngIf="myForm.get('password')?.hasError('required') && myForm.get('password')?.touched"
-        class="error-message">
-        <span class="error-text absolute top-[45px]">Password is required.</span>
+      <input
+        #passwordField
+        class="border focus:ring-0 mb-5"
+        type="password"
+        id="password"
+        formControlName="password"
+        [class.invalid]="
+          myForm.get('password')?.invalid && myForm.get('password')?.touched
+        "
+      />
+      <div
+        *ngIf="
+          myForm.get('password')?.hasError('required') &&
+          myForm.get('password')?.touched
+        "
+        class="error-message"
+      >
+        <span class="error-text absolute top-[45px]"
+          >Password is required.</span
+        >
       </div>
       <!-- <div *ngIf="myForm.get('password')?.hasError('password') && myForm.get('password')?.touched"
         class="error-message">
         <span class="error-text absolute top-[45px]">Please enter a valid password address.</span>
       </div> -->
     </div>
-    <div class="">
-      <div class="text-end"><a class="text-blue-500" routerLink="/forgot">Forgot Password?</a> </div>
+    <div>
+      <div class="text-end">
+        <a class="text-blue-500" routerLink="/forgot">Forgot Password?</a>
+      </div>
 
-      <button class="btn1 w-full mt-2" type="submit" (click)="login()">Login</button>
+      <button class="btn1 w-full mt-2" type="submit" (click)="login()">
+        Login
+      </button>
     </div>
-    <div class="text-center mt-2">Don't have an account? <a class="text-blue-600 font-medium"
-        routerLink="/register">Register</a></div>
-
+    <div class="text-center mt-2">
+      Don't have an account?
+      <a class="text-blue-600 font-medium" routerLink="/register">Register</a>
+    </div>
   </form>
 </div>

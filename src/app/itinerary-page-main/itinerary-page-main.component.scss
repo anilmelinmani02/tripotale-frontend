@@ -1,100 +1,97 @@
-.bg-img{
-    background-image: url(../../assets/img/PuneMainImage.jpg); 
-    background-repeat: no-repeat;
-    object-fit: cover;
-    background-position: center;
+.bg-img {
+  background-image: url(../../assets/img/PuneMainImage.jpg);
+  background-repeat: no-repeat;
+  object-fit: cover;
+  background-position: center;
 }
-.pin-number{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: black;
-    color: white;
-    border-radius: 100%;
-    width: 10px;
-    height: 10px;
-    font-size: x-small;
-    position: absolute;
-    top: 30px;
-    left: 11px;
+.pin-number {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: black;
+  color: white;
+  border-radius: 100%;
+  width: 10px;
+  height: 10px;
+  font-size: x-small;
+  position: absolute;
+  top: 30px;
+  left: 11px;
 }
-
-
-//  loader for Reregenration
 .overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 9999;
-  };
-  
-  .loading {
-    --speed-of-animation: 0.9s;
-    --gap: 6px;
-    --first-color: #4c86f9;
-    --second-color: #49a84c;
-    --third-color: #f6bb02;
-    --fourth-color: #f6bb02;
-    --fifth-color: #2196f3;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    // width: 100px;
-    gap: 6px;
-    height: auto;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+}
+
+.loading {
+  --speed-of-animation: 0.9s;
+  --gap: 6px;
+  --first-color: #4c86f9;
+  --second-color: #49a84c;
+  --third-color: #f6bb02;
+  --fourth-color: #f6bb02;
+  --fifth-color: #2196f3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  height: auto;
+}
+
+.loading span {
+  width: 4px;
+  height: 20px;
+  background: var(--first-color);
+  animation: scale var(--speed-of-animation) ease-in-out infinite;
+}
+
+.loading span:nth-child(2) {
+  background: var(--second-color);
+  animation-delay: -0.8s;
+}
+
+.loading span:nth-child(3) {
+  background: var(--third-color);
+  animation-delay: -0.7s;
+}
+
+.loading span:nth-child(4) {
+  background: var(--fourth-color);
+  animation-delay: -0.6s;
+}
+
+.loading span:nth-child(5) {
+  background: var(--fifth-color);
+  animation-delay: -0.5s;
+}
+
+@keyframes scale {
+  0%,
+  40%,
+  100% {
+    transform: scaleY(0.05);
   }
-  
-  .loading span {
-    width: 4px;
-    height: 20px;
-    background: var(--first-color);
-    animation: scale var(--speed-of-animation) ease-in-out infinite;
+
+  20% {
+    transform: scaleY(1);
   }
-  
-  .loading span:nth-child(2) {
-    background: var(--second-color);
-    animation-delay: -0.8s;
-  }
-  
-  .loading span:nth-child(3) {
-    background: var(--third-color);
-    animation-delay: -0.7s;
-  }
-  
-  .loading span:nth-child(4) {
-    background: var(--fourth-color);
-    animation-delay: -0.6s;
-  }
-  
-  .loading span:nth-child(5) {
-    background: var(--fifth-color);
-    animation-delay: -0.5s;
-  }
-  
-  @keyframes scale {
-  
-    0%,
-    40%,
-    100% {
-      transform: scaleY(0.05);
-    }
-  
-    20% {
-      transform: scaleY(1);
-    }
-  }
+}
 
 .loader {
-    background-repeat: no-repeat;
-    animation: l11 1s infinite linear;
+  background-repeat: no-repeat;
+  animation: l11 1s infinite linear;
+}
+@keyframes l11 {
+  100% {
+    transform: rotate(1turn);
   }
-  @keyframes l11{ 
-    100%{transform: rotate(1turn)}
-  }
-  
-.save-and-share-btn:hover{
+}
+
+.save-and-share-btn:hover {
   filter: drop-shadow(2px 4px 6px black);
 }

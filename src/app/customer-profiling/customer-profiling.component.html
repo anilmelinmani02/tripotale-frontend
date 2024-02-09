@@ -4,218 +4,382 @@
   <div class="bg-[#f5f5dc]">
     <div class="lg:px-60 sm:px-8 xsm:px-4 xxsm:px-2 md:px-32 w-full h-full">
       <span
-        class="pt-9 flex items-center justify-center font-semibold md:text-5xl xxsm:pb-9 sm:pb-16 xsm:text-4xl xxsm:text-2xl text-center">Plan
-        your next adventure
+        class="pt-9 flex items-center justify-center font-semibold md:text-5xl xxsm:pb-9 sm:pb-16 xsm:text-4xl xxsm:text-2xl text-center"
+        >Plan your next adventure
       </span>
       <!-- form -->
       <form [formGroup]="myForm">
         <div class="w-full">
-          <label class="font-normal md:text-2xl whitespace-nowrap" #selectCityInput>Select cities to visit.</label>
+          <label
+            class="font-normal md:text-2xl whitespace-nowrap"
+            #selectCityInput
+            >Select cities to visit.</label
+          >
           <div class="pt-5 pb-12">
             <div class="relative" #cityList>
-              <div [ngClass]="{'border-2 border-red-500' : showRequireCity}"
-                class="flex flex-row-reverse bg-transparent rounded border border-black">
-                <input formControlName="selectCity"
-                  class="relative block outline-0 border-0 focus:outline-none focus:border-0 focus:ring-0 w-full bg-transparent  text-[#0006] font-normal xsm:text-lg sm:text-xl xxsm:py-1 sm:py-3  px-4 rounded"
-                  type="text" id="searchInput" [(ngModel)]="searchQuery" (input)="onSearch()" (click)="onInputFocus()"
-                  (blur)="onInputBlur()">
-                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+              <div
+                [ngClass]="{ 'border-2 border-red-500': showRequireCity }"
+                class="flex flex-row-reverse bg-transparent rounded border border-black"
+              >
+                <input
+                  formControlName="selectCity"
+                  class="relative block outline-0 border-0 focus:outline-none focus:border-0 focus:ring-0 w-full bg-transparent text-[#0006] font-normal xsm:text-lg sm:text-xl xxsm:py-1 sm:py-3 px-4 rounded"
+                  type="text"
+                  id="searchInput"
+                  [(ngModel)]="searchQuery"
+                  (input)="onSearch()"
+                  (click)="onInputFocus()"
+                  (blur)="onInputBlur()"
+                />
+                <div
+                  class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
+                >
                   <!-- down arrow -->
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                  >
                     <path d="M7 10L12 15L17 10H7Z" fill="black" />
                   </svg>
                 </div>
                 <!-- city chips -->
-                <div class="flex ps-2 items-center gap-1" *ngIf="selectedCities.length > 0">
-                  <span *ngFor="let city of selectedCities;let i = index "
-                    class="whitespace-nowrap flex gap-1 items-center sm:py-1 px-2 bg-[#fcfcd5]  border-[1px] rounded-2xl border-blue-500">
+                <div
+                  class="flex ps-2 items-center gap-1"
+                  *ngIf="selectedCities.length > 0"
+                >
+                  <span
+                    *ngFor="let city of selectedCities; let i = index"
+                    class="whitespace-nowrap flex gap-1 items-center sm:py-1 px-2 bg-[#fcfcd5] border-[1px] rounded-2xl border-blue-500"
+                  >
                     <span>{{ city }}</span>
-                    <span (click)="removeCity(i)" class="flex justify-start items-center"><svg
-                        class="hover:cursor-pointer hover:fill-[#3680ca]" xmlns="http://www.w3.org/2000/svg" height="16"
-                        width="16" viewBox="0 0 512 512">
+                    <span
+                      (click)="removeCity(i)"
+                      class="flex justify-start items-center"
+                      ><svg
+                        class="hover:cursor-pointer hover:fill-[#3680ca]"
+                        xmlns="http://www.w3.org/2000/svg"
+                        height="16"
+                        width="16"
+                        viewBox="0 0 512 512"
+                      >
                         <path
-                          d="M256 48a208 208 0 1 1 0 416 208 208 0 1 1 0-416zm0 464A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM175 175c-9.4 9.4-9.4 24.6 0 33.9l47 47-47 47c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l47-47 47 47c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-47-47 47-47c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-47 47-47-47c-9.4-9.4-24.6-9.4-33.9 0z" />
-                      </svg></span>
+                          d="M256 48a208 208 0 1 1 0 416 208 208 0 1 1 0-416zm0 464A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM175 175c-9.4 9.4-9.4 24.6 0 33.9l47 47-47 47c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l47-47 47 47c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-47-47 47-47c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-47 47-47-47c-9.4-9.4-24.6-9.4-33.9 0z"
+                        /></svg
+                    ></span>
                   </span>
                 </div>
               </div>
-              <p class="bg-[#ffffec] z-10 absolute w-full px-4 py-2 mt-1 rounded-md border-2 border-sky-100 searchbox-shadow"
-                *ngIf="showPromptMessage && !searchQuery">Please start typing to search for cities.</p>
+              <p
+                class="bg-[#ffffec] z-10 absolute w-full px-4 py-2 mt-1 rounded-md border-2 border-sky-100 searchbox-shadow"
+                *ngIf="showPromptMessage && !searchQuery"
+              >
+                Please start typing to search for cities.
+              </p>
 
               <div class="">
-                <ul *ngIf="filteredCities.length > 0 && searchQuery.length>0"
-                  class="max-h-56 min-h-fit divide-y overflow-y-auto bg-[#ffffec] px-4 py-2 mt-1 rounded-md border-2 border-sky-100 searchbox-shadow z-10 absolute w-full">
-                  <li (click)="onSelectCity(city)" *ngFor="let city of filteredCities"
-                    class="py-2 hover:cursor-pointer hover:text-cyan-500">
-                    <input type="checkbox" [checked]="selectedCities.includes(city)">
+                <ul
+                  *ngIf="filteredCities.length > 0 && searchQuery.length > 0"
+                  class="max-h-56 min-h-fit divide-y overflow-y-auto bg-[#ffffec] px-4 py-2 mt-1 rounded-md border-2 border-sky-100 searchbox-shadow z-10 absolute w-full"
+                >
+                  <li
+                    (click)="onSelectCity(city)"
+                    *ngFor="let city of filteredCities"
+                    class="py-2 hover:cursor-pointer hover:text-cyan-500"
+                  >
+                    <input
+                      type="checkbox"
+                      [checked]="selectedCities.includes(city)"
+                    />
                     {{ city }}
                   </li>
                 </ul>
               </div>
-              <p class="bg-[#ffffec] px-4 py-2 mt-1 rounded-md border-2 border-sky-100 searchbox-shadow z-10 absolute w-full"
-                *ngIf="filteredCities?.length === 0 &&  searchQuery !== '' && showPromptMessage">No matching cities
-                found.</p>
-              <!-- <p class="absolute" *ngIf="selectedCities.length > 0">{{ selectedCities.join('; ') }}</p> -->
+              <p
+                class="bg-[#ffffec] px-4 py-2 mt-1 rounded-md border-2 border-sky-100 searchbox-shadow z-10 absolute w-full"
+                *ngIf="
+                  filteredCities?.length === 0 &&
+                  searchQuery !== '' &&
+                  showPromptMessage
+                "
+              >
+                No matching cities found.
+              </p>
             </div>
-            <!-- <span *ngIf="showRequireCity" class="text-red-400">Plese select at least one city</span> -->
-
-            <div *ngIf="showRequireCity && !myForm.get('selectCity')?.touched"
-              class="relative z-[5] left-1 w-fit xxsm:mt-2 sm:mt-[8px] border-2">
+            <div
+              *ngIf="showRequireCity && !myForm.get('selectCity')?.touched"
+              class="relative z-[5] left-1 w-fit xxsm:mt-2 sm:mt-[8px] border-2"
+            >
               <div
-                class="bg-white  text-black shadow-gray-600 shadow-sm px-2 py-[6px] rounded-sm text-sm flex gap-1 justify-center items-center">
-                <div class=" bg-red-500 border border-red-500 text-white px-1">
+                class="bg-white text-black shadow-gray-600 shadow-sm px-2 py-[6px] rounded-sm text-sm flex gap-1 justify-center items-center"
+              >
+                <div class="bg-red-500 border border-red-500 text-white px-1">
                   <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
                 </div>
-                <span>
-                  Please select at least one city
-                </span>
+                <span> Please select at least one city </span>
               </div>
-
               <div
-                class="absolute top-[-1px] left-20 z-[-2] w-5 h-4 bg-white border-2 rotate-45 transform -translate-x-1/2">
-              </div>
+                class="absolute top-[-1px] left-20 z-[-2] w-5 h-4 bg-white border-2 rotate-45 transform -translate-x-1/2"
+              ></div>
             </div>
-
           </div>
-
-          <label class="font-normal md:text-2xl whitespace-nowrap" #peopleCountInput>How many people are going?</label>
+          <label
+            class="font-normal md:text-2xl whitespace-nowrap"
+            #peopleCountInput
+            >How many people are going?</label
+          >
           <div class="relative">
-            <input formControlName="peopleCount" maxlength="2" min="10"
-              [ngClass]="{'border-2 border-red-500 outline-[#ea4444]': peopleCount < 1 || peopleCount > 50}"
-              class="block w-full bg-transparent  border border-black font-normal xxsm:text-lg sm:text-xl xxsm:py-1 sm:py-3  px-4 mt-5 rounded-lg mb-12"
-              type="text" placeholder="1" [(ngModel)]="peopleCount" (ngModelChange)="validateInput()">
-            <div class="absolute inset-y-0 right-0 flex items-center gap-4 xxsm:pe-2 sm:pe-3">
+            <input
+              formControlName="peopleCount"
+              maxlength="2"
+              min="10"
+              [ngClass]="{
+                'border-2 border-red-500 outline-[#ea4444]':
+                  peopleCount < 1 || peopleCount > 50
+              }"
+              class="block w-full bg-transparent border border-black font-normal xxsm:text-lg sm:text-xl xxsm:py-1 sm:py-3 px-4 mt-5 rounded-lg mb-12"
+              type="text"
+              placeholder="1"
+              [(ngModel)]="peopleCount"
+              (ngModelChange)="validateInput()"
+            />
+            <div
+              class="absolute inset-y-0 right-0 flex items-center gap-4 xxsm:pe-2 sm:pe-3"
+            >
               <div class="w-[40px] flex justify-center items-center">
-                <button (click)="peopleCount = peopleCount - 1" [disabled]="peopleCount < 2"
-                  [ngStyle]="{'background' : peopleCount < 2 ? '#b4b4b4' : ''}"
-                  [ngClass]="{'cursor-text': peopleCount < 2}"
-                  class="select-none xxsm:w-7 sm:w-9 xxsm:h-7 sm:h-9 rounded-full border cursor-pointer bg-[#F5F5F5] hover:text-[#F5F5F5] hover:bg-[#1f2937] border-[#3D3C3C] md:hover:w-[39px] md:hover:h-[39px] flex justify-center items-center xxsm:text-xl sm:text-2xl text-[#393939]">
+                <button
+                  (click)="peopleCount = peopleCount - 1"
+                  [disabled]="peopleCount < 2"
+                  [ngStyle]="{ background: peopleCount < 2 ? '#b4b4b4' : '' }"
+                  [ngClass]="{ 'cursor-text': peopleCount < 2 }"
+                  class="select-none xxsm:w-7 sm:w-9 xxsm:h-7 sm:h-9 rounded-full border cursor-pointer bg-[#F5F5F5] hover:text-[#F5F5F5] hover:bg-[#1f2937] border-[#3D3C3C] md:hover:w-[39px] md:hover:h-[39px] flex justify-center items-center xxsm:text-xl sm:text-2xl text-[#393939]"
+                >
                   <div class="pb-[3px]">-</div>
                 </button>
               </div>
               <div class="w-[40px] flex justify-center items-center">
-                <button (click)="peopleCount = peopleCount + 1" [disabled]="peopleCount > 49"
-                  [ngStyle]="{'background' : peopleCount > 49 ? '#b4b4b4' : ''}"
-                  [ngClass]="{'cursor-text': peopleCount > 49}"
-                  class="select-none xxsm:w-7 sm:w-9 xxsm:h-7 sm:h-9 rounded-full border cursor-pointer bg-[#F5F5F5] hover:text-[#F5F5F5] hover:bg-[#1f2937] border-[#3D3C3C]  md:hover:w-[39px] md:hover:h-[39px] flex justify-center items-center xxsm:text-xl">
+                <button
+                  (click)="peopleCount = peopleCount + 1"
+                  [disabled]="peopleCount > 49"
+                  [ngStyle]="{ background: peopleCount > 49 ? '#b4b4b4' : '' }"
+                  [ngClass]="{ 'cursor-text': peopleCount > 49 }"
+                  class="select-none xxsm:w-7 sm:w-9 xxsm:h-7 sm:h-9 rounded-full border cursor-pointer bg-[#F5F5F5] hover:text-[#F5F5F5] hover:bg-[#1f2937] border-[#3D3C3C] md:hover:w-[39px] md:hover:h-[39px] flex justify-center items-center xxsm:text-xl"
+                >
                   <span class="pb-[3px]">+</span>
                 </button>
               </div>
             </div>
           </div>
-
-          <label class="font-normal md:text-2xl whitespace-nowrap" #candidateInput>Whom are you travelling with?</label>
+          <label
+            class="font-normal md:text-2xl whitespace-nowrap"
+            #candidateInput
+            >Whom are you travelling with?</label
+          >
           <div class="pt-5 pb-12">
             <div class="relative" #candidateList>
-              <div [ngClass]="{'border-2 border-red-500' : unselectedCandidate}"
-                class="flex flex-row-reverse border bg-transparent border-black rounded ">
-                <input formControlName="selectCandidate" [(ngModel)]="selectedCandidate" (click)="showCandidate()"
-                  class="relative block focus:outline-0 focus:ring-0 focus:border-0 outline-0 border-0 w-full  bg-transparent font-normal xsm:text-lg sm:text-xl xxsm:py-1 sm:py-3  px-4 rounded"
-                  type="text">
-                <div class="flex ps-2 items-center gap-1">
-                </div>
+              <div
+                [ngClass]="{ 'border-2 border-red-500': unselectedCandidate }"
+                class="flex flex-row-reverse border bg-transparent border-black rounded"
+              >
+                <input
+                  formControlName="selectCandidate"
+                  [(ngModel)]="selectedCandidate"
+                  (click)="showCandidate()"
+                  class="relative block focus:outline-0 focus:ring-0 focus:border-0 outline-0 border-0 w-full bg-transparent font-normal xsm:text-lg sm:text-xl xxsm:py-1 sm:py-3 px-4 rounded"
+                  type="text"
+                />
+                <div class="flex ps-2 items-center gap-1"></div>
               </div>
-
               <div class="" *ngIf="listCandidate">
                 <ul
-                  class="divide-y h-45 overflow-y-auto bg-[#ffffec] px-4 py-2 mt-1 rounded-md border-2 border-sky-100 searchbox-shadow z-10 absolute w-full">
-                    <li class="py-2 hover:cursor-pointer hover:text-cyan-500" (click)="selectCandidate('Single')" *ngIf="peopleCount < 2">Single</li>
-                    <li class="py-2 hover:cursor-pointer hover:text-cyan-500" (click)="selectCandidate('Couple')" *ngIf="peopleCount == 2">Couple</li>
-                    <li class="py-2 hover:cursor-pointer hover:text-cyan-500" (click)="selectCandidate('Family')" *ngIf="peopleCount > 1">Family</li>
-                    <li class="py-2 hover:cursor-pointer hover:text-cyan-500" (click)="selectCandidate('Friends')" *ngIf="peopleCount > 1">Friends</li>
+                  class="divide-y h-45 overflow-y-auto bg-[#ffffec] px-4 py-2 mt-1 rounded-md border-2 border-sky-100 searchbox-shadow z-10 absolute w-full"
+                >
+                  <li
+                    class="py-2 hover:cursor-pointer hover:text-cyan-500"
+                    (click)="selectCandidate('Single')"
+                    *ngIf="peopleCount < 2"
+                  >
+                    Single
+                  </li>
+                  <li
+                    class="py-2 hover:cursor-pointer hover:text-cyan-500"
+                    (click)="selectCandidate('Couple')"
+                    *ngIf="peopleCount == 2"
+                  >
+                    Couple
+                  </li>
+                  <li
+                    class="py-2 hover:cursor-pointer hover:text-cyan-500"
+                    (click)="selectCandidate('Family')"
+                    *ngIf="peopleCount > 1"
+                  >
+                    Family
+                  </li>
+                  <li
+                    class="py-2 hover:cursor-pointer hover:text-cyan-500"
+                    (click)="selectCandidate('Friends')"
+                    *ngIf="peopleCount > 1"
+                  >
+                    Friends
+                  </li>
                 </ul>
               </div>
-              <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <div
+                class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                >
                   <path d="M7 10L12 15L17 10H7Z" fill="black" />
                 </svg>
               </div>
             </div>
           </div>
-
-
-          <label class="font-normal md:text-2xl md:whitespace-nowrap" #moneySpendInput>How much do you plan to spend on
-            this trip per
-            person?</label>
+          <label
+            class="font-normal md:text-2xl md:whitespace-nowrap"
+            #moneySpendInput
+            >How much do you plan to spend on this trip per person?</label
+          >
           <div class="relative">
-            <input formControlName="moneySpend"
-              [ngClass]="{'border-2 border-red-500 outline-[#ea4444]': moneyCount < 1 && myForm.get('moneySpend')?.invalid}"
-              class="block w-full bg-transparent border border-black text-[] font-normal xxsm:text-lg sm:text-xl xxsm:py-1 sm:py-3  px-4 mt-5 rounded-lg mb-12 pl-8"
-              placeholder="360" maxlength="6" [(ngModel)]="moneyCount" (ngModelChange)="moneyInput()">
-            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <input
+              formControlName="moneySpend"
+              [ngClass]="{
+                'border-2 border-red-500 outline-[#ea4444]':
+                  moneyCount < 1 && myForm.get('moneySpend')?.invalid
+              }"
+              class="block w-full bg-transparent border border-black text-[] font-normal xxsm:text-lg sm:text-xl xxsm:py-1 sm:py-3 px-4 mt-5 rounded-lg mb-12 pl-8"
+              placeholder="360"
+              maxlength="6"
+              [(ngModel)]="moneyCount"
+              (ngModelChange)="moneyInput()"
+            />
+            <div
+              class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
+            >
               <span class="text-[]">&#x20B9;</span>
             </div>
           </div>
-
-
-          <label class="font-normal md:text-2xl whitespace-nowrap" #journeyStartDateInput>Select start date to
-            travel.</label>
-          <div >
+          <label
+            class="font-normal md:text-2xl whitespace-nowrap"
+            #journeyStartDateInput
+            >Select start date to travel.</label
+          >
+          <div>
             <div class="relative">
-              <input formControlName="journeyStartDate" type="date" [min]="minDate"
-                [ngClass]="{'border-2 border-red-500 outline-[#ea4444]': myForm.get('journeyStartDate')?.invalid && !ischoosedStartDate}"
-                class="block w-full bg-transparent border border-black text-[] font-normal xxsm:text-lg sm:text-xl xxsm:py-1 sm:py-3  px-4 mt-5 rounded-lg mb-12 pl-8">
+              <input
+                formControlName="journeyStartDate"
+                type="date"
+                [min]="minDate"
+                [ngClass]="{
+                  'border-2 border-red-500 outline-[#ea4444]':
+                    myForm.get('journeyStartDate')?.invalid &&
+                    !ischoosedStartDate
+                }"
+                class="block w-full bg-transparent border border-black text-[] font-normal xxsm:text-lg sm:text-xl xxsm:py-1 sm:py-3 px-4 mt-5 rounded-lg mb-12 pl-8"
+              />
             </div>
           </div>
-
-          <label class="font-normal md:text-2xl whitespace-nowrap" #journeyEndDateInput>Select end date of
-            travel.</label>
-          <div >
+          <label
+            class="font-normal md:text-2xl whitespace-nowrap"
+            #journeyEndDateInput
+            >Select end date of travel.</label
+          >
+          <div>
             <div class="relative">
-              <input formControlName="journeyEndDate" type="date"
-                [ngClass]="{'border-2 border-red-500 outline-[#ea4444]': myForm.get('journeyEndDate')?.invalid && !ischoosedEndDate}"
-                class="block w-full bg-transparent border border-black text-[] font-normal xxsm:text-lg sm:text-xl xxsm:py-1 sm:py-3  px-4 mt-5 rounded-lg mb-12 pl-8">
+              <input
+                formControlName="journeyEndDate"
+                type="date"
+                [ngClass]="{
+                  'border-2 border-red-500 outline-[#ea4444]':
+                    myForm.get('journeyEndDate')?.invalid && !ischoosedEndDate
+                }"
+                class="block w-full bg-transparent border border-black text-[] font-normal xxsm:text-lg sm:text-xl xxsm:py-1 sm:py-3 px-4 mt-5 rounded-lg mb-12 pl-8"
+              />
             </div>
           </div>
-
-          <label class="font-normal md:text-2xl whitespace-nowrap" #activitiesSelection>Which activities are you
-            interested in?</label>
-          <p *ngIf="showReqActivity" class="text-red-600 absolute">Please select at least one activity</p>
+          <label
+            class="font-normal md:text-2xl whitespace-nowrap"
+            #activitiesSelection
+            >Which activities are you interested in?</label
+          >
+          <p *ngIf="showReqActivity" class="text-red-600 absolute">
+            Please select at least one activity
+          </p>
           <div
-            class=" grid items-center xxsm:justify-items-center sm:justify-items-stretch sm:grid-cols-2 md:grid-cols-3 pb-6 pt-8 gap-4">
-            <div (click)="selectInterestActivity(activity)"
+            class="grid items-center xxsm:justify-items-center sm:justify-items-stretch sm:grid-cols-2 md:grid-cols-3 pb-6 pt-8 gap-4"
+          >
+            <div
+              (click)="selectInterestActivity(activity)"
               class="w-[253px] h-[98px] border-2 rounded-lg cursor-pointer border-[#93969A]"
-              [class.border-cyan-500]="activity.isChoosed" [class.bg-[#f2f4f8]]="activity.isChoosed"
-              *ngFor="let activity of interestedActivities">
+              [class.border-cyan-500]="activity.isChoosed"
+              [class.bg-[#f2f4f8]]="activity.isChoosed"
+              *ngFor="let activity of interestedActivities"
+            >
               <div class="p-4 flex flex-col gap-2">
                 <span>
-                  <img [src]="activity.isChoosed ? activity.filledIcon : activity.icon">
+                  <img
+                    [src]="
+                      activity.isChoosed ? activity.filledIcon : activity.icon
+                    "
+                  />
                 </span>
-                <span class="font-medium	text-base text-[#1F2937]"
-                  [class.text-cyan-500]="activity.isChoosed">{{activity.name}}</span>
+                <span
+                  class="font-medium text-base text-[#1F2937]"
+                  [class.text-cyan-500]="activity.isChoosed"
+                  >{{ activity.name }}</span
+                >
               </div>
             </div>
           </div>
-
-          <label class="font-normal md:text-2xl whitespace-nowrap" #travelModeSelection>How do you like to
-            travel?</label>
-          <p *ngIf="showReqTravelMode === true" class="text-red-600 absolute">Please select at least one mode of travel
+          <label
+            class="font-normal md:text-2xl whitespace-nowrap"
+            #travelModeSelection
+            >How do you like to travel?</label
+          >
+          <p *ngIf="showReqTravelMode === true" class="text-red-600 absolute">
+            Please select at least one mode of travel
           </p>
           <div
-            class="grid items-center xxsm:justify-items-center sm:justify-items-stretch sm:grid-cols-2 md:grid-cols-3 pb-6 pt-8 gap-4">
-            <div (click)="selectModeOfTravel(mode)" id="card"
+            class="grid items-center xxsm:justify-items-center sm:justify-items-stretch sm:grid-cols-2 md:grid-cols-3 pb-6 pt-8 gap-4"
+          >
+            <div
+              (click)="selectModeOfTravel(mode)"
+              id="card"
               class="w-[253px] h-[98px] cursor-pointer border-2 rounded-lg border-[#93969A]"
-              [class.border-cyan-500]="mode.isSelected" [class.bg-[#f2f4f8]]="mode.isSelected"
-              *ngFor="let mode of modesOfTravel">
+              [class.border-cyan-500]="mode.isSelected"
+              [class.bg-[#f2f4f8]]="mode.isSelected"
+              *ngFor="let mode of modesOfTravel"
+            >
               <div class="p-4 flex flex-col gap-2">
                 <span>
-                  <img class="w-8" [src]="mode.isSelected ? mode.selectedIcon : mode.icon">
+                  <img
+                    class="w-8"
+                    [src]="mode.isSelected ? mode.selectedIcon : mode.icon"
+                  />
                 </span>
-                <span class="font-medium select-none	text-base text-[#1F2937]"
-                  [class.text-cyan-500]="mode.isSelected">{{
-                  mode.name }}</span>
+                <span
+                  class="font-medium select-none text-base text-[#1F2937]"
+                  [class.text-cyan-500]="mode.isSelected"
+                  >{{ mode.name }}</span
+                >
               </div>
             </div>
           </div>
         </div>
-        <div [ngClass]="{'overlay' : loading == true}"></div>
+        <div [ngClass]="{ overlay: loading == true }"></div>
 
         <div class="pb-28 xxsm:flex sm:block justify-center">
-          <!-- <button [disabled]="myForm.invalid || selectedActivities.length < 1 || selectedCities.length < 1 || (selectedModeOfTravell == '')" [ngClass]="{'disable-btn' : myForm.invalid || selectedActivities.length < 1 || selectedCities.length < 1 || (selectedModeOfTravell == '')}" (click)="onSubmit()"
-          class="flex justify-center items-center w-32 xxsm:h-8 sm:h-[43px] text-base p-4 leading-none font-bold rounded text-white bg-black mt-4">Submit
-        </button> -->
-          <button (click)="onSubmit()"
-            class="flex justify-center items-center w-32 xxsm:h-8 sm:h-[43px] text-base p-4 leading-none font-bold rounded text-white bg-black mt-4">Submit
+          <button
+            (click)="onSubmit()"
+            class="flex justify-center items-center w-32 xxsm:h-8 sm:h-[43px] text-base p-4 leading-none font-bold rounded text-white bg-black mt-4"
+          >
+            Submit
             <div *ngIf="loading" class="loading ps-1">
               <span></span>
               <span></span>
@@ -224,45 +388,75 @@
               <span></span>
             </div>
           </button>
-
         </div>
       </form>
       <app-error-modal #errorModalComponent></app-error-modal>
     </div>
-
-    <div [ngClass]="{'overlay': showCreaditModal === true}" class="select-none">
-      <div *ngIf="showCreaditModal === true"
-        class="flex justify-center items-center fixed top-0 left-0 w-full h-full">
+    <div [ngClass]="{ overlay: showCreaditModal === true }" class="select-none">
+      <div
+        *ngIf="showCreaditModal === true"
+        class="flex justify-center items-center fixed top-0 left-0 w-full h-full"
+      >
         <div class="p-4 w-min max-w-fit max-h-full">
           <div class="bg-white rounded-lg shadow dark:bg-gray-700">
             <div class="flex justify-end">
-            <button (click)="closeCreaditsModal()" type="button"
-              class=" text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
-              <svg class="w-3 h-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
-              </svg>
-              <span class="sr-only">Close modal</span>
-            </button>
+              <button
+                (click)="closeCreaditsModal()"
+                type="button"
+                class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+              >
+                <svg
+                  class="w-3 h-3"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 14 14"
+                >
+                  <path
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+                  />
+                </svg>
+                <span class="sr-only">Close modal</span>
+              </button>
             </div>
             <div class="p-4">
-              <svg class="mx-auto mb-4 text-red-600 w-12 h-12 dark:text-gray-200" xmlns="http://www.w3.org/2000/svg"
-                fill="none" viewBox="0 0 20 20">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+              <svg
+                class="mx-auto mb-4 text-red-600 w-12 h-12 dark:text-gray-200"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                />
               </svg>
-              <h3 class="mb-5 text-xl font-normal text-center text-gray-950">Oops! Looks like you ran out of
-                credits.</h3>
-              <h3 class="text-lg font-normal text-gray-500"> 
-                Please refer to a friend to get additional credits. Your unique referral code - <p class="text-gray-800" style="user-select: text;">{{loggedUserRefCode}}</p>
+              <h3 class="mb-5 text-xl font-normal text-center text-gray-950">
+                Oops! Looks like you ran out of credits.
+              </h3>
+              <h3 class="text-lg font-normal text-gray-500">
+                Please refer to a friend to get additional credits. Your unique
+                referral code -
+                <p class="text-gray-800" style="user-select: text">
+                  {{ loggedUserRefCode }}
+                </p>
                 Click here to know
-                <a (click)="goToHowItWorks()" class="text-start text-lg font-normal text-blue-600 hover:cursor-pointer">how
-                  it works</a></h3>
+                <a
+                  (click)="goToHowItWorks()"
+                  class="text-start text-lg font-normal text-blue-600 hover:cursor-pointer"
+                  >how it works</a
+                >
+              </h3>
             </div>
           </div>
         </div>
       </div>
     </div>
-
   </div>
 </div>
