@@ -57,9 +57,9 @@ export class AuthService {
   forgotPassword(email: string){
     this.afu.sendPasswordResetEmail(email).then(()=>{
       this.router.navigate(['/verify-email']);
-      alert('Email send Successful');
+      this.toastr.success('Password reset email sent successfully')
     }, err =>{
-      alert('something went wrong')
+      this.toastr.error('Something went wrong, Please try again.');
     })
   }
 

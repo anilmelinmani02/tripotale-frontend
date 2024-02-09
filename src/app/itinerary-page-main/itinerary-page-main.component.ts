@@ -332,15 +332,31 @@ export class ItineraryPageMainComponent implements OnInit {
       // const reactedPlaces = { likedPlaces: this.likedPlaces, dislikedPlaces: this.dislikedPlaces }
       this.userRequestedData.userReq.preferredPlaces = Array.from(this.likedPlaces);
       this.userRequestedData.userReq.notPreferredPlaces = Array.from(this.dislikedPlaces);
-  
+      
+      this.gptResponse = "";
       this.itineraryService.getItineraryData(this.userRequestedData).subscribe(
         (regeneratedPlan) => {
-          this.gptResponse = "";
+
+          this.likedCardNumbers = [];
+          this.dislikedCardNumbers = [];
+
+          this.gptResponse = regeneratedPlan?.tripPlan.userTrip;
           console.log("regeneratedPlan", regeneratedPlan);
+          console.log("new data-->>", this.gptResponse);
+          
           // stop loader
           this.isGenerating = false;
-  
-          this.gptResponse = regeneratedPlan.userTrip;
+          // update tripPlan in DB with regenerated one
+          const regeneratedUserTrip = regeneratedPlan?.tripPlan.userTrip;
+          this.firestore.doc(`/users/${this.userId}/tripPlans/${this.docId}`).update({userTrip: regeneratedUserTrip})
+          .then(() => {
+            console.log("Document updated successfully.");
+          })
+          .catch((error) => {
+            console.error("Error updating document: ", error);
+          });
+
+          this.gptResponse = regeneratedPlan?.tripPlan.userTrip;
           // day-wise trip plans
           this.allDaysTripPlans = this.gptResponse?.tripPlans
           console.log('day-wise trip plans=>', this.allDaysTripPlans);

@@ -4,14 +4,13 @@
   <div class="bg-[#f5f5dc]">
     <div class="lg:px-60 sm:px-8 xsm:px-4 xxsm:px-2 md:px-32 w-full h-full">
       <span
-        class="pt-9 flex items-center justify-center font-semibold md:text-5xl xxsm:pb-9 sm:pb-16 xsm:text-4xl xxsm:text-2xl">Plan
+        class="pt-9 flex items-center justify-center font-semibold md:text-5xl xxsm:pb-9 sm:pb-16 xsm:text-4xl xxsm:text-2xl text-center">Plan
         your next adventure
       </span>
       <!-- form -->
       <form [formGroup]="myForm">
         <div class="w-full">
-          <label class="font-normal md:text-2xl whitespace-nowrap" #selectCityInput>Are you planning to visit
-            multiplecities?</label>
+          <label class="font-normal md:text-2xl whitespace-nowrap" #selectCityInput>Select cities to visit.</label>
           <div class="pt-5 pb-12">
             <div class="relative" #cityList>
               <div [ngClass]="{'border-2 border-red-500' : showRequireCity}"

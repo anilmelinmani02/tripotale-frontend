@@ -51,12 +51,12 @@ export class HowItWorksComponent {
   ];
 
   steps = [
-    { step: 'Planning Your Trip:', details: 'Begin by answering a series of simple questions about your travel preferences and details. Tell us if you are visiting multiple cities, the number of people, travel companions, budget per person, travel dates, preferred activities, and mode of transportation.'},
-    { step: 'Generate Your Itinerary:', details: 'Our AI processes your inputs to create a personalized itinerary, suggesting activities, restaurants, and more. Get daily plans for each city, along with detailed information about the destination'},
-    { step: 'Credit System:', details: 'New Users: Earn 5 credits upon registration. Generate Itineraries: Each generated itinerary costs 1 credit. Referral Program: Refer a friend and both get 5 additional credits.'},
-    { step: 'Referral Program:', details: 'Share your unique referral code with friends to earn more credits. Both you and your friend receive 5 credits upon successful registration.'},
-    { step: 'Destination Details:', details: 'Explore detailed information about each destination, including currency, temperature, language spoken, crowd status, and daily activities. Discover local cuisine, high-rated restaurants, and interesting trivia about the place.'},
-    { step: 'Post-Generation Options:', details: "Save, share, or print your itinerary for easy access. Dislike and regenerate without using credits if the recommendations don't meet your preferences."},
+    { step: 'Planning Your Trip', details: 'Begin by answering a series of simple questions about your travel preferences and details. Tell us if you are visiting multiple cities, the number of people, travel companions, budget per person, travel dates, preferred activities, and mode of transportation.'},
+    { step: 'Generate Your Itinerary', details: 'Our AI processes your inputs to create a personalized itinerary, suggesting activities, restaurants, and more. Get daily plans for each city, along with detailed information about the destination'},
+    { step: 'Credit System', details: 'New Users: Earn 5 credits upon registration. Generate Itineraries: Each generated itinerary costs 1 credit. Referral Program: Refer a friend and both get 5 additional credits.'},
+    { step: 'Referral Program', details: 'Share your unique referral code with friends to earn more credits. Both you and your friend receive 5 credits upon successful registration.'},
+    { step: 'Destination Details', details: 'Explore detailed information about each destination, including currency, temperature, language spoken, crowd status, and daily activities. Discover local cuisine, high-rated restaurants, and interesting trivia about the place.'},
+    { step: 'Post-Generation Options', details: "Save, share, or print your itinerary for easy access. Dislike and regenerate without using credits if the recommendations don't meet your preferences."},
   ]
   
 }
