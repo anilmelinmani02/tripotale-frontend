@@ -222,18 +222,21 @@
           <!--city img -->
           <div class="mb-3">
             <div *ngIf="bannerLoading == true" role="status" class="space-y-8 animate-pulse md:space-y-0 md:space-x-8 rtl:space-x-reverse md:flex md:items-center">
-              <div style="border-radius: 0px 0px 50px 50px;" class="flex items-center justify-center w-full h-48 bg-gray-300 rounded dark:bg-gray-700">
+              <div style="border-radius: 0px 0px 50px 50px;" class="flex items-center justify-center w-full xxsm:h-[120px] sm:h-[180px] md:h-[237px] bg-gray-300 rounded dark:bg-gray-700">
                   <svg class="w-10 h-10 text-gray-200 dark:text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
                       <path d="M18 0H2a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2Zm-5.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm4.376 10.481A1 1 0 0 1 16 15H4a1 1 0 0 1-.895-1.447l3.5-7A1 1 0 0 1 7.468 6a.965.965 0 0 1 .9.5l2.775 4.757 1.546-1.887a1 1 0 0 1 1.618.1l2.541 4a1 1 0 0 1 .028 1.011Z"/>
                   </svg>
               </div>
               <span class="sr-only">Loading...</span>
             </div>
-            <!-- <div style="border-radius: 0px 0px 50px 50px; background: rgba(0, 0, 0, 0.40); background: rgba(0, 0, 0, 0.40);"
-                        class="w-full xxsm:h-[120px] sm:h-[180px] md:h-[237px]">
-                        <p class="text-[#FFF] text-3xl font-bold font-['Sora'] pt-3 text-center">Mexico</p>
-                    </div> -->
-            <div *ngIf="bannerLoading == false"
+            <div *ngIf="bannerLoading == false" style="border-radius: 0px 0px 50px 50px;" class="w-full xxsm:h-[120px] sm:h-[180px] md:h-[237px] relative border border-solid border-gray-400">
+              <div class="flex justify-center items-center">
+                <p class="text-[#FFF] text-3xl font-bold font-['Sora'] absolute xxsm:top-[4%]  z-10">{{ city1?.cityName }}</p>
+              </div>
+              <img [src]="citiImageUrl"  class="w-full h-full object-cover" style="border-radius: 0px 0px 50px 50px; filter: blur(1px);">
+            </div>
+
+            <!-- <div *ngIf="bannerLoading == false" 
               [style.background-image]="'url(' + citiImageUrl + ')'"
               style="
                 border-radius: 0px 0px 50px 50px;
@@ -241,6 +244,7 @@
                 background-repeat: no-repeat;
                 background-size: cover;
                 background-position: center;
+                opacity: 50%;
               "
               class="w-full xxsm:h-[120px] sm:h-[180px] md:h-[237px]"
             >
@@ -249,12 +253,13 @@
               >
                 {{ city1?.cityName }}
               </p>
-            </div>
+            </div> -->
           </div>
           <!-- city details -->
           <div
-            class="px-8 py-3 flex gap-x-[2vw] justify-stretch flex-wrap items-center bg-white shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] border border-[#E5E7EB] rounded-[14px] min-h-[78px]"
+            class="px-8 py-3 flex flex-col gap-x-[2vw] justify-stretch flex-wrap items-start bg-white shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] border border-[#E5E7EB] rounded-[14px] min-h-[78px]"
           >
+          <div class="flex gap-2 pb-4 flex-wrap border-blue-50 border-b-2 w-full">
             <div class="flex justify-between items-center">
               <div class="flex gap-2 items-center">
                 <span>
@@ -465,38 +470,28 @@
                 </span>
               </div>
             </div>
+          </div>
 
-            <div
-              *ngFor="let city of shoulderMonths"
-              class="flex justify-between items-center"
-            >
-              <div class="flex gap-2 items-center">
-                <span class="font-medium"> Shoulder months: </span>
-                <span>
-                  <p
-                    class="text-base font-normal text-[#18181B] font-['IBM_Plex_Sans']"
-                  >
-                    {{ city.shoulderMonths }}
-                  </p>
-                </span>
+            <div class="block pt-2">
+              <div *ngFor="let city of shoulderMonths" class="flex justify-between items-center">
+                <div class="font-medium flex flex-wrap "> Shoulder months: 
+                  <div class="text-base font-normal text-[#18181B] font-['IBM_Plex_Sans']"> <span class="ps-1">{{ city.shoulderMonths }}</span></div>
+                </div>
               </div>
+
+            <div *ngFor="let city of shoulderMonths" class="flex justify-between items-center">
+                <div class="font-medium flex flex-wrap "> Peak Months: 
+                  <div class="text-base font-normal text-[#18181B] font-['IBM_Plex_Sans']"> <span class="ps-1">{{ city.peakMonth }}</span></div>
+                </div>
             </div>
-            <div
-              *ngFor="let city of shoulderMonths"
-              class="flex justify-between items-center"
-            >
-              <div class="flex gap-2 items-center">
-                <span class="font-medium"> Peak Months: </span>
-                <span>
-                  <p
-                    class="text-base font-normal text-[#18181B] font-['IBM_Plex_Sans']"
-                  >
-                    {{ city.peakMonth }}
-                  </p>
-                </span>
-              </div>
+
+            <div *ngFor="let city of shoulderMonths">
+                <div class="font-medium flex flex-wrap "> Months to avoid: 
+                  <div class="text-base font-normal text-[#18181B] font-['IBM_Plex_Sans']"> <span class="ps-1">{{ city.monthsToAvoid }}</span></div>
+                </div>
             </div>
-            <div
+            
+            <!-- <div
               *ngFor="let city of shoulderMonths"
               class="flex justify-between items-center"
             >
@@ -510,6 +505,7 @@
                   </p>
                 </span>
               </div>
+            </div> -->
             </div>
           </div>
           <!-- 1 Day Itinerary of city -->
@@ -667,7 +663,7 @@
                 {{ day.dayDetail }}
               </p>
               <div
-                (mouseover)="hoverOnCard(i, ind, activity)"
+                (mouseover)="hoverOnCard(i, ind, activity , i * 2 + ind + i)"
                 *ngFor="let activity of day.activities; let ind = index"
               >              
                 <small
@@ -684,32 +680,35 @@
                   "
                   class="hover:cursor-pointer my-5 w-full bg-white min-h-[200px] sm:max-h-[200px] md:h-[162px] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] p-4 border border-[#E5E7EB] rounded-md flex xxsm:flex-col-reverse sm:flex-row xxsm:gap-3 md:gap-9"
                 >
-                  <div class="xxsm:w-full sm:w-[70%]">
+                  <div class="xxsm:w-full sm:w-[70%] flex flex-col justify-between ">
                     <p
                       class="text-lg font-medium text-[#1F2937] font-['IBM_Plex_Sans'] flex items-center"
                     >
                       {{ activity.placeName }}
                     </p>
-                    <div class="flex items-center justify-start gap-2 pb-2">
+                    <div class="flex flex-col">
+                      <div class="flex items-center justify-start gap-2 pb-2">
+                        <p
+                          class="text-sm font-normal text-[#1F2937] font-['IBM_Plex_Sans']"
+                        >
+                          {{ activity.cityName }}
+                        </p>
+                        <span
+                          class="w-[1px] h-[2px] flex justify-center items-center rounded-full bg-[#3F3F46]"
+                        ></span>
+                        <p
+                          class="text-sm font-normal text-[#1F2937] font-['IBM_Plex_Sans']"
+                        >
+                          {{ activity.time }}
+                        </p>
+                      </div>
                       <p
-                        class="text-sm font-normal text-[#1F2937] font-['IBM_Plex_Sans']"
+                        class="text-base font-normal text-[#1F2937] font-['IBM_Plex_Sans']"
                       >
-                        {{ activity.cityName }}
-                      </p>
-                      <span
-                        class="w-[1px] h-[2px] flex justify-center items-center rounded-full bg-[#3F3F46]"
-                      ></span>
-                      <p
-                        class="text-sm font-normal text-[#1F2937] font-['IBM_Plex_Sans']"
-                      >
-                        {{ activity.time }}
+                        {{ activity.commentOnPlace }}
                       </p>
                     </div>
-                    <p
-                      class="text-base font-normal text-[#1F2937] font-['IBM_Plex_Sans']"
-                    >
-                      {{ activity.commentOnPlace }}
-                    </p>
+
                     <span class="flex pt-2 gap-3">
                       <svg
                         (click)="
@@ -1045,17 +1044,22 @@
               class="py-7 bg-white border border-[#E5E7EB] rounded-md px-5 w-full justify-start w-fit"
             >
               <ul
-                *ngFor="let item of tripDetailsSecondary.trivia"
-                class="list-disc xxsm:text-base sm:text-lg flex flex-col text-[#000] font-normal"
+                *ngFor="let item of tripDetailsSecondary.trivia ;let index = index"
+                class="list-disc px-8 pb-3 text-[#5d5c5c] gap-2 xxsm:text-base sm:text-lg flex flex-col font-normal"
               >
-                <span class="flex gap-1">
+                <!-- <span class="flex gap-1">
                   <p>Q:</p>
                   <p class="pb-1">{{ item.question }}</p>
                 </span>
                 <span class="flex gap-1">
                   <p>A:</p>
                   <p class="pb-1">{{ item.answer }}</p>
-                </span>
+                </span> -->
+                <li>
+                  <span class="font-medium pb-[2px] text-[#000]">
+                    {{ item.question }}
+                  </span>
+                  <div>{{ item.answer }}</div>
               </ul>
             </div>
           </div>
@@ -1313,7 +1317,7 @@
                                 tripDetailsSecondary.secondBestTravellingMode ===
                                 'Bus'
                               "
-                              src="../../assets/img/svgForActivityies/bus.svg"
+                              src="../../assets/img/busNew.jpg"
                               style="width: 20px"
                           /></a>
                         </span>
@@ -1324,7 +1328,7 @@
                     class="xxsm:w-full sm:w-[30%] flex xxsm:justify-center md:justify-end items-center xxsm:pt-"
                   >
                     <img
-                      src="../../assets/img/agakhanPune_Palace.jpg"
+                      [src]="allplacesImages[imageNo]"
                       class="xxsm:w-full rounded-md w-full object-cover sm:h-full"
                     />
                   </div>

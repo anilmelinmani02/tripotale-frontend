@@ -84,6 +84,7 @@ export class ItineraryPageMainComponent implements OnInit {
   placesImagesLoading: boolean = true;
   bannerLoading: boolean = true;
   allPlacesName: any[] = [];
+  imageNo:any;
 
   private imageBaseUrl = 'https://www.googleapis.com/customsearch/v1';
   private apiKey = 'AIzaSyDp7yyM3_72459eJ2sd6DF6JDzHzBOhHXU';
@@ -320,9 +321,10 @@ export class ItineraryPageMainComponent implements OnInit {
     });
   }
 
-  hoverOnCard(day: any, cardNo: any, activity: any) {
+  hoverOnCard(day: any, cardNo: any, activity: any, imgNo:any) {
     this.cardHover = true;
     this.mapCardObj = activity;
+    this.imageNo = imgNo;
   }
 
   closeCard(): void {
