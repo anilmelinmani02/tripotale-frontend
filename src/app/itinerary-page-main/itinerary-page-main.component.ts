@@ -25,6 +25,7 @@ import { easeOut } from 'ol/easing';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { ToastrService, GlobalConfig } from 'ngx-toastr';
 import { HttpClient } from '@angular/common/http';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-itinerary-page-main',
@@ -57,6 +58,7 @@ export class ItineraryPageMainComponent implements OnInit {
   tripDetailsSecondary: any = {};
   city1: any = {};
   citiImageUrl: string = '';
+  citiImageAPi: string = '';
   tripSpotsLocation: any[] = [];
   allSpotsLocation: any[] = [];
   cardHover: boolean = false;
@@ -72,10 +74,21 @@ export class ItineraryPageMainComponent implements OnInit {
   isGenerating: boolean = false;
   itineraryURL: string;
   isUserLoggedIn: any = '';
-  showModal: boolean = false;
+  showModal: boolean = false; 
   isCollectionStoredInDB: boolean = false;
   isCollectionSaved: boolean = false;
   loading: boolean = false;
+  ctimg:string ='';
+  allPlacesImagesApi: any[] = [];
+  allplacesImages: any[] = [];
+  placesImagesLoading: boolean = true;
+  bannerLoading: boolean = true;
+  allPlacesName: any[] = [];
+
+  private imageBaseUrl = 'https://www.googleapis.com/customsearch/v1';
+  private apiKey = 'AIzaSyDp7yyM3_72459eJ2sd6DF6JDzHzBOhHXU';
+  // private apiKey = 'AIzaSyCwpkamdyVPIcbaAOwHpf60Ru56EibBR4M';
+  private cx = 'e69c01861f05f459f';
 
   constructor(
     private itineraryService: ItineraryService,
@@ -123,7 +136,62 @@ export class ItineraryPageMainComponent implements OnInit {
               ]);
             });
           });
-          this.citiImageUrl = this.city1.cityImageUrl;
+
+          // fetch image for for city banner
+          this.citiImageAPi = `${this.imageBaseUrl}?q=${this.city1.cityName}&cx=${this.cx}&searchType=image&key=${this.apiKey}`
+          
+          // console.log('bannerUrl', this.citiImageAPi);
+          this.http.get(this.citiImageAPi).subscribe(
+            (res: any)=>{
+            console.log('citybannerimgAPI response--->', res);
+            const imagesList = res.items;
+            const filteredData = imagesList.find((data:any) => {
+              const title = data.title.toLowerCase();
+              return title.includes('history') || title.includes('population') ||title.includes('wikipedia');
+          });
+          this.citiImageUrl = filteredData ? filteredData.link : null;
+          console.log(this.citiImageUrl);
+          
+          
+          if ( this.citiImageUrl.length > 1) {
+            this.bannerLoading = false;
+          }else{
+            this.citiImageUrl = imagesList[0]
+            this.bannerLoading = true;
+          }          
+        }
+          )
+
+          // fetching places images from apis
+          this.allActivities.forEach(
+            (result)=>{
+            result.forEach((obj:any) => {
+              // this.allPlacesImagesApi.push(obj?.imageUrl)
+              this.allPlacesName.push(obj?.placeName)
+            })              
+          },
+          )
+          console.log('all places name', this.allPlacesName);
+          this.allPlacesName.forEach((i)=>{
+            this.allPlacesImagesApi.push(`${this.imageBaseUrl}?q=${i}&cx=${this.cx}&searchType=image&key=${this.apiKey}`);
+          })
+          console.log('allPlacesImagesApi', this.allPlacesImagesApi);
+          
+          const observables = this.allPlacesImagesApi.map(url => this.http.get<any>(url));
+
+    forkJoin(observables).subscribe(
+      (responses: any[]) => {
+        this.allplacesImages = responses.map(response => response.items[0].link);
+        console.log('Actual images urls', this.allplacesImages);
+        this.placesImagesLoading = false;
+      },
+      error => {
+        console.error("Error fetching image results:", error);
+        this.placesImagesLoading = true;
+      }
+    );
+    // console.log('placesImgApis-->', this.allPlacesImagesApi);
+
           // for estimated,cuisin,sugg..
           this.tripDetailsSecondary = this.gptResponse?.moreTripDetails;
           // cuision
@@ -362,7 +430,7 @@ export class ItineraryPageMainComponent implements OnInit {
             });
           });
 
-          this.citiImageUrl = this.city1.cityImageUrl;
+          // this.citiImageUrl = this.city1.cityImageUrl;
 
           // for estimated,cuisin,sugg..
           this.tripDetailsSecondary = this.gptResponse?.moreTripDetails;

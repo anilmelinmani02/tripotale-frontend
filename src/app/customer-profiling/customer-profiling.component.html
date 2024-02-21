@@ -90,7 +90,7 @@
                     class="py-2 hover:cursor-pointer hover:text-cyan-500"
                   >
                     <input
-                      type="checkbox"
+                      type="checkbox" class="hidden"
                       [checked]="selectedCities.includes(city)"
                     />
                     {{ city }}
@@ -213,7 +213,7 @@
                   <li
                     class="py-2 hover:cursor-pointer hover:text-cyan-500"
                     (click)="selectCandidate('Family')"
-                    *ngIf="peopleCount > 1"
+                    *ngIf="peopleCount > 1 && peopleCount < 10"
                   >
                     Family
                   </li>
@@ -272,7 +272,9 @@
           >
           <div>
             <div class="relative">
-              <input
+              <input 
+                onfocus="this.showPicker()"
+                id="startDateInputField" 
                 formControlName="journeyStartDate"
                 type="date"
                 [min]="minDate"
@@ -293,6 +295,7 @@
           <div>
             <div class="relative">
               <input
+                onfocus="this.showPicker()"
                 formControlName="journeyEndDate"
                 type="date"
                 [ngClass]="{

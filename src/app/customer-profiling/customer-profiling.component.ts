@@ -171,6 +171,12 @@ export class CustomerProfilingComponent implements OnInit {
   loggedUserRefCode: string = '';
   refereeList: any[] = [];
   updatedCredits: number = 0;
+  imgApiRes: string = '';
+
+  private imageBaseUrl = 'https://www.googleapis.com/customsearch/v1';
+  private apiKey = 'AIzaSyDp7yyM3_72459eJ2sd6DF6JDzHzBOhHXU';
+  // private apiKey = 'AIzaSyCwpkamdyVPIcbaAOwHpf60Ru56EibBR4M';
+  private cx = 'e69c01861f05f459f';
 
   constructor(
     private fb: FormBuilder,
@@ -346,6 +352,24 @@ export class CustomerProfilingComponent implements OnInit {
         userReq: this.itineraryData,
         userInfo: this.userInfo,
       };
+
+      // searchCityImage
+      
+    // const searchImgofCity = this.myForm.get('selectCity')?.value;
+    // this.http.get(`${this.imageBaseUrl}?q=${searchImgofCity}&cx=${this.cx}&searchType=image&key=${this.apiKey}`).subscribe((res: any)=>{
+    //   console.log('city image from imgAPI --->', res);
+    //   const imagesList = res.items;
+    //   const filteredData = imagesList.find((data:any) => {
+    //     const title = data.title.toLowerCase();
+    //     return title.includes('history') || title.includes('population') ||title.includes('wikipedia');
+    // });
+    // const link = filteredData ? filteredData.link : null;
+    // this.imgApiRes = link;
+    // console.log('selected image-->', this.imgApiRes);
+    
+    //   sessionStorage.setItem( 'ctimg', this.imgApiRes );
+    // })
+
       // store reqestedData data in session storage.
       sessionStorage.setItem('sharedObject', JSON.stringify(reqestedData));
       if (this.leftCredits > 0) {
@@ -441,6 +465,7 @@ export class CustomerProfilingComponent implements OnInit {
 
     this.myForm.get('selectCity')?.setValue('');
   }
+
 
   closeCreaditsModal() {
     this.showCreaditModal = false;

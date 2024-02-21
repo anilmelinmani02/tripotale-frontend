@@ -221,11 +221,19 @@
           </div>
           <!--city img -->
           <div class="mb-3">
+            <div *ngIf="bannerLoading == true" role="status" class="space-y-8 animate-pulse md:space-y-0 md:space-x-8 rtl:space-x-reverse md:flex md:items-center">
+              <div style="border-radius: 0px 0px 50px 50px;" class="flex items-center justify-center w-full h-48 bg-gray-300 rounded dark:bg-gray-700">
+                  <svg class="w-10 h-10 text-gray-200 dark:text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
+                      <path d="M18 0H2a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2Zm-5.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm4.376 10.481A1 1 0 0 1 16 15H4a1 1 0 0 1-.895-1.447l3.5-7A1 1 0 0 1 7.468 6a.965.965 0 0 1 .9.5l2.775 4.757 1.546-1.887a1 1 0 0 1 1.618.1l2.541 4a1 1 0 0 1 .028 1.011Z"/>
+                  </svg>
+              </div>
+              <span class="sr-only">Loading...</span>
+            </div>
             <!-- <div style="border-radius: 0px 0px 50px 50px; background: rgba(0, 0, 0, 0.40); background: rgba(0, 0, 0, 0.40);"
                         class="w-full xxsm:h-[120px] sm:h-[180px] md:h-[237px]">
                         <p class="text-[#FFF] text-3xl font-bold font-['Sora'] pt-3 text-center">Mexico</p>
                     </div> -->
-            <div
+            <div *ngIf="bannerLoading == false"
               [style.background-image]="'url(' + citiImageUrl + ')'"
               style="
                 border-radius: 0px 0px 50px 50px;
@@ -661,7 +669,7 @@
               <div
                 (mouseover)="hoverOnCard(i, ind, activity)"
                 *ngFor="let activity of day.activities; let ind = index"
-              >
+              >              
                 <small
                   class="w-6 h-6 bg-black text-white flex items-center justify-center rounded-full relative top-[32px] right-[11px]"
                 >
@@ -786,10 +794,17 @@
                   <div
                     class="xxsm:w-full sm:w-[30%] flex xxsm:justify-center md:justify-end items-center xxsm:pt-"
                   >
-                    <img
-                      [src]="activity.imageUrl"
+                    <img *ngIf="placesImagesLoading === false"
+                      [src]="allplacesImages[i * 2 + ind + i]"
                       class="xxsm:w-full rounded-md w-full object-cover sm:h-full"
                     />
+                    <div *ngIf="placesImagesLoading === true" role="status" class="space-y-8 animate-pulse md:space-y-0 md:space-x-8 rtl:space-x-reverse md:flex md:items-center xxsm:w-full rounded-md w-full object-cover sm:h-full">
+                      <div class="flex items-center justify-center w-full h-full rounded-md bg-gray-300 dark:bg-gray-700">
+                          <svg class="w-10 h-10 text-gray-200 dark:text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
+                              <path d="M18 0H2a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2Zm-5.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm4.376 10.481A1 1 0 0 1 16 15H4a1 1 0 0 1-.895-1.447l3.5-7A1 1 0 0 1 7.468 6a.965.965 0 0 1 .9.5l2.775 4.757 1.546-1.887a1 1 0 0 1 1.618.1l2.541 4a1 1 0 0 1 .028 1.011Z"/>
+                          </svg>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -868,7 +883,7 @@
                     <p
                       class="text-xl font-normal text-[#000] font-['IBM_Plex_Sans']"
                     >
-                      &#8377;{{
+                      {{
                         tripDetailsSecondary?.estimatedBudget?.accommodationCost
                           ?.hostel
                       }}
@@ -884,7 +899,7 @@
                     <p
                       class="text-xl font-normal text-[#000] font-['IBM_Plex_Sans']"
                     >
-                      &#8377;{{
+                      {{
                         tripDetailsSecondary?.estimatedBudget?.accommodationCost
                           ?.hotel
                       }}
@@ -921,7 +936,7 @@
                     <p
                       class="text-xl font-normal text-[#000] font-['IBM_Plex_Sans']"
                     >
-                      &#8377;{{
+                      {{
                         tripDetailsSecondary?.estimatedBudget?.foodCost.budget
                       }}
                       per meal
@@ -936,7 +951,7 @@
                     <p
                       class="text-xl font-normal text-[#000] font-['IBM_Plex_Sans']"
                     >
-                      &#8377;{{
+                      {{
                         tripDetailsSecondary?.estimatedBudget?.foodCost
                           .fancyMeal
                       }}
@@ -1016,30 +1031,9 @@
                   <ul
                     class="list-disc xxsm:text-base sm:text-lg flex flex-col text-[#000] font-normal"
                   >
-                    <li
-                      class="pb-1"
-                      *ngFor="
-                        let sugst of tripDetailsSecondary.suggestions;
-                        let i = index
-                      "
-                      [innerHTML]="
-                        wrapWithAnchorTag(
-                          sugst,
-                          i === 0
-                            ? 'Ola or Uber'
-                            : i === 1
-                            ? 'historical charm'
-                            : i === 2
-                            ? 'Tulshi Baug'
-                            : i === 3
-                            ? 'Khadakwasla Dam'
-                            : i === 4
-                            ? 'Koregaon Park'
-                            : '',
-                          'https://www.example.com/custom-link'
-                        )
-                      "
-                    ></li>
+                    <li class="pb-1"
+                      *ngFor="let sugst of tripDetailsSecondary.suggestions;let i = index">
+                    </li>
                   </ul>
                 </div>
               </div>
