@@ -150,7 +150,7 @@ export class ItineraryPageMainComponent implements OnInit {
               const title = data.title.toLowerCase();
               return title.includes('history') || title.includes('population') ||title.includes('wikipedia');
           });
-          this.citiImageUrl = filteredData ? filteredData.link : null;
+          this.citiImageUrl = filteredData ? filteredData.link : imagesList[0].link;
           console.log(this.citiImageUrl);
           
           
