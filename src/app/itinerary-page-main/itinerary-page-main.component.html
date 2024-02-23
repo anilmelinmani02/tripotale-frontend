@@ -1,12 +1,12 @@
 <div class="bg-[#F7F7C9]">
   <app-header class="sticky top-0 z-40"></app-header>
-  <div class="">
+  <div id="contentToConvert" class="">
     <div
       class="bg-[#F7F7C9] w-full xxsm:grid-cols-1 sm:grid-cols-1 md:grid-cols-2 gap-9"
     >
       <!-- 1st col -->
-      <div class="w-full flex xxsm:flex-col md:flex-row">
-        <div class="xxsm:w-full md:w-3/5 xxsm:px-2 md:ps-[10px]">
+      <div class="textSec w-full flex xxsm:flex-col md:flex-row">
+        <div class="textSec xxsm:w-full md:w-3/5 xxsm:px-2 md:ps-[10px]">
           <!-- save n share -->
           <div class="flex justify-end gap-2 p-2 pe-0">
             <button
@@ -473,21 +473,21 @@
           </div>
 
             <div class="block pt-2">
-              <div *ngFor="let city of shoulderMonths" class="flex justify-between items-center">
+              <div  class="flex justify-between items-center">
                 <div class="font-medium flex flex-wrap "> Shoulder months: 
-                  <div class="text-base font-normal text-[#18181B] font-['IBM_Plex_Sans']"> <span class="ps-1">{{ city.shoulderMonths }}</span></div>
+                  <div class="text-base font-normal text-[#18181B] font-['IBM_Plex_Sans']"> <span class="ps-1">{{ moreTripDetails?.shoulderMonths[0]?.shoulderMonths }}</span></div>
                 </div>
               </div>
 
-            <div *ngFor="let city of shoulderMonths" class="flex justify-between items-center">
+            <div  class="flex justify-between items-center">
                 <div class="font-medium flex flex-wrap "> Peak Months: 
-                  <div class="text-base font-normal text-[#18181B] font-['IBM_Plex_Sans']"> <span class="ps-1">{{ city.peakMonth }}</span></div>
+                  <div class="text-base font-normal text-[#18181B] font-['IBM_Plex_Sans']"> <span class="ps-1">{{moreTripDetails?.shoulderMonths[0]?.peakMonth }}</span></div>
                 </div>
             </div>
 
-            <div *ngFor="let city of shoulderMonths">
+            <div >
                 <div class="font-medium flex flex-wrap "> Months to avoid: 
-                  <div class="text-base font-normal text-[#18181B] font-['IBM_Plex_Sans']"> <span class="ps-1">{{ city.monthsToAvoid }}</span></div>
+                  <div class="text-base font-normal text-[#18181B] font-['IBM_Plex_Sans']"> <span class="ps-1">{{ moreTripDetails?.shoulderMonths[0]?.monthsToAvoid }}</span></div>
                 </div>
             </div>
             
@@ -650,10 +650,10 @@
             </div>
           </div>
           <!-- day 1 detail -->
-          <div class="" *ngFor="let day of allDaysTripPlans; let i = index">
+          <div class="" *ngFor="let day of userTrip?.tripPlans; let i = index">
             <div class="pt-14 px-4">
               <p
-                class="text-[#1F2937] text-xl font-medium font-['IBM_Plex_Sans']"
+                class="text-[#1F2937] text-xl font-semibold font-['IBM_Plex_Sans']"
               >
                 Day {{ i + 1 }}
               </p>
@@ -883,7 +883,7 @@
                       class="text-xl font-normal text-[#000] font-['IBM_Plex_Sans']"
                     >
                       {{
-                        tripDetailsSecondary?.estimatedBudget?.accommodationCost
+                        moreTripDetails?.estimatedBudget?.accommodationCost
                           ?.hostel
                       }}
                       per night
@@ -899,7 +899,7 @@
                       class="text-xl font-normal text-[#000] font-['IBM_Plex_Sans']"
                     >
                       {{
-                        tripDetailsSecondary?.estimatedBudget?.accommodationCost
+                        moreTripDetails?.estimatedBudget?.accommodationCost
                           ?.hotel
                       }}
                       per night
@@ -936,7 +936,7 @@
                       class="text-xl font-normal text-[#000] font-['IBM_Plex_Sans']"
                     >
                       {{
-                        tripDetailsSecondary?.estimatedBudget?.foodCost.budget
+                        moreTripDetails?.estimatedBudget?.foodCost.budget
                       }}
                       per meal
                     </p>
@@ -951,7 +951,7 @@
                       class="text-xl font-normal text-[#000] font-['IBM_Plex_Sans']"
                     >
                       {{
-                        tripDetailsSecondary?.estimatedBudget?.foodCost
+                        moreTripDetails?.estimatedBudget?.foodCost
                           .fancyMeal
                       }}
                       per meal
@@ -977,7 +977,7 @@
                     class="list-disc xxsm:text-lg sm:text-xl flex flex-col text-[#000] font-normal"
                   >
                     <li
-                      *ngFor="let food of tripDetailsSecondary.localCuisine"
+                      *ngFor="let food of moreTripDetails?.localCuisine"
                       class="pb-1"
                     >
                       {{ food.name }}-{{ food.comment }}
@@ -1004,7 +1004,7 @@
                   >
                     <li
                       *ngFor="
-                        let restaurants of tripDetailsSecondary.highRatedRestaurants
+                        let restaurants of moreTripDetails?.highRatedRestaurants
                       "
                       class="pb-1"
                     >
@@ -1031,7 +1031,7 @@
                     class="list-disc xxsm:text-base sm:text-lg flex flex-col text-[#000] font-normal"
                   >
                     <li class="pb-1"
-                      *ngFor="let sugst of tripDetailsSecondary.suggestions;let i = index">
+                      *ngFor="let sugst of moreTripDetails?.suggestions;let i = index">
                       {{sugst}}
                     </li>
                   </ul>
@@ -1045,7 +1045,7 @@
               class="py-7 bg-white border border-[#E5E7EB] rounded-md px-5 w-full justify-start w-fit"
             >
               <ul
-                *ngFor="let item of tripDetailsSecondary.trivia ;let index = index"
+                *ngFor="let item of moreTripDetails?.trivia ;let index = index"
                 class="list-disc px-8 pb-3 text-[#5d5c5c] gap-2 xxsm:text-base sm:text-lg flex flex-col font-normal"
               >
                 <!-- <span class="flex gap-1">
@@ -1070,14 +1070,14 @@
             <div
               class="flex flex-wrap xxsm:justify-evenly sm:justify-start gap-3"
             >
-              <div
+              <div value="Convert" (click)="convertToPDF()"
                 class="flex justify-center cursor-pointer shadow-[0_2px_4px_0px_rgba(0,0,0,0.25)] items-center gap-2 bg-[#F00] text-white rounded-full py-2 px-6"
               >
                 <span class="flex justify-center items-center">
                   <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
                 </span>
                 <span>
-                  <p class="text-sm font-bold">PDF</p>
+                  <p class="text-sm font-bold" id="download">PDF</p>
                 </span>
               </div>
               <div
@@ -1103,15 +1103,15 @@
                 class="flex justify-center cursor-pointer shadow-[0_2px_4px_0px_rgba(0,0,0,0.25)] items-center gap-2 bg-[#3DB7E4] text-white rounded-full py-2 px-6"
               >
                 <span>
-                  <p class="text-sm font-bold">Copy URL</p>
+                  <p (click)="shareUrl()" class="text-sm font-bold">Copy URL</p>
                 </span>
               </div>
             </div>
           </div>
         </div>
         <!-- map sec -->
-        <div
-          class="xxsm:w-full md:w-2/5 xxsm:px-2 lg:px-0 xxsm:h-[60vh] md:h-[88.4vh] sticky top-[77px]"
+        <div 
+          class="mapSec xxsm:w-full md:w-2/5 xxsm:px-2 lg:px-0 xxsm:h-[60vh] md:h-[88.4vh] sticky top-[77px]"
         >
           <div id="map" class="h-full w-full">
             <!-- card in map on hover -->
@@ -1230,7 +1230,7 @@
                             target="_blank"
                             ><img
                               *ngIf="
-                                tripDetailsSecondary.bestTravellingMode ===
+                                moreTripDetails?.bestTravellingMode ===
                                 'Plane'
                               "
                               src="../../assets/img/plane.webp"
@@ -1242,7 +1242,7 @@
                           >
                             <img
                               *ngIf="
-                                tripDetailsSecondary.bestTravellingMode ===
+                                moreTripDetails?.bestTravellingMode ===
                                 'Train'
                               "
                               src="../../assets/img/svgForActivityies/train.svg"
@@ -1253,7 +1253,7 @@
                             target="_blank"
                             ><img
                               *ngIf="
-                                tripDetailsSecondary.bestTravellingMode ===
+                                moreTripDetails?.bestTravellingMode ===
                                 'Bus'
                               "
                               src="../../assets/img/busNew.jpg"
@@ -1262,7 +1262,7 @@
                           <a href="https://www.cruisebay.com/" target="_blank"
                             ><img
                               *ngIf="
-                                tripDetailsSecondary.bestTravellingMode ===
+                                moreTripDetails?.bestTravellingMode ===
                                 'Ship'
                               "
                               src="../../assets/img/svgForActivityies/ship.svg"
@@ -1283,7 +1283,7 @@
                           >
                             <img
                               *ngIf="
-                                tripDetailsSecondary.secondBestTravellingMode ===
+                                moreTripDetails?.secondBestTravellingMode ===
                                 'Plane'
                               "
                               src="../../assets/img/planeNew.jpg"
@@ -1292,7 +1292,7 @@
                           <a href="https://www.cruisebay.com/" target="_blank"
                             ><img
                               *ngIf="
-                                tripDetailsSecondary.secondBestTravellingMode ===
+                                moreTripDetails?.secondBestTravellingMode ===
                                 'Ship'
                               "
                               src="../../assets/img/svgForActivityies/ship.svg"
@@ -1304,7 +1304,7 @@
                           >
                             <img
                               *ngIf="
-                                tripDetailsSecondary.secondBestTravellingMode ===
+                                moreTripDetails?.secondBestTravellingMode ===
                                 'Train'
                               "
                               src="../../assets/img/trainNew.jpg"
@@ -1315,7 +1315,7 @@
                             target="_blank"
                             ><img
                               *ngIf="
-                                tripDetailsSecondary.secondBestTravellingMode ===
+                                moreTripDetails?.secondBestTravellingMode ===
                                 'Bus'
                               "
                               src="../../assets/img/busNew.jpg"
