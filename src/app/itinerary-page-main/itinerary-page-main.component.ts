@@ -1,10 +1,12 @@
 import {
   Component,
   DebugElement,
+  ElementRef,
   Input,
   NgZone,
   OnInit,
   Renderer2,
+  ViewChild,
 } from '@angular/core';
 import { ItineraryService } from '../services/itinerary.service';
 import Map from 'ol/Map';
@@ -51,11 +53,10 @@ export class ItineraryPageMainComponent implements OnInit {
   selectedCities: any;
   userId: any;
   docId: any;
-  gptResponse: any;
-  allDaysTripPlans: any[] = [];
+  userTrip: any;
   days: any[] = [];
   plan: any[] = [];
-  tripDetailsSecondary: any = {};
+  moreTripDetails: any = {};
   city1: any = {};
   citiImageUrl: string = '';
   citiImageAPi: string = '';
@@ -64,7 +65,7 @@ export class ItineraryPageMainComponent implements OnInit {
   cardHover: boolean = false;
   allActivities: any[] = [];
   mapCardObj: any = {};
-  shoulderMonths: any[] = [];
+  // shoulderMonths: any = {};
   likedPlaces = new Set();
   dislikedPlaces = new Set();
   userRequestedData: any;
@@ -74,22 +75,27 @@ export class ItineraryPageMainComponent implements OnInit {
   isGenerating: boolean = false;
   itineraryURL: string;
   isUserLoggedIn: any = '';
-  showModal: boolean = false; 
+  showModal: boolean = false;
   isCollectionStoredInDB: boolean = false;
   isCollectionSaved: boolean = false;
   loading: boolean = false;
-  ctimg:string ='';
+  ctimg: string = '';
   allPlacesImagesApi: any[] = [];
   allplacesImages: any[] = [];
   placesImagesLoading: boolean = true;
   bannerLoading: boolean = true;
   allPlacesName: any[] = [];
-  imageNo:any;
+  imageNo: any;
+  regeneratedUserTrip: any;
+  processingToPDF: boolean = false;
 
   private imageBaseUrl = 'https://www.googleapis.com/customsearch/v1';
   private apiKey = 'AIzaSyDp7yyM3_72459eJ2sd6DF6JDzHzBOhHXU';
   // private apiKey = 'AIzaSyCwpkamdyVPIcbaAOwHpf60Ru56EibBR4M';
   private cx = 'e69c01861f05f459f';
+
+  @ViewChild('contentToConvert', { static: false })
+  public contentToConvert: ElementRef | null = null;
 
   constructor(
     private itineraryService: ItineraryService,
@@ -120,16 +126,17 @@ export class ItineraryPageMainComponent implements OnInit {
       .valueChanges()
       .subscribe(
         (res: any) => {
-          this.gptResponse = res.userTrip;
+          this.userTrip = res.userTrip;
+          this.moreTripDetails = res?.moreTripDetails;
+
           // day-wise trip plans
-          this.allDaysTripPlans = this.gptResponse?.tripPlans;
-          this.allDaysTripPlans.forEach((act) => {
+          this.userTrip?.tripPlans.forEach((act: any) => {
             // this.allActivities.push(act?.activities)
             this.allActivities.push(act?.activities);
           });
-          this.city1 = this.allDaysTripPlans[0].moreAboutCity;
+          this.city1 = this.userTrip?.tripPlans[0].moreAboutCity;
           // cordinates
-          this.allDaysTripPlans.forEach((plans) => {
+          this.userTrip?.tripPlans.forEach((plans: any) => {
             plans.activities.forEach((cords: any) => {
               this.allSpotsLocation.push([
                 cords.coordinates.longitude,
@@ -139,66 +146,74 @@ export class ItineraryPageMainComponent implements OnInit {
           });
 
           // fetch image for for city banner
-          this.citiImageAPi = `${this.imageBaseUrl}?q=${this.city1.cityName}&cx=${this.cx}&searchType=image&key=${this.apiKey}`
-          
-          // console.log('bannerUrl', this.citiImageAPi);
-          this.http.get(this.citiImageAPi).subscribe(
-            (res: any)=>{
+          this.citiImageAPi = `${this.imageBaseUrl}?q=${this.city1.cityName}&cx=${this.cx}&searchType=image&key=${this.apiKey}`;
+          console.log('bannerApi', this.citiImageAPi);
+          this.http.get(this.citiImageAPi).subscribe((res: any) => {
             console.log('citybannerimgAPI response--->', res);
             const imagesList = res.items;
-            const filteredData = imagesList.find((data:any) => {
+            const filteredData = imagesList.find((data: any) => {
               const title = data.title.toLowerCase();
-              return title.includes('history') || title.includes('population') ||title.includes('wikipedia');
+              const imgName = data.link.toLowerCase();
+              return (
+                title.includes('history') ||
+                title.includes('population') ||
+                (title.includes('wikipedia') &&
+                  !(
+                    imgName.includes('political_Map') || imgName.includes('map')
+                  ))
+              );
+            });
+            this.citiImageUrl = filteredData
+              ? filteredData.link
+              : imagesList[5].link;
+            console.log(this.citiImageUrl);
+
+            if (this.citiImageUrl.length > 1) {
+              this.bannerLoading = false;
+            } else {
+              this.citiImageUrl = imagesList[0];
+              this.bannerLoading = true;
+            }
           });
-          this.citiImageUrl = filteredData ? filteredData.link : imagesList[0].link;
-          console.log(this.citiImageUrl);
-          
-          
-          if ( this.citiImageUrl.length > 1) {
-            this.bannerLoading = false;
-          }else{
-            this.citiImageUrl = imagesList[0]
-            this.bannerLoading = true;
-          }          
-        }
-          )
 
           // fetching places images from apis
-          this.allActivities.forEach(
-            (result)=>{
-            result.forEach((obj:any) => {
+          this.allActivities.forEach((result) => {
+            result.forEach((obj: any) => {
               // this.allPlacesImagesApi.push(obj?.imageUrl)
-              this.allPlacesName.push(obj?.placeName)
-            })              
-          },
-          )
+              this.allPlacesName.push(obj?.placeName);
+            });
+          });
           console.log('all places name', this.allPlacesName);
-          this.allPlacesName.forEach((i)=>{
-            this.allPlacesImagesApi.push(`${this.imageBaseUrl}?q=${i}&cx=${this.cx}&searchType=image&key=${this.apiKey}`);
-          })
+          this.allPlacesName.forEach((i) => {
+            this.allPlacesImagesApi.push(
+              `${this.imageBaseUrl}?q=${i}&cx=${this.cx}&searchType=image&key=${this.apiKey}`
+            );
+          });
           console.log('allPlacesImagesApi', this.allPlacesImagesApi);
-          
-          const observables = this.allPlacesImagesApi.map(url => this.http.get<any>(url));
 
-    forkJoin(observables).subscribe(
-      (responses: any[]) => {
-        this.allplacesImages = responses.map(response => response.items[0].link);
-        console.log('Actual images urls', this.allplacesImages);
-        this.placesImagesLoading = false;
-      },
-      error => {
-        console.error("Error fetching image results:", error);
-        this.placesImagesLoading = true;
-      }
-    );
-    // console.log('placesImgApis-->', this.allPlacesImagesApi);
+          const observables = this.allPlacesImagesApi.map((url) =>
+            this.http.get<any>(url)
+          );
 
+          forkJoin(observables).subscribe(
+            (responses: any[]) => {
+              this.allplacesImages = responses.map(
+                (response) => response.items[0].link
+              );
+              console.log('Actual images urls', this.allplacesImages);
+              this.placesImagesLoading = false;
+            },
+            (error) => {
+              console.error('Error fetching image results:', error);
+              this.placesImagesLoading = true;
+            }
+          );
+          // console.log('placesImgApis-->', this.allPlacesImagesApi);
           // for estimated,cuisin,sugg..
-          this.tripDetailsSecondary = this.gptResponse?.moreTripDetails;
+
           // cuision
-          this.localCuisine = this.tripDetailsSecondary.localCuisine;
-          // shoulderMonths
-          this.shoulderMonths = this.tripDetailsSecondary.shoulderMonths;
+          // this.localCuisine = this.moreTripDetails.localCuisine;
+
           // initilizing Map
           this.initializeMap();
         },
@@ -279,7 +294,7 @@ export class ItineraryPageMainComponent implements OnInit {
   }
 
   showLocationName(name: string) {
-    this.allDaysTripPlans.forEach((e) => {
+    this.userTrip?.tripPlans.forEach((e: any) => {
       for (const iterator of e.activities) {
       }
     });
@@ -321,7 +336,7 @@ export class ItineraryPageMainComponent implements OnInit {
     });
   }
 
-  hoverOnCard(day: any, cardNo: any, activity: any, imgNo:any) {
+  hoverOnCard(day: any, cardNo: any, activity: any, imgNo: any) {
     this.cardHover = true;
     this.mapCardObj = activity;
     this.imageNo = imgNo;
@@ -395,35 +410,40 @@ export class ItineraryPageMainComponent implements OnInit {
       this.userRequestedData.userReq.notPreferredPlaces = Array.from(
         this.dislikedPlaces
       );
-      this.gptResponse = '';
+      // this.userTrip = '';
+      this.regeneratedUserTrip = '';
       this.itineraryService.getItineraryData(this.userRequestedData).subscribe(
         (regeneratedPlan) => {
+          this.toastr.success('Trip regenerated !');
           this.likedCardNumbers = [];
           this.dislikedCardNumbers = [];
-          this.gptResponse = regeneratedPlan?.tripPlan.userTrip;
+          this.regeneratedUserTrip = regeneratedPlan?.tripPlan;
+          this.userTrip = this.regeneratedUserTrip?.userTrip;
           // stop loader
           this.isGenerating = false;
           // update tripPlan in DB with regenerated one
-          const regeneratedUserTrip = regeneratedPlan?.tripPlan.userTrip;
           this.firestore
             .doc(`/users/${this.userId}/tripPlans/${this.docId}`)
-            .update({ userTrip: regeneratedUserTrip })
+            .update({ userTrip: this.userTrip })
             .then(() => {})
             .catch((error) => {
-              console.error('Error updating document: ', error);
+              console.error(
+                'Error updating old document with regenerated plan: ',
+                error
+              );
             });
 
-          this.gptResponse = regeneratedPlan?.tripPlan.userTrip;
+          this.userTrip = this.regeneratedUserTrip.userTrip;
+          // for estimated,cuisin,sugg..
+          // this.moreTripDetails = this.regeneratedUserTrip?.moreTripDetails;
           // day-wise trip plans
-          this.allDaysTripPlans = this.gptResponse?.tripPlans;
-          this.allDaysTripPlans.forEach((act) => {
-            // this.allActivities.push(act?.activities)
+          this.userTrip?.tripPlans.forEach((act: any) => {
             this.allActivities.push(act?.activities);
           });
-          this.city1 = this.allDaysTripPlans[0].moreAboutCity;
+          this.city1 = this.userTrip?.tripPlans[0].moreAboutCity;
 
           // cordinates
-          this.allDaysTripPlans.forEach((plans) => {
+          this.userTrip?.tripPlans.forEach((plans: any) => {
             plans.activities.forEach((cords: any) => {
               this.allSpotsLocation.push([
                 cords.coordinates.longitude,
@@ -434,14 +454,13 @@ export class ItineraryPageMainComponent implements OnInit {
 
           // this.citiImageUrl = this.city1.cityImageUrl;
 
-          // for estimated,cuisin,sugg..
-          this.tripDetailsSecondary = this.gptResponse?.moreTripDetails;
           // cuision
-          this.localCuisine = this.tripDetailsSecondary.localCuisine;
+          this.localCuisine = this.moreTripDetails.localCuisine;
           // shoulderMonths
-          this.shoulderMonths = this.tripDetailsSecondary.shoulderMonths.cities;
+          // this.shoulderMonths = this.moreTripDetails.shoulderMonths.cities;
         },
         (error) => {
+          this.toastr.error('Regenerating failed !');
           console.error('Error while Regenerating trip plan:', error);
           this.isGenerating = false;
         }
@@ -500,5 +519,39 @@ export class ItineraryPageMainComponent implements OnInit {
 
   goToLogin() {
     this.router.navigate(['login']);
+  }
+
+  // convertToPDF(){
+  //     window.print()
+  // }
+
+  convertToPDF() {
+    this.hideDiv();
+
+    window.addEventListener('beforeprint', this.hideDiv);
+
+    window.addEventListener('afterprint', this.showDiv);
+
+    window.print();
+    window.removeEventListener('beforeprint', this.hideDiv);
+    window.removeEventListener('afterprint', this.showDiv);
+  }
+
+  hideDiv() {
+    const div = document.querySelector('.mapSec') as HTMLElement;
+    const textSection = document.querySelector('.textSec') as HTMLElement;
+    if (div !== null && textSection !== null) {
+      div.style.display = 'none';
+      textSection.style.justifyContent = 'center';
+    }
+  }
+
+  showDiv() {
+    const div = document.querySelector('.mapSec') as HTMLElement;
+    const textSection = document.querySelector('.textSec') as HTMLElement;
+    if (div !== null) {
+      div.style.display = 'block';
+      textSection.style.justifyContent = 'start';
+    }
   }
 }
