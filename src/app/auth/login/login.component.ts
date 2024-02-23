@@ -13,6 +13,7 @@ export class LoginComponent {
   email!: string;
   password!: string;
   myForm!: FormGroup;
+  loading: boolean = false;
 
   @ViewChild('emailField', { static: false }) emailField!: ElementRef;
   @ViewChild('passwordField', { static: false }) passwordField!: ElementRef;
@@ -38,19 +39,23 @@ export class LoginComponent {
 
   login() {
     if (this.myForm.valid) {
+      this.loading = true;
       this.auth
         .login(this.myForm.value.email, this.myForm.value.password)
         .then((res) => {
           sessionStorage.setItem('logedIn', 'true');
           sessionStorage.setItem('userId', this.myForm.value.email);
           if (res.user?.emailVerified == true) {
+            this.loading = false;
             this.toastr.success('Logged in successfully.');
             this.router.navigate(['/home']);
           } else {
             this.toastr.error('Please verify your email before login');
+            this.loading = false;
           }
         })
         .catch((error) => {
+          this.loading = false;
           if (error.code == 'auth/invalid-credential') {
             this.toastr.error(
               'Oops! Incorrect password or email. Please try again.'
@@ -66,6 +71,7 @@ export class LoginComponent {
           }
         });
     } else {
+      this.loading = false;
       if (this.myForm.get('email')?.invalid) {
         this.emailField.nativeElement.focus();
       }
