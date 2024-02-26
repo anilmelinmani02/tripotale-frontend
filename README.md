@@ -28,3 +28,5 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 google images api key
 AIzaSyDp7yyM3_72459eJ2sd6DF6JDzHzBOhHXU
+
+hosted url - https://tripotale-f1db9.web.app

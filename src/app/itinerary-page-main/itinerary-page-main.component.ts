@@ -153,7 +153,7 @@ export class ItineraryPageMainComponent implements OnInit {
           this.citiImageAPi = `${this.imageBaseUrl}?q=${this.city1.cityName}&cx=${this.cx}&searchType=image&key=${this.apiKey}`;
           console.log('bannerApi', this.citiImageAPi);
           this.http.get(this.citiImageAPi).subscribe((res: any) => {
-            console.log('citybannerimgAPI response--->', res);
+            // console.log('citybannerimgAPI response--->', res);
             const imagesList = res.items;
             const filteredData = imagesList.find((data: any) => {
               const title = data.title.toLowerCase();
@@ -193,7 +193,7 @@ export class ItineraryPageMainComponent implements OnInit {
               `${this.imageBaseUrl}?q=${i}&cx=${this.cx}&searchType=image&key=${this.apiKey}`
             );
           });
-          console.log('allPlacesImagesApi', this.allPlacesImagesApi);
+          // console.log('allPlacesImagesApi', this.allPlacesImagesApi);
 
           const observables = this.allPlacesImagesApi.map((url) =>
             this.http.get<any>(url)
@@ -202,9 +202,9 @@ export class ItineraryPageMainComponent implements OnInit {
           forkJoin(observables).subscribe(
             (responses: any[]) => {
               this.allplacesImages = responses.map(
-                (response) => response.items[0].link
+                (response) => response?.items[0].link
               );
-              console.log('Actual images urls', this.allplacesImages);
+              // console.log('Actual images urls', this.allplacesImages);
               this.placesImagesLoading = false;
             },
             (error) => {
@@ -441,12 +441,14 @@ export class ItineraryPageMainComponent implements OnInit {
           // for estimated,cuisin,sugg..
           // this.moreTripDetails = this.regeneratedUserTrip?.moreTripDetails;
           // day-wise trip plans
+          this.allActivities = [];
           this.userTrip?.tripPlans.forEach((act: any) => {
             this.allActivities.push(act?.activities);
           });
           this.city1 = this.userTrip?.tripPlans[0].moreAboutCity;
 
           // cordinates
+          this.allSpotsLocation = [];
           this.userTrip?.tripPlans.forEach((plans: any) => {
             plans.activities.forEach((cords: any) => {
               this.allSpotsLocation.push([
@@ -455,8 +457,40 @@ export class ItineraryPageMainComponent implements OnInit {
               ]);
             });
           });
-
-          // this.citiImageUrl = this.city1.cityImageUrl;
+          
+                    // fetching places images from apis
+                    this.allPlacesImagesApi = [];
+                    this.allPlacesName = [];
+                    this.allActivities.forEach((result) => {
+                      result.forEach((obj: any) => {
+                        this.allPlacesName.push(obj?.placeName);
+                      });
+                    });
+                    console.log('all places name', this.allPlacesName);
+                    this.allPlacesName.forEach((i) => {
+                      this.allPlacesImagesApi.push(
+                        `${this.imageBaseUrl}?q=${i}&cx=${this.cx}&searchType=image&key=${this.apiKey}`
+                      );
+                    });
+                    // console.log('allPlacesImagesApi', this.allPlacesImagesApi);
+          
+                    const observables = this.allPlacesImagesApi.map((url) =>
+                      this.http.get<any>(url)
+                    );
+          
+                    forkJoin(observables).subscribe(
+                      (responses: any[]) => {
+                        this.allplacesImages = responses.map(
+                          (response) => response?.items[0].link
+                        );
+                        // console.log('Actual images urls', this.allplacesImages);
+                        this.placesImagesLoading = false;
+                      },
+                      (error) => {
+                        console.error('Error fetching image results:', error);
+                        this.placesImagesLoading = true;
+                      }
+                    );
 
           // cuision
           this.localCuisine = this.moreTripDetails.localCuisine;
