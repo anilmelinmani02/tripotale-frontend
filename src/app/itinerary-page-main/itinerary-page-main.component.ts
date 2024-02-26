@@ -127,7 +127,11 @@ export class ItineraryPageMainComponent implements OnInit {
       .subscribe(
         (res: any) => {
           this.userTrip = res.userTrip;
-          this.moreTripDetails = res?.moreTripDetails;
+          if (res.moreTripDetails) {
+              this.moreTripDetails = res?.moreTripDetails;
+          } else if(this.userTrip.moreTripDetails){
+            this.moreTripDetails = this.userTrip.moreTripDetails;
+          }
 
           // day-wise trip plans
           this.userTrip?.tripPlans.forEach((act: any) => {
