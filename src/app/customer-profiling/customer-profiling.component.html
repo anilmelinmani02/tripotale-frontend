@@ -376,9 +376,8 @@
           </div>
         </div>
         <div [ngClass]="{ overlay: loading == true }"></div>
-
-        <div class="pb-28 xxsm:flex sm:block justify-center">
-          <button
+        <div style="z-index: 200;" class="pb-28 xxsm:flex sm:block justify-center">
+          <button 
             (click)="onSubmit()"
             class="flex justify-center items-center w-32 xxsm:h-8 sm:h-[43px] text-base p-4 leading-none font-bold rounded text-white bg-black mt-4"
           >

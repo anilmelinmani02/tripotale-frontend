@@ -1,5 +1,5 @@
 <div class="bg-[#F7F7C9]">
-  <app-header class="sticky top-0 z-40"></app-header>
+  <app-header class="sticky top-0 z-[500]"></app-header>
   <div id="contentToConvert" class="">
     <div
       class="bg-[#F7F7C9] w-full xxsm:grid-cols-1 sm:grid-cols-1 md:grid-cols-2 gap-9"
@@ -813,7 +813,7 @@
           <div [ngClass]="{ overlay: isGenerating === true }"></div>
           <!-- regenrate button -->
           <div class="flex pt-12 items-center justify-center">
-            <button
+            <button style="z-index: 300;"
               [disabled]="
                 (likedPlaces.size < 1 && dislikedPlaces.size < 1) ||
                 allSpotsLocation.length === 0
@@ -1046,7 +1046,7 @@
           <!-- Q n A -->
           <div class="pt-12">
             <div
-              class="py-7 bg-white border border-[#E5E7EB] rounded-md px-5 w-full justify-start w-fit"
+              class="py-7 bg-white border border-[#E5E7EB] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] rounded-md px-5 w-full justify-start w-fit"
             >
             <p
             class="text-[#1F2937] text-center xxsm:text-xl sm:text-2xl font-semibold text-['IBM_Plex_Sans']"
