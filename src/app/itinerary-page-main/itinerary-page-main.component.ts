@@ -88,6 +88,14 @@ export class ItineraryPageMainComponent implements OnInit {
   imageNo: any;
   regeneratedUserTrip: any;
   processingToPDF: boolean = false;
+  leftCredits: number = 0;
+  userInfo: any;
+  updatedCredits: number = 0;
+  refereeList: any[] = [];
+  showCreaditModal: boolean = false;
+  fetchingRefCode: boolean = true;
+  loggedUserRefCode: string = '';
+
 
   private imageBaseUrl = 'https://www.googleapis.com/customsearch/v1';
   private apiKey = 'AIzaSyDp7yyM3_72459eJ2sd6DF6JDzHzBOhHXU';
@@ -113,6 +121,20 @@ export class ItineraryPageMainComponent implements OnInit {
     });
     this.itineraryURL = window.location.href;
     this.isUserLoggedIn = sessionStorage.getItem('logedIn');
+
+    this.userInfo = {
+      loginStatus: sessionStorage.getItem('logedIn'),
+      userId: sessionStorage.getItem('userId'),
+    };
+
+          // fetching credits count from DB
+          const referralDocRef = this.firestore.collection('users').doc(this.userInfo.userId).collection('referrals').doc('referralDoc');
+          referralDocRef.valueChanges().subscribe((data: any) => {
+            if (data && 'leftCredits' in data) {
+              this.leftCredits = data.leftCredits;
+              sessionStorage.setItem('leftCredits', this.leftCredits.toString());
+            }
+          });
   }
   ngOnInit() {
     const storedObject = sessionStorage.getItem('sharedObject');
@@ -405,8 +427,10 @@ export class ItineraryPageMainComponent implements OnInit {
     return this.dislikedCardNumbers.includes(cardNumber);
   }
 
-  reGenerateData(): void {
+  reGenerateData(): void {    
     if (this.isUserLoggedIn == 'true') {
+
+      if (this.leftCredits > 0 && this.leftCredits !== 0) {
       this.isGenerating = true;
       this.userRequestedData.userReq.preferredPlaces = Array.from(
         this.likedPlaces
@@ -494,8 +518,41 @@ export class ItineraryPageMainComponent implements OnInit {
 
           // cuision
           this.localCuisine = this.moreTripDetails.localCuisine;
-          // shoulderMonths
-          // this.shoulderMonths = this.moreTripDetails.shoulderMonths.cities;
+
+                 
+            // reduce left-credits &Update in Firestore
+            const referralDocRef = this.firestore
+              .collection('users')
+              .doc(this.userInfo.userId)
+              .collection('referrals')
+              .doc('referralDoc');
+            referralDocRef.get().subscribe((res) => {
+              const data = res.data();
+              if (data) {
+                for (const key in data) {
+                  if (Object.prototype.hasOwnProperty.call(data, key)) {
+                    if (key === 'leftCredits') {
+                      this.leftCredits = data[key];
+                      this.updatedCredits = this.leftCredits - 1;
+                      this.itineraryService.updatedCredits =
+                        this.updatedCredits;
+                    }
+                    if (key === 'referredTo') {
+                      const allRefree = data[key];
+                      this.refereeList = allRefree;
+                    }
+                  }
+                }
+        
+                const updatedObj = {
+                  leftCredits: this.updatedCredits,
+                  referredTo: this.refereeList,
+                };
+                // update object in DB
+                referralDocRef.update(updatedObj);
+              }
+            });
+          
         },
         (error) => {
           this.toastr.error('Regenerating failed !');
@@ -503,9 +560,31 @@ export class ItineraryPageMainComponent implements OnInit {
           this.isGenerating = false;
         }
       );
+      } else{
+        this.showCreaditModal = true;
+        this.itineraryService.getRefrralCode(this.userInfo.userId).subscribe(
+          (res) => {
+            this.fetchingRefCode = false;
+            this.loggedUserRefCode = res.refCode;
+          },
+          (error) => {
+            this.fetchingRefCode = true;
+            console.error(error);
+          }
+        )
+      }
+      
     } else {
       this.showModal = true;
     }
+  }
+
+  closeCreaditsModal() {
+    this.showCreaditModal = false;
+  }
+
+  goToHowItWorks() {
+    this.router.navigate(['/refrralDetrails']);
   }
 
   toggleTooltip() {
