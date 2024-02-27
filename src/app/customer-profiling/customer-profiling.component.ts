@@ -169,6 +169,7 @@ export class CustomerProfilingComponent implements OnInit {
   leftCreaditsDocId: string = '';
   showCreaditModal: boolean = false;
   loggedUserRefCode: string = '';
+  fetchingRefCode: boolean = true;
   refereeList: any[] = [];
   updatedCredits: number = 0;
   imgApiRes: string = '';
@@ -451,9 +452,11 @@ export class CustomerProfilingComponent implements OnInit {
       } else {
         this.itineraryService.getRefrralCode(this.userInfo.userId).subscribe(
           (res) => {
+            this.fetchingRefCode = false;
             this.loggedUserRefCode = res.refCode;
           },
           (error) => {
+            this.fetchingRefCode = true;
             console.error(error);
           }
         );
