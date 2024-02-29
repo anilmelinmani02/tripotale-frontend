@@ -1,33 +1,25 @@
+import { HttpClient } from '@angular/common/http';
 import {
   Component,
-  DebugElement,
   ElementRef,
-  Input,
-  NgZone,
   OnInit,
-  Renderer2,
-  ViewChild,
+  ViewChild
 } from '@angular/core';
-import { ItineraryService } from '../services/itinerary.service';
-import Map from 'ol/Map';
-import TileLayer from 'ol/layer/Tile';
-import OSM from 'ol/source/OSM';
-import View from 'ol/View';
-import Overlay from 'ol/Overlay';
-import { fromLonLat } from 'ol/proj';
-import { ActivatedRoute, Router } from '@angular/router';
-import VectorLayer from 'ol/layer/Vector';
-import VectorSource from 'ol/source/Vector';
-import Feature from 'ol/Feature';
-import { Point } from 'ol/geom';
-import Style from 'ol/style/Style';
-import Icon from 'ol/style/Icon';
-import { boundingExtent } from 'ol/extent';
-import { easeOut } from 'ol/easing';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { ToastrService, GlobalConfig } from 'ngx-toastr';
-import { HttpClient } from '@angular/common/http';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import Map from 'ol/Map';
+import Overlay from 'ol/Overlay';
+import View from 'ol/View';
+import { easeOut } from 'ol/easing';
+import { boundingExtent } from 'ol/extent';
+import TileLayer from 'ol/layer/Tile';
+import VectorLayer from 'ol/layer/Vector';
+import { fromLonLat } from 'ol/proj';
+import OSM from 'ol/source/OSM';
+import VectorSource from 'ol/source/Vector';
 import { forkJoin } from 'rxjs';
+import { ItineraryService } from '../services/itinerary.service';
 
 @Component({
   selector: 'app-itinerary-page-main',
