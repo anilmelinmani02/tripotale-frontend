@@ -48,3 +48,4 @@ Thumbs.db
 /.angular
 /.firebase
 /www
+firebase-debug.log

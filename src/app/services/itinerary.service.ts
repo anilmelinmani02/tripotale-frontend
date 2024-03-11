@@ -7,7 +7,8 @@ import { BehaviorSubject, Observable, Subject, catchError, tap } from 'rxjs';
   providedIn: 'root',
 })
 export class ItineraryService {
-  baseUrl: string = `https://us-central1-tripotale-f1db9.cloudfunctions.net/api2/`;
+  baseUrl: string = `https://us-central1-tripotale-5f31c.cloudfunctions.net/api2/`;
+  
 
   // Subject to emit tripPlan data
   tripPlanSource = new Subject<any>();

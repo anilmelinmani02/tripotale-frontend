@@ -47,7 +47,7 @@ export class LoginComponent {
           sessionStorage.setItem('userId', this.myForm.value.email);
           if (res.user?.emailVerified == true) {
             this.loading = false;
-            this.toastr.success('Logged in successfully.');
+            this.toastr.success('You have successfully logged in! Welcome back.');
             this.router.navigate(['/home']);
           } else {
             this.toastr.error('Please verify your email before login');

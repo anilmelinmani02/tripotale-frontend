@@ -44,80 +44,45 @@
         </div>
       </div>
       <!-- date select sec -->
-      <form [formGroup]="searchForm">
-        <div class="flex justify-center">
+      <div class="flex justify-center">
+        <div
+          style="width: 600px;"
+          
+          class="mb-7 rounded-2xl w-full bg-white p-5 sm:mx-16 lg:mx-44 xxsm:mx-2 xxsm:px-4 flex gap-5 xxsm:flex-col md:flex-row"
+        >
           <div
-            style="border: 1px solid #969696"
-            class="mb-7 rounded-2xl w-full bg-white p-5 sm:mx-16 lg:mx-36 xxsm:mx-2 xxsm:px-4 flex gap-5 xxsm:flex-col md:flex-row"
+            class="xxsm:w-full flex xxsm:justify-center xxsm:items-center gap-5"
           >
-            <div
-              class="xxsm:w-full flex xxsm:justify-center xxsm:items-center gap-5"
+            <!-- Remove formControlName and use [(ngModel)] -->
+            <input
+              [(ngModel)]="from"
+              name="from"
+              type="text"
+              [ngStyle]="{
+                border: !from && touched ? '1px solid red' : ''
+              }"
+              class="rounded-md w-32 max-w-[270px] flex-grow flex-shrink py-1.5 xxsm:px-2 sm:px-7 text-[#070707] border-[1px] border-gray-300 placeholder:text-[#070707] sm:text-sm sm:leading-8 focus:ring-0 text-center"
+              placeholder="Journey Begin From"
+              (blur)="onBlur()"
+              (input)="onInput()"
+            />
+          </div>
+          <div
+            class="xxsm:w-full flex xxsm:justify-center md:justify-center xxsm:items-center xxsm:gap-2 sm:gap-5 lg:gap-8"
+          >
+            <button
+              (click)="onSubmit()"
+              [disabled]="!from"
+              [ngStyle]="{
+                background: !from ? 'gray' : 'black'
+              }"
+              class="max-w-[170px] flex-grow flex-shrink h-full text-sm text-center xsm:py-1 sm:py-2 flex items-center justify-center sm:font-bold rounded text-white"
             >
-              <input
-                formControlName="from"
-                type="text"
-                [ngStyle]="{
-                  border:
-                    searchForm.get('from')?.invalid &&
-                    searchForm.get('from')?.touched
-                      ? '1px solid red'
-                      : ''
-                }"
-                class="rounded-md w-32 max-w-[270px] flex-grow flex-shrink py-1.5 xxsm:px-2 sm:px-7 text-[#070707] border-[1px] border-gray-300 placeholder:text-[#070707] sm:text-sm sm:leading-8 focus:ring-0"
-                placeholder="From"
-              />
-              <img
-                src="../../assets/img/span.cursor-pointer.png"
-                class="absolute"
-                alt=""
-              />
-              <input
-                formControlName="to"
-                type="text"
-                [ngStyle]="{
-                  border:
-                    searchForm.get('to')?.invalid &&
-                    searchForm.get('to')?.touched
-                      ? '1px solid red'
-                      : ''
-                }"
-                class="rounded-md w-32 max-w-[270px] flex-grow flex-shrink py-1.5 xxsm:px-2 sm:px-7 text-[#070707] border-[1px] border-gray-300 placeholder:text-[#070707] sm:text-sm sm:leading-8 focus:ring-0"
-                placeholder="To"
-              />
-            </div>
-            <div
-              class="xxsm:w-full flex xxsm:justify-center md:justify-start xxsm:items-center xxsm:gap-2 sm:gap-5 lg:gap-8"
-            >
-              <input
-                onclick="this.showPicker()"
-                formControlName="date"
-                type="date"
-                [ngStyle]="{
-                  border:
-                    searchForm.get('date')?.invalid &&
-                    searchForm.get('date')?.touched
-                      ? '1px solid red'
-                      : ''
-                }"
-                class="textbox-n"
-                class="rounded-md w-32 max-w-[270px] lg:max-w-[350px] flex-grow flex-shrink py-[5px] xxsm:px-2 sm:px-7 text-[#070707] border-[1px] border-gray-300 placeholder:text-[#070707] sm:text-sm sm:leading-8 focus:ring-0"
-                [min]="minDate"
-              />
-              <button
-                (click)="onSubmit()"
-                [disabled]="searchForm.invalid"
-                [ngStyle]="{
-                  background: searchForm.invalid ? 'gray' : 'black'
-                }"
-                class="max-w-[170px] flex-grow flex-shrink h-full text-sm text-center xsm:py-1 sm:py-2 flex items-center justify-center sm:font-bold rounded text-white"
-              >
-                Search
-              </button>
-            </div>
+              Plan Your Trip
+            </button>
           </div>
         </div>
-      </form>
-
+      </div>
       <div
         class="xxsm:w-full xxsm:px-2 sm:px-16 lg:px-36 xxsm:pb-8 md:pb-16 flex gap-5 xxsm:flex-col xxsm:gap-11 md:flex-row"
       >

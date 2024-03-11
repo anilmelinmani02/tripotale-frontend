@@ -88,7 +88,6 @@ export class ItineraryPageMainComponent implements OnInit {
   fetchingRefCode: boolean = true;
   loggedUserRefCode: string = '';
 
-
   private imageBaseUrl = 'https://www.googleapis.com/customsearch/v1';
   private apiKey = 'AIzaSyDp7yyM3_72459eJ2sd6DF6JDzHzBOhHXU';
   // private apiKey = 'AIzaSyCwpkamdyVPIcbaAOwHpf60Ru56EibBR4M';
@@ -587,7 +586,7 @@ export class ItineraryPageMainComponent implements OnInit {
       navigator.clipboard
         .writeText(this.itineraryURL)
         .then(() => {
-          this.toastr.success('URL copied to clipboard', '', {});
+          this.toastr.success('Click to share this link', '', {});
         })
         .catch((err) => {
           this.toastr.error('Error in copying text to clipboard');
@@ -611,7 +610,7 @@ export class ItineraryPageMainComponent implements OnInit {
         )
         .subscribe(
           (res) => {
-            this.toastr.success('Collectoin is updated successfully !');
+            this.toastr.success(' Your collection has been updated successfully!');
             this.loading = false;
             this.isCollectionSaved = !this.isCollectionSaved;
           },

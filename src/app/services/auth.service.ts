@@ -24,13 +24,13 @@ export class AuthService {
       this.afu
         .createUserWithEmailAndPassword(email, password)
         .then((res) => {
-          this.toastr.success('Registration has been completed');
+          this.toastr.success('Congratulations! Your registration is complete.');
           res.user?.sendEmailVerification();
           resolve(true);
         })
         .catch((err) => {
           if (err.code === 'auth/email-already-in-use') {
-            this.toastr.error('This email is already registered.');
+            this.toastr.error('Oops! Looks like that email is already registered. Please log in or try a different email..');
           } else {
             this.toastr.error('Registration failed. Please try again later.');
           }
@@ -55,7 +55,7 @@ export class AuthService {
     this.afu.sendPasswordResetEmail(email).then(
       () => {
         this.router.navigate(['/verify-email']);
-        this.toastr.success('Password reset email sent successfully');
+        this.toastr.success("Password reset email sent. Check your inbox for instructions.");
       },
       (err) => {
         this.toastr.error('Something went wrong, Please try again.');

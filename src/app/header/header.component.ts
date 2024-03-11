@@ -61,7 +61,7 @@ export class HeaderComponent {
     this.checkLogin();
     sessionStorage.removeItem('userId');
     this.loading = false;
-    this.toastr.success('Logged out successfully !');
+    this.toastr.success('You have successfully logged out. See you next time!');
     this.router.navigate(['']);
   }
 

@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 @Component({
@@ -8,31 +7,26 @@ import { Router } from '@angular/router';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent {
-  searchForm: FormGroup;
   journey: any;
-  minDate: string;
+  from: any;
+  touched: boolean = false;
 
-  constructor(private fb: FormBuilder, private router: Router) {
-    this.minDate = this.formatDate(new Date());
-
-    this.searchForm = this.fb.group({
-      from: ['', Validators.required],
-      to: [''],
-      date: ['', Validators.required],
-    });
-  }
-
-  private formatDate(date: Date): string {
-    const year = date.getFullYear();
-    const month = ('0' + (date.getMonth() + 1)).slice(-2);
-    const day = ('0' + date.getDate()).slice(-2);
-    return `${year}-${month}-${day}`;
-  }
+  constructor(private router: Router) {}
 
   onSubmit() {
-    this.journey = this.searchForm.value;
+    this.journey = { from: this.from };
     this.router.navigate(['/customer-profilling'], {
       queryParams: this.journey,
     });
+  }
+  
+  onBlur() {
+    this.touched = true;
+  }
+
+  onInput() {
+    if (this.touched) {
+      this.touched = false;
+    }
   }
 }
