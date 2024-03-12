@@ -9,4 +9,8 @@ export const environment = {
         measurementId: "G-JMQ061HFB5"
       },
       production: false,
+      depolyUrl:"http://localhost:4200",
+      // depolyUrl:"https://tripotale-f1db9.web.app",
+      // depolyUrl:"tripotale-f1db9.firebaseapp.com",
+
 } 

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ItineraryService } from '../services/itinerary.service';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { ToastrService, GlobalConfig } from 'ngx-toastr';
+import { environment } from '../environment/environment';
 
 @Component({
   selector: 'app-referral-details',
@@ -65,10 +66,11 @@ export class ReferralDetailsComponent {
   }
 
   copyRefCode() {
+    const copyUrl=
     navigator.clipboard
-      .writeText(this.loggedUserRefCode)
+      .writeText(`${environment.depolyUrl}/register?refCode=${this.loggedUserRefCode}`)
       .then(() => {
-        this.toastr.success('Referral code copied to clipboard', '', {});
+        this.toastr.success('Referral link copied. Share with a friend!', '', {});
       })
       .catch((err) => {
         this.toastr.error('Error in copying text to clipboard');

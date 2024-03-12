@@ -25,6 +25,7 @@ button {
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  margin-left: 131px;
 }
 
 button:disabled {
@@ -43,3 +44,38 @@ button:disabled {
 .error-text {
   font-size: 14px;
 }
+
+.message-container {
+  display: flex;
+  justify-content: center;  
+  align-items: center;  
+  // height: 100vh; 
+}
+
+.message {
+  max-width: 500px;  
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  padding: 20px;
+  border-radius: 5px;
+}
+
+.message h1 {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.message ul {
+  margin-top: 5px;
+}
+
+.message ul li {
+  margin-bottom: 5px;
+}
+
+.link {
+  color: #007bff;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
