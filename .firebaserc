@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "tripotale-f1db9"
-  }
+    "default": "tripotale-5f31c",
+    "tripotale-f1db9": "tripotale-5f31c"
+  },
+  "targets": {},
+  "etags": {}
 }

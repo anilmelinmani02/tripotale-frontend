@@ -21,16 +21,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { CommonModule } from '@angular/common';
 import { HowItWorksComponent } from './how-it-works/how-it-works.component';
 import { ReferralDetailsComponent } from './referral-details/referral-details.component';
-
-const firebaseConfig = {
-  apiKey: "AIzaSyAsO-5snlKEEswJqk0b1JkcY5_d3cwusg0",
-  authDomain: "tripotale-5f31c.firebaseapp.com",
-  projectId: "tripotale-5f31c",
-  storageBucket: "tripotale-5f31c.appspot.com",
-  messagingSenderId: "535848464026",
-  appId: "1:535848464026:web:d3bf9d93cdac09546e3923",
-  measurementId: "G-PMEB2R3Z0M"
-};
+import { environment } from './environment/environment';
 
 @NgModule({
   declarations: [
@@ -56,7 +47,7 @@ const firebaseConfig = {
     FormsModule,
     FormsModule,
     ReactiveFormsModule,
-    AngularFireModule.initializeApp(firebaseConfig),
+    AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireAuthModule,
     AngularFireModule,
     HttpClientModule,

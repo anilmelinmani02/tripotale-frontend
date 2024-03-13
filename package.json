@@ -9,7 +9,7 @@
     "test": "ng test"
   },
   "private": true,
-  "dependencies": {
+  "depedencies": {
     "@agm/core": "^3.0.0-beta.0",
     "@angular/animations": "^16.2.12",
     "@angular/common": "^16.0.0",
